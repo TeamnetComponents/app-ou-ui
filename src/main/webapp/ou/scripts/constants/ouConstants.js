@@ -1,0 +1,1 @@
+var ouConstants=angular.module('ouConstants',[]);

@@ -1,0 +1,33 @@
+.ou{
+
+}
+
+.modal-dialog {
+    z-index: 2002;
+}
+
+/*for buttons*/
+section .md-button:not(.md-fab) {
+    min-width: 5em; }
+section .md-button {
+    display: block;
+    margin: 1em;
+}
+.label {
+    position: absolute;
+    bottom: 5px;
+
+    color: #ccc;
+    font-size: 14px; }
+
+/*for tabs*/
+.md-tab-content {
+    background: white; }
+
+.md-header-items-container {
+    background-color: #7FB0C8;
+}
+
+md-tabs.md-default-theme md-tab {
+    color: 	#000000;
+}

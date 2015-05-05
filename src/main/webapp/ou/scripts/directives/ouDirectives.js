@@ -1,0 +1,1 @@
+var ouDirectives=angular.module('ouDirectives',[]);
