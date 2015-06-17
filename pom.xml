@@ -15,6 +15,26 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 	
+    <distributionManagement>
+        <repository>
+            <id>tni-hq-artifact</id>
+            <name>tni-hq-artifact-releases</name>
+            <url>http://repo.teamnet.ro/tn-components</url>
+        </repository>
+        <snapshotRepository>
+            <id>tni-hq-artifact</id>
+            <name>tni-hq-artifact-snapshots</name>
+            <url>http://repo.teamnet.ro/tn-components</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>tni-hq-artifact</id>
+            <name>tni-hq-artifact-releases</name>
+            <url>http://repo.teamnet.ro/tn-components</url>
+        </repository>
+    </repositories>
+
     <dependencies>
 		<!-- Project dependencies -->
         <dependency>
