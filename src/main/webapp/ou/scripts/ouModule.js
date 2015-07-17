@@ -15,7 +15,7 @@ ouModule
             });
         $routeProvider
             .when('/organizationUnit/manage', {
-                templateUrl: 'ou/views/manageOrganizationUnits.html',
+                templateUrl: 'ou/views/manageOrganizationalUnit/manageOrganizationalUnit.html',
                 controller: 'ouManageController',
                 access: {
                     authorizedModules: [AUTH_BOOTSTRAP.all]
