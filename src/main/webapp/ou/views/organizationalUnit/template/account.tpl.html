@@ -1,0 +1,45 @@
+<div ng-show="" class="row"
+     style="width: 100%; height: 100%;position: absolute; z-index: 9999; background-color: rgba(248, 248, 248, 0.63)">
+    <md-progress-circular style="position: absolute;
+                                          left: 50%;
+                                          top: 50%;
+                                          z-index: 9999"
+                          class="md-hue-2" md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="row permsissions-editor">
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" ng-class="{'col-anim': isEdit}">
+        <div class="thumbnail"
+             style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
+             data-drop="true"
+             ng-model='selectedAccount.functions'
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccount.functions])'}"
+             jqyoui-droppable="{multiple:true}">
+
+
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" ng-class="{'col-anim': isEdit}">
+        <div class="thumbnail"
+             style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
+             data-drop="true"
+             ng-model='selectedAccount.functions'
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccount.functions])'}"
+             jqyoui-droppable="{multiple:true}">
+
+
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" ng-class="{'col-anim': isEdit}">
+        <div class="thumbnail"
+             style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
+             data-drop="true"
+             ng-model='selectedAccount.functions'
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccount.functions])'}"
+             jqyoui-droppable="{multiple:true}">
+
+
+        </div>
+    </div>
+</div>
