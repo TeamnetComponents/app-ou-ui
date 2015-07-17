@@ -1,0 +1,44 @@
+<div ng-controller="ouManageController">
+    <div>
+        <h2 class="page-title">Manage Organizational Units</h2>
+        <div class="panel panel-default panel-without-overflow">
+            <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>Manage OU</b></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="ng-scope">Department</label>
+
+                                <ui-select ng-model="departmentSelection.selected" theme="selectize"
+                                           reset-search-input="false" ng-required="true" name="departmentField">
+                                    <ui-select-match>
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="department in departments">
+                                        <span ng-bind-html="department.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                            <label class="ng-scope">&nbsp</label>
+                                <input type="button" ng-click="createOrganization()"
+                                       class="btn btn-primary center-block" value="New Organization">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default panel-without-overflow">
+            <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Details</b></div>
+            <div class="panel-body">
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
