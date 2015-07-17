@@ -4,5 +4,12 @@ ouModule
         console.log('ou Module loading!!!');
 
     //place some routes here
-
+        $routeProvider
+            .when('/organizationalUnit', {
+                templateUrl: 'ou/views/organizationalUnit/organizationalUnit.html',
+                controller: 'organizationalUnitController',
+                access: {
+                    authorizedModules: [AUTH_BOOTSTRAP.all]
+                }
+            });
     });
