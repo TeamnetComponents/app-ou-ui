@@ -1,5 +1,4 @@
-var ouModule=angular.module('ouModule',['ouControllers','ouServices','ouDirectives','ouConstants','angular-component.app-file-uploader',
-    'ui.select']);
+var ouModule=angular.module('ouModule',['ouControllers','ouServices','ouDirectives','ouConstants']);
 ouModule
     .config(function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider,AUTH_BOOTSTRAP) {
         console.log('ou Module loading!!!');
@@ -12,8 +11,7 @@ ouModule
                 access: {
                     authorizedModules: [AUTH_BOOTSTRAP.all]
                 }
-            });
-        $routeProvider
+            })
             .when('/organizationUnit/manage', {
                 templateUrl: 'ou/views/manageOrganizationalUnit/manageOrganizationalUnit.html',
                 controller: 'ouManageController',
