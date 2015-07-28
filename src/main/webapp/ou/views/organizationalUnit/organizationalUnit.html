@@ -13,17 +13,17 @@
                         <label> Selecteaza organizatie : </label>
 
                         <ui-select on-select="showPerspectiveSelect()" name="organizationSelect"
-                                   ng-model="organization.selected"
-                                   theme="selectize">
+                                   ng-model="organization.selected" theme="selectize">
 
                             <ui-select-match placeholder="Organizatie">
                                 {{$select.selected.name}}
                             </ui-select-match>
 
-                            <ui-select-choices repeat="org in repetitionTypes | filter: $select.search">
+                            <ui-select-choices
+                                    repeat="org in organizationalUnitList | filter: $select.search">
                                 <div ng-bind-html="org.name | highlight: $select.search"></div>
                                 <small>
-                                    Name: {{org.name}}
+                                    Name: {{org.description}}
                                 </small>
                             </ui-select-choices>
                         </ui-select>
@@ -37,47 +37,18 @@
                                    ng-model="perspective.selected" theme="selectize">
 
                             <ui-select-match placeholder="Perspectiva">
-                                {{$select.selected.name}}
+                                {{$select.selected.code}}
                             </ui-select-match>
 
-                            <ui-select-choices repeat="scheduledJob in repetitionTypes | filter: $select.search">
-                                <div ng-bind-html="scheduledJob.name | highlight: $select.search"></div>
+                            <ui-select-choices
+                                    repeat="perspective in organization.selected.items | filter: $select.search">
+                                <div ng-bind-html="perspective.code | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
                 </div>
 
-                <script type="text/ng-template" id="items_renderer.html">
-                    <div ui-tree-handle>
-                        <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this)">
-                        <span class="glyphicon"
-                              ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span>
-                        </a>
-                        {{item.code}}
-                        <a class="pull-right btn btn-primary btn-xs" data-nodrag
-                           ng-click='item.items.push({title:"New", validFrom:"", validTo:"", items:[]})'
-                           ng-touch="updateOuInformation(item)"
-                           style="margin-right: 8px;">
-                            <span class="glyphicon glyphicon-plus"></span></a>
-                    </div>
-                    <ol ui-tree-nodes="options" ng-model="item.items" ng-class="{hidden: collapsed}">
-                        <li ng-repeat="item in item.items" ui-tree-node
-                            ng-include="'items_renderer.html'" collapsed="false"></li>
-                    </ol>
-                </script>
-
-                <div class="thumbnail ng-pristine ng-valid ui-droppable ng-touched"
-                     style="min-height: 310px; max-height: 400px; overflow-y: scroll" ng-show="isPerspectiveSelected">
-
-                    <input type="text" class="form-control" ng-model="pattern">
-
-                    <div ui-tree="options">
-                        <ol ui-tree-nodes ng-model="testListForUi">
-                            <li ng-click="updateOuInformation(item)" ng-repeat="item in testListForUi" ui-tree-node
-                                ng-include="'items_renderer.html'" data-nodrag collapsed="false"></li>
-                        </ol>
-                    </div>
-                </div>
+                <div ng-include="'ou/views/organizationalUnit/organizationalUnitTreeView.html'"></div>
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" ng-show="isTreePerspectiveSelected">
@@ -85,21 +56,8 @@
                 <div class="row m0">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
-                            <label> Selecteaza parinte : </label>
-
-                            <ui-select name="parentSelected" ng-model="parent.selected" theme="selectize">
-
-                                <ui-select-match ng-model="parent" placeholder="Parinte">
-                                    {{$select.selected.name}}
-                                </ui-select-match>
-
-                                <ui-select-choices repeat="par in repetitionTypes | filter: $select.search">
-                                    <div ng-bind-html="par.name | highlight: $select.search"></div>
-                                    <small>
-                                        Name: {{par.name}}
-                                    </small>
-                                </ui-select-choices>
-                            </ui-select>
+                            <label> Organizational Unit Parinte :</label>
+                            <input type="text" name="ouCode" class="form-control" ng-model="parentOu.code" readonly/>
                         </div>
                     </div>
                 </div>
@@ -108,7 +66,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Code :</label>
-                            <input type="text" class="form-control" ng-model="ou">
+                            <input type="text" name="ouCode" class="form-control" ng-model="code">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -134,6 +92,12 @@
                     </div>
                 </div>
 
+                <div class="row m0" ng-show="isEditingAnOu">
+                    <p style="font-size: 12px; text-align: center;">
+                        <b>Acum editati Organizational Unit: {{code}}</b>
+                    </p>
+                </div>
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="separator mt5 mb15"></div>
@@ -153,11 +117,12 @@
                 <div class="col-md-12">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#functions" aria-controls="functions"
-                                                                  role="tab"
-                                                                  data-toggle="tab">Functions</a></li>
-                        <li role="presentation"><a href="#accounts" aria-controls="accounts" role="tab"
-                                                   data-toggle="tab">Accounts</a>
+                        <li role="presentation" class="active">
+                            <a href="#functions" aria-controls="functions" role="tab"
+                               data-toggle="tab">Functions</a></li>
+                        <li role="presentation">
+                            <a href="#accounts" aria-controls="accounts" role="tab"
+                               data-toggle="tab">Accounts</a>
                         </li>
                     </ul>
 
