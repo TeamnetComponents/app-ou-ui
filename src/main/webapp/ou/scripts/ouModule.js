@@ -1,4 +1,4 @@
-var ouModule=angular.module('ouModule',['ouControllers','ouServices','ouDirectives','ouConstants']);
+var ouModule=angular.module('ouModule',['ouControllers','ouServices','ouDirectives','ouConstants', 'ouFilters']);
 ouModule
     .config(function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider,AUTH_BOOTSTRAP) {
         console.log('ou Module loading!!!');

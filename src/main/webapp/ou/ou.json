@@ -5,6 +5,8 @@
         "ou/scripts/ouModule.js",
         "ou/scripts/controllers/ouControllers.js",
         "ou/scripts/controllers/ouMainController.js",
+        "ou/scripts/filters/ouFilters.js",
+        "ou/scripts/filters/organizationUnitFilter.js",
         "ou/scripts/controllers/manageOrganizationalUnit/ouManageController.js",
         "ou/scripts/services/ouServices.js",
         "ou/scripts/services/ouMainService.js",
