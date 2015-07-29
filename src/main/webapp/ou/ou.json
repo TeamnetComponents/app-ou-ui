@@ -13,6 +13,7 @@
         "ou/scripts/constants/ouConstants.js",
         "ou/scripts/constants/OU.js",
         "ou/scripts/controllers/organizationalUnit/organizationalUnitController.js",
-        "ou/scripts/services/organizationalUnit/organizationalUnitService.js"
+        "ou/scripts/services/organizationalUnit/organizationalUnitService.js",
+        "ou/scripts/controllers/manageOrganizationalUnit/ouManage.json"
     ]
 }
