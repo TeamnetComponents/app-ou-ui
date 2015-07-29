@@ -6,7 +6,6 @@ ouControllers
         $scope.isPerspectiveSelected = false;
         $scope.isEditingAnOu = false;
         $scope.checkIfHaveChildren = false;
-        //$scope.item = {};
         $scope.organization = {};
         $scope.perspective = {};
         $scope.objectToUpdate = {};
@@ -22,21 +21,6 @@ ouControllers
 
         $scope.showTreePerspective = function () {
             $scope.isPerspectiveSelected = true;
-            //if ($scope.perspective.selected.items.length == 0) {
-            //    $scope.checkIfHaveChildren = true;
-            //}
-        };
-
-        $scope.createNewChildForPerspective = function () {
-            $scope.perspective.selected.items.push(
-                {
-                    code: "New",
-                    description: "Description",
-                    validFrom: "10/10/2014",
-                    validTo: "06/10/2015",
-                    items: []
-                }
-            )
         };
 
         $scope.className = function () {
@@ -45,6 +29,26 @@ ouControllers
             }
             return "col-lg-6 col-md-6 col-sm-12 col-xs-12";
         };
+
+        /*click on a tree node and you will get in args all the for the clicked node.
+            parentOu will have the parent information
+            objectToUpdate is the node
+            isTreePerspectiveSelected will be true to show the node info to be edited
+            search is an empty string to initialize the Search input for filter
+            isEditingAnOu will be true to show what action the user is doing.
+        */
+        $scope.$on('sendData', function(e, args){
+            $scope.parentOu = args.parentOu;
+            $scope.objectToUpdate = args.objectToUpdate;
+            $scope.isTreePerspectiveSelected = args.isTreePerspectiveSelected;
+            $scope.search = args.search;
+            $scope.isEditingAnOu = args.isEditingAnOu;
+
+            $scope.code = $scope.objectToUpdate.code;
+            $scope.description = $scope.objectToUpdate.description;
+            $scope.validFrom = new Date($scope.objectToUpdate.validFrom);
+            $scope.validTo = new Date($scope.objectToUpdate.validTo);
+        });
 
         $scope.saveOu = function () {
             $scope.saveUpdateOuInformation($scope.objectToUpdate);
@@ -55,21 +59,6 @@ ouControllers
             objToUpdate.description = $scope.description;
             objToUpdate.validFrom = $scope.validFrom;
             objToUpdate.validTo = $scope.validTo;
-        };
-
-        $scope.insertNewElement = function (item) {
-            var object = {
-                code: "New " + item.code + " child",
-                description: "Description",
-                validFrom: "10/10/2014",
-                validTo: "06/10/2015",
-                items: []
-            };
-            item.items.push(object);
-        };
-
-        $scope.toggle = function (scope) {
-            scope.toggle();
         };
 
         $scope.organizationalUnitList = [
@@ -172,43 +161,4 @@ ouControllers
                 ]
             }
         ];
-
-        $scope.getMissingParent = function (object) {
-            var objectToReturn = $scope.perspective.selected;
-            var objectToIterate = $scope.perspective.selected.items;
-            for(var i = 0; i < objectToIterate.length; i++) {
-                for(var j = 0; j < objectToIterate[i].items.length; j++) {
-                    if(objectToIterate[i].items[j].code == object.code &&
-                        objectToIterate[i].items[j].description == object.description) {
-                        return objectToIterate[i];
-                    }
-                }
-            }
-        };
-
-        $scope.updateOuInformation = function (item, father) {
-            $scope.search = "";
-            $scope.isTreePerspectiveSelected = true;
-            $scope.isEditingAnOu = true;
-
-            if (father != undefined) {
-                $scope.parentOu = father;
-            } else {
-                $scope.parentOu = $scope.getMissingParent(item);
-            }
-            $scope.objectToUpdate = item;
-
-            $scope.code = item.code;
-            $scope.description = item.description;
-            $scope.validFrom = new Date(item.validFrom);
-            $scope.validTo = new Date(item.validTo);
-        };
-
-        $scope.collapseAll = function() {
-            $scope.$broadcast('collapseAll');
-        };
-
-        $scope.expandAll = function() {
-            $scope.$broadcast('expandAll');
-        };
     });

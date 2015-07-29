@@ -12,6 +12,8 @@
         "ou/scripts/services/ouMainService.js",
         "ou/scripts/directives/ouDirectives.js",
         "ou/scripts/directives/ouMainDirective.js",
+        "ou/scripts/directives/ouTreeView/ouTreeViewDirective.js",
+        "ou/scripts/directives/ouTreeView/ouTreeViewController.js",
         "ou/scripts/constants/ouConstants.js",
         "ou/scripts/constants/OU.js",
         "ou/scripts/controllers/organizationalUnit/organizationalUnitController.js",

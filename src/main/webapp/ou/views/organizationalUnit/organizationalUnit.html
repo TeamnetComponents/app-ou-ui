@@ -48,7 +48,8 @@
                     </div>
                 </div>
 
-                <div ng-include="'ou/views/organizationalUnit/organizationalUnitTreeView.html'"></div>
+                <div ng-show="isPerspectiveSelected" ou-tree-view ou-tree-data="perspective.selected"
+                     is-ou-manage="false"></div>
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" ng-show="isTreePerspectiveSelected">
