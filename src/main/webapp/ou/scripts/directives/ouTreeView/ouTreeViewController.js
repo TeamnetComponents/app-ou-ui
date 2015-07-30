@@ -49,18 +49,19 @@ ouControllers.
                 items: []
             };
             item.items.push(object);
+            $scope.updateOuInformation(object, item);
         };
 
         $scope.createNewChildForPerspective = function () {
-            $scope.ouTreeData.items.push(
-                {
-                    code: "New",
-                    description: "Description",
-                    validFrom: "10/10/2014",
-                    validTo: "06/10/2015",
-                    items: []
-                }
-            )
+            var object = {
+                code: "New",
+                description: "Description",
+                validFrom: "10/10/2014",
+                validTo: "06/10/2015",
+                items: []
+            };
+            $scope.ouTreeData.items.push(object);
+            $scope.updateOuInformation(object, $scope.ouTreeData);
         };
 
         var getRootNodesScope = function() {
@@ -70,14 +71,10 @@ ouControllers.
         $scope.collapseAll = function() {
             var scope = getRootNodesScope();
             scope.collapseAll();
-            $scope.$broadcast('collapseAll');
-            //scope.collapsed = true;
         };
 
         $scope.expandAll = function () {
             var scope = getRootNodesScope();
             scope.expandAll();
-            $scope.$broadcast('expandAll');
-            //scope.collapsed = false;
         };
     });

@@ -1,6 +1,7 @@
 <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle>
-        <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this); $event.stopPropagation();">
+        <a class="btn btn-success btn-xs" ng-if="item.items && item.items.length > 0"
+           data-nodrag ng-click="toggle(this); $event.stopPropagation();">
             <span class="glyphicon"
                   ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
             </span>
@@ -21,7 +22,7 @@
 </script>
 
 <div class="thumbnail ng-pristine ng-valid ui-droppable ng-touched"
-     style="min-height: 310px; max-height: 462px; overflow-y: scroll">
+     style="min-height: 310px; max-height: 465px; overflow-y: scroll">
 
     <input type="text" class="form-control" ng-model="search" placeholder="Search"/>
 
@@ -42,15 +43,19 @@
         <div class="row m0">
             <div class="col-md-12 text-right mb15">
 
-                <!--<button class="btn btn-success"-->
-                        <!--ng-click="collapseAll()">-->
-                    <!--Collapse All-->
-                <!--</button>-->
+                <!--<div class="col-md-4">-->
+                    <!--<button class="btn btn-success"-->
+                            <!--ng-click="collapseAll()">-->
+                        <!--Collapse-->
+                    <!--</button>-->
+                <!--</div>-->
 
-                <!--<button class="btn btn-success"-->
-                        <!--ng-click="expandAll()">-->
-                    <!--Expand All-->
-                <!--</button>-->
+                <!--<div class="col-md-4">-->
+                    <!--<button class="btn btn-success"-->
+                            <!--ng-click="expandAll()">-->
+                        <!--Expand-->
+                    <!--</button>-->
+                <!--</div>-->
 
                 <button class="btn btn-success"
                         ng-click="createNewChildForPerspective()">
