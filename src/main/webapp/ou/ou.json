@@ -18,6 +18,7 @@
         "ou/scripts/constants/OU.js",
         "ou/scripts/controllers/organizationalUnit/organizationalUnitController.js",
         "ou/scripts/services/organizationalUnit/organizationalUnitService.js",
-        "ou/scripts/controllers/manageOrganizationalUnit/ouManage.json"
+        "ou/scripts/controllers/manageOrganizationalUnit/ouManage.json",
+        "ou/scripts/services/organizationalUnit/organizationalUnitServiceMock.js"
     ]
 }

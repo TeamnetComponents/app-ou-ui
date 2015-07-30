@@ -20,7 +20,7 @@
                             </ui-select-match>
 
                             <ui-select-choices
-                                    repeat="org in organizationalUnitList | filter: $select.search">
+                                    repeat="org in organizationalUnits | filter: $select.search">
                                 <div ng-bind-html="org.name | highlight: $select.search"></div>
                                 <small>
                                     Name: {{org.description}}
@@ -108,9 +108,19 @@
                 <div class="row m0">
                     <div class="col-md-12 text-right mb15">
 
+                        <button class="btn btn-info"
+                                ng-show="isView"
+                                ng-click="editOrganizationalUnit()">
+                            Edit
+                        </button>
                         <button class="btn btn-success"
-                                ng-click="saveOu()">
+                                ng-click="saveOrganizationalUnit()">
                             Save
+                        </button>
+                        <button class="btn btn-warning"
+                                ng-show="!isView"
+                                ng-click="backOrganizationalUnit()">
+                            Back
                         </button>
                     </div>
                 </div>
