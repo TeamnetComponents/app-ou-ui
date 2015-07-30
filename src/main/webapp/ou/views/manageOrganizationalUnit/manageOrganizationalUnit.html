@@ -4,8 +4,11 @@
         <div class="panel panel-default panel-without-overflow">
             <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>Manage OU</b></div>
                 <div class="panel-body">
+
                     <div class="row">
+
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
                             <div class="form-group">
                                 <label class="ng-scope">Organization</label>
 
@@ -20,24 +23,16 @@
                                 </ui-select>
                             </div>
                         </div>
+
                         <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+
                             <div class="form-group">
                                 <label class="ng-scope">&nbsp</label>
                                 <input type="button" ng-click="createOrganization()"
-                                       class="btn btn-primary center-block" value="New Organization">
+                                       class="btn btn-success center-block" value="New Organization">
                             </div>
                         </div>
                     </div>
-                    <!--<form name="leaveDaysForm" novalidate class="form">-->
-                        <!--<input type="text" ng-model="demoInput">-->
-                        <!--<app-upload update-token="myFunction(data)"></app-upload>-->
-                        <!--<div class="form-actions">-->
-                            <!--<p class="text-center">-->
-                                <!--<input type="button" ng-click="submit()" class="btn btn-primary" value="Click me!">-->
-                            <!--</p>-->
-                        <!--</div>-->
-                    <!--</form>-->
-                    <!--Token: {{token}}-->
                 </div>
             </div>
         </div>
@@ -45,7 +40,9 @@
             <div class="panel panel-default panel-without-overflow">
                 <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Details</b></div>
                 <div class="panel-body">
+
                     <div class="row">
+
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label class="ng-scope">Organization name</label>
@@ -53,6 +50,7 @@
                                        class="form-control">
                             </div>
                         </div>
+
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label class="ng-scope">Organization code</label>
@@ -61,6 +59,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
@@ -75,8 +74,85 @@
             <div class="panel panel-default panel-without-overflow">
                 <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Perspectives</b></div>
                 <div class="panel-body">
-                    <div class="row">
 
+                    <div class="col-md-12">
+
+                        <div class="row">
+                            <ul class="nav nav-tabs" role="tablist" style="float: left; border-bottom: 0">
+                                <li role="presentation" ng-repeat="perspective in departmentSelection.selected.perspectives"
+                                    ng-class="{'active':$index == (departmentSelection.selected.perspectives.length - 1)}">
+                                    <a ng-href="#{{'perspective'+$index}}" aria-controls="{{perspective.name}}" role="tab"
+                                       data-toggle="tab">{{perspective.name}}</a></li>
+
+                            </ul>
+                            <span>
+                                <ul class="nav nav-tabs">
+                                    <li id="add" role="presentation">
+
+                                        <a ng-href="#{{'perspective'+ (departmentSelection.selected.perspectives.length - 1)}}"
+                                           data-toggle="tab" ng-click="addPerspective()" role="tab" id="add-btn"
+                                           style="background-color: #e0e0e0 !important; color:#555 !important">+</a>
+
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <div class="tab-content">
+
+                                <div role="tabpanel" class="tab-pane" id="{{'perspective'+$index}}"
+                                     ng-repeat="perspective in departmentSelection.selected.perspectives"
+                                     ng-class="{'active':$index == (departmentSelection.selected.perspectives.length - 1)}">
+
+                                    <div class="col-md-12" ng-if="perspective.name != 'new'">
+
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
+                                             ng-if="perspective.items != undefined || perspective.items != null">
+                                            <div class="form-group">
+                                                <ou-tree-view ou-tree-data="perspective.items" is-ou-manage="true"
+                                                        edit-url="editUrl">
+                                                </ou-tree-view>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12"
+                                             ng-if="perspective.items == undefined || perspective.items == null">
+
+                                            <div class="form-group">
+                                                <label class="ng-scope">&nbsp</label>
+                                                <input type="button" ng-click="editPerspective()"
+                                                       class="btn btn-success center-block" value="Edit Perspective">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12" ng-if="perspective.name == 'new'">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                                                    <div class="form-group">
+                                                        <label class="ng-scope">Perspective name</label>
+                                                        <input type="text" class="form-control" ng-model="newPerspectiveName">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+
+                                                    <div class="form-group">
+                                                        <label class="ng-scope">&nbsp</label>
+                                                        <input type="submit" class="btn btn-primary center-block"
+                                                               ng-click="saveNewPerspective(newPerspectiveName, $index)" value="Save">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

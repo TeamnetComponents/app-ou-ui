@@ -1,5 +1,5 @@
 ouControllers.
-    controller('ouTreeViewController', function($scope){
+    controller('ouTreeViewController', ['$scope', '$location', function($scope, $location){
 
         /*
             Get the current ou and his parent.
@@ -7,24 +7,29 @@ ouControllers.
             You must listen with $on for the sendData event.
          */
         $scope.updateOuInformation = function (item, father) {
-            $scope.search = "";
-            $scope.isTreePerspectiveSelected = true;
-            $scope.isEditingAnOu = true;
+            if($scope.isOuManage){
+                $location.path($scope.editUrl); // TODO send perspective id on url
 
-            $scope.objectToUpdate = item;
-            if (father != undefined) {
-                $scope.parentOu = father;
             } else {
-                $scope.parentOu = $scope.getMissingParent(item);
-            }
+                $scope.search = "";
+                $scope.isTreePerspectiveSelected = true;
+                $scope.isEditingAnOu = true;
 
-            var array = {};
-            array.parentOu = $scope.parentOu;
-            array.objectToUpdate = $scope.objectToUpdate;
-            array.isTreePerspectiveSelected = $scope.isTreePerspectiveSelected;
-            array.search = $scope.search;
-            array.isEditingAnOu = $scope.isEditingAnOu;
-            $scope.$emit('sendData', array);
+                $scope.objectToUpdate = item;
+                if (father != undefined) {
+                    $scope.parentOu = father;
+                } else {
+                    $scope.parentOu = $scope.getMissingParent(item);
+                }
+
+                var array = {};
+                array.parentOu = $scope.parentOu;
+                array.objectToUpdate = $scope.objectToUpdate;
+                array.isTreePerspectiveSelected = $scope.isTreePerspectiveSelected;
+                array.search = $scope.search;
+                array.isEditingAnOu = $scope.isEditingAnOu;
+                $scope.$emit('sendData', array);
+            }
         };
 
         $scope.getMissingParent = function (object) {
@@ -77,4 +82,4 @@ ouControllers.
             var scope = getRootNodesScope();
             scope.expandAll();
         };
-    });
+    }]);

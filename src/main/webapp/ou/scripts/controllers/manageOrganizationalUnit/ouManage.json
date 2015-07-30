@@ -13,14 +13,107 @@
         "code": "DPT2",
         "description": "Departamentul 2 se ocupa cu ",
         "validFrom": "22-06-2015",
-        "validTo": "22-06-2051"
+        "validTo": "22-06-2051",
+        "perspectives": [
+          {
+            "name": "Perspective 2.1",
+            "items":
+            {
+              "id": 1,
+              "code": "Departamentul 2",
+              "description": "Departamentul 2",
+              "validFrom": "10/05/2014",
+              "validTo": "10/02/2015",
+              "items": [
+                {
+                  "id": 11,
+                  "code": "Departamentul 2.1",
+                  "description": "Departamentul 2.1",
+                  "validFrom": "10/05/2014",
+                  "validTo": "10/10/2015",
+                  "items": [
+                    {
+                      "id": 111,
+                      "code": "Departamentul 2.1.1",
+                      "description": "Departamentul 2.1.1",
+                      "validFrom": "10/05/2014",
+                      "validTo": "10/10/2015",
+                      "items": [
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": 12,
+                  "code": "Departamentul 2.2",
+                  "description": "Departamentul 2.2",
+                  "validFrom": "10/04/2014",
+                  "validTo": "10/03/2015",
+                  "items": []
+                }
+              ]
+            }
+          },
+          {
+            "name": "Perspective 2.2",
+            "items":
+            {
+              "id": 1,
+              "code": "Departamentul 2",
+              "description": "Departamentul 2",
+              "validFrom": "10/05/2014",
+              "validTo": "10/02/2015",
+              "items": [
+                {
+                  "id": 11,
+                  "code": "Departamentul 2.2",
+                  "description": "Departamentul 2.1",
+                  "validFrom": "10/05/2014",
+                  "validTo": "10/10/2015"
+                },
+                {
+                  "id": 12,
+                  "code": "Departamentul 2.1",
+                  "description": "Departamentul 2.2",
+                  "validFrom": "10/04/2014",
+                  "validTo": "10/03/2015",
+                  "items": [
+                    {
+                      "id": 111,
+                      "code": "Departamentul 2.1.1",
+                      "description": "Departamentul 2.1.1",
+                      "validFrom": "10/05/2014",
+                      "validTo": "10/10/2015",
+                      "items": [
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "Perspective 2.3"
+          },
+          {
+            "name": "Perspective 2.4"
+          }
+        ]
       },
       {
         "name": "Departament 3",
         "code": "DPT3",
         "description": "Departamentul 3 se ocupa cu ",
         "validFrom": "23-06-2015",
-        "validTo": "23-06-2051"
+        "validTo": "23-06-2051",
+        "perspectives": [
+          {
+            "name": "Perspective 3.1"
+          },
+          {
+            "name": "Perspective 3.2"
+          }
+        ]
       },
       {
         "name": "Departament 4",
