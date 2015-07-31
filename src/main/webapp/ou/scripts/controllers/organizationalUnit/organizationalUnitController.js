@@ -1,6 +1,7 @@
 'use strict';
 ouControllers
-    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'Function', function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, Function) {
+    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'Function', 'OU',
+        function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, Function, OU) {
 
         $scope.showDropDownForPerspective = false;
         $scope.isPerspectiveSelected = false;
@@ -13,9 +14,8 @@ ouControllers
         $scope.objectToUpdate = {};
         $scope.parentOu = {};
 
-        var baseTemplateUrl = 'ou/views/organizationalUnit/template/';
-        $scope.accountsTpl = baseTemplateUrl + 'account.tpl.html';
-        $scope.functionsTpl = baseTemplateUrl + 'function.tpl.html';
+        $scope.accountsTpl = OU.url.template + OU.url.account;
+        $scope.functionsTpl = OU.url.template + OU.url.functions;
 
         $scope.organizationalUnits = [];
         $scope.selectedOu = {};
@@ -24,10 +24,6 @@ ouControllers
 
         $scope.search = '';
         $scope.selectedSearch = '';
-
-        $scope.isView = true;
-        $scope.isEdit = false;
-
         $scope.loading = false;
 
         $scope.isSelected = function(organizationalUnit){
@@ -61,6 +57,9 @@ ouControllers
         };
 
         $scope.saveOrganizationalUnit = function() {
+            $scope.saveUpdateOuInformation($scope.objectToUpdate);
+            $scope.isView = true;
+            $scope.isEdit = false;
 
             //TODO updateOrganizationalUnit in repository & service (backend + frontend)
             organizationalUnitServiceMock.updateOrganizationalUnit($scope.selectedOu, function() {
