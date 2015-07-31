@@ -1,7 +1,8 @@
 'use strict';
 ouControllers
-    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'Function', 'OU',
-        function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, Function, OU) {
+   
+    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
+        function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
 
         $scope.showDropDownForPerspective = false;
         $scope.isPerspectiveSelected = false;
@@ -99,7 +100,7 @@ ouControllers
                         $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
                     }
                 });
-                Function.getAll(function(res){
+                FunctionMock.getAll(function(res){
                     $scope.allFunctions = res;
                     if(!_.isEmpty($scope.organizationalUnits)){
                         $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
