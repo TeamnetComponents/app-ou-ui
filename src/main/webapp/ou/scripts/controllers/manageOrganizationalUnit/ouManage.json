@@ -2,13 +2,16 @@
   "content": {
     "organizations":[
       {
+        "id": 1,
         "name": "Departament 1",
         "code": "DPT1",
         "description": "Departamentul 1 se ocupa cu ",
         "validFrom": "21-06-2015",
-        "validTo": "21-06-2051"
+        "validTo": "21-06-2051",
+        "perspectives": []
       },
       {
+        "id": 2,
         "name": "Departament 2",
         "code": "DPT2",
         "description": "Departamentul 2 se ocupa cu ",
@@ -101,6 +104,7 @@
         ]
       },
       {
+        "id": 3,
         "name": "Departament 3",
         "code": "DPT3",
         "description": "Departamentul 3 se ocupa cu ",
@@ -116,11 +120,13 @@
         ]
       },
       {
+        "id": 4,
         "name": "Departament 4",
         "code": "DPT4",
         "description": "Departamentul 4 se ocupa cu ",
         "validFrom": "24-06-2015",
-        "validTo": "24-06-2051"
+        "validTo": "24-06-2051",
+        "perspectives": []
       }
     ]
   }

@@ -3,26 +3,65 @@
  */
 ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$location', function ($scope, $http, OU, $location) {
     $scope.departmentSelection = {};
-    $scope.disableDetails = false;
+    $scope.disableDetails = true;
     $scope.newPerspectiveName = "";
     $scope.newTab = -1;
     $scope.editUrl = OU.url.manageOrganizationUnits;
+    $scope.canEdit = false;
+    $scope.invalidForm = false;
 
     $http.get('/ou/scripts/controllers/manageOrganizationalUnit/ouManage.json')
         .success(function(data) {
             $scope.departments = data.content.organizations;
+            $scope.initialDepartments = data.content.organizations;
+            for(var i = 0; i < $scope.departments.length; i++){
+
+                $scope.departments[i].validFrom = OU.convertDate($scope.departments[i].validFrom);
+
+                $scope.departments[i].validTo = OU.convertDate($scope.departments[i].validTo);
+            }
         })
         .error(function(data) {
 
         });
 
-    if($scope.departmentSelection.selected != null &&
-        $scope.departmentSelection.selected != undefined){
-        var a = 1;
-    }
-    
+    $scope.disableEditing = function () {
+        $scope.canEdit = false;
+        $scope.disableDetails = !$scope.canEdit;
+    };
+
     $scope.createOrganization = function () {
-    }
+        $scope.departmentSelection.selected = {
+            "name": "",
+            "code": "",
+            "description": ""
+        };
+        $scope.canEdit = true;
+        $scope.disableDetails = !$scope.canEdit;
+    };
+
+    $scope.editOrganization = function () {
+        $scope.canEdit = true;
+        $scope.disableDetails = !$scope.canEdit;
+    };
+
+    $scope.saveOrganization = function () {
+        // TODO save new modifications to DB
+    };
+
+    $scope.back = function () {
+        $scope.canEdit = false;
+        $scope.disableDetails = !$scope.canEdit;
+        // Sa se citeasca din nou datele din json
+        // TODO poate sa schimb variabilele de pe ng-model de pe inputuri in cazul in care
+        // raman salvate modificarile facute de user
+
+    };
+
+    $scope.deleteOrganization = function () {
+        // TODO delete the organization from database
+
+    };
 
     $scope.addPerspective = function () {
         $scope.departmentSelection.selected.perspectives
@@ -39,22 +78,4 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
         $scope.departmentSelection.selected.perspectives[index].name = newPerspectiveName;
     };
 
-    //$scope.myFunction = function (data) {
-    //    $scope.token = data;
-    //}
-    //
-    //$scope.submit = function () {
-    //
-    //    if ($scope.token != null || $scope.token != undefined) {
-    //        $http.post('/upload/sendToken', $scope.token)
-    //            .success(function (response) {
-    //                console.log(response.response);
-    //            })
-    //            .error(function (response) {
-    //                console.log(response.response);
-    //            })
-    //    } else {
-    //        window.alert("Please upload file!");
-    //    }
-    //}
 }]);

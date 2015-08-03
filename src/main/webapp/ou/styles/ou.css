@@ -28,10 +28,6 @@ section .md-button {
     background-color: #7FB0C8;
 }
 
-md-tabs.md-default-theme md-tab {
-    color: 	#000000;
-}
-
 
 .btn {
     margin-right: 8px;
@@ -62,4 +58,9 @@ md-tabs.md-default-theme md-tab {
 .group-title {
     background-color: #687074 !important;
     color: #FFF !important;
+}
+
+.center-btn {
+    margin-right: auto;
+    margin-left: auto
 }

@@ -1,61 +1,96 @@
 <div ng-controller="ouManageController">
     <div>
-        <h2 class="page-title">Manage Organizational Units</h2>
+        <h2 class="page-title">Manage Organizations</h2>
+
         <div class="panel panel-default panel-without-overflow">
             <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>Manage OU</b></div>
-                <div class="panel-body">
+            <div class="panel-body">
 
-                    <div class="row">
+                <div class="row">
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 
-                            <div class="form-group">
-                                <label class="ng-scope">Organization</label>
+                        <div class="form-group">
+                            <label class="ng-scope">Organization</label>
 
-                                <ui-select ng-model="departmentSelection.selected" theme="selectize"
-                                           reset-search-input="false" ng-required="true" name="departmentField">
-                                    <ui-select-match placeholder="Select organization">
-                                        {{$select.selected.name}}
-                                    </ui-select-match>
-                                    <ui-select-choices repeat="department in departments">
-                                        <span ng-bind-html="department.name"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
+                            <ui-select ng-model="departmentSelection.selected" theme="selectize"
+                                       on-select="disableEditing()"
+                                       reset-search-input="false" ng-required="true" name="departmentField">
+                                <ui-select-match placeholder="Select organization">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="department in departments">
+                                    <span ng-bind-html="department.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
+                    </div>
 
-                        <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
+                    <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
 
-                            <div class="form-group">
-                                <label class="ng-scope">&nbsp</label>
-                                <input type="button" ng-click="createOrganization()"
-                                       class="btn btn-success center-block" value="New Organization">
-                            </div>
+                        <div class="form-group">
+                            <label class="ng-scope">&nbsp</label>
+                            <input type="button" ng-click="createOrganization()"
+                                   class="btn btn-success center-block center-btn" value="New Organization">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12" ng-show="departmentSelection.selected.name != ''
+                                && departmentSelection.selected.name != undefined">
+
+                        <div class="form-group">
+                            <label>&nbsp</label>
+                            <input type="button" ng-click="deleteOrganization()"
+                                   style="margin-right: auto; margin-left: auto"
+                                   class="btn btn-danger center-block center-btn" value="Delete Organization">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div ng-if="departmentSelection.selected != null && departmentSelection.selected != undefined">
-            <div class="panel panel-default panel-without-overflow">
-                <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Details</b></div>
-                <div class="panel-body">
-
+    </div>
+    <div ng-show="departmentSelection.selected != null && departmentSelection.selected != undefined">
+        <div class="panel panel-default panel-without-overflow">
+            <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Details</b></div>
+            <div class="panel-body">
+                <form id="organizationDetailsForm">
                     <div class="row">
 
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label class="ng-scope">Organization name</label>
-                                <input type="text" value="{{departmentSelection.selected.name}}" ng-disabled="disableDetails"
-                                       class="form-control">
+                                <input type="text" ng-model="departmentSelection.selected.name"
+                                       ng-disabled="disableDetails" ng-invalid="departmentSelection.selected.name == ''"
+                                       class="form-control" ng-change="watchOrgName()">
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label class="ng-scope">Organization code</label>
-                                <input type="text" value="{{departmentSelection.selected.code}}" ng-disabled="disableDetails"
-                                       class="form-control">
+                                <input type="text" ng-model="departmentSelection.selected.code"
+                                       ng-disabled="disableDetails" ng-invalid="departmentSelection.selected.code == ''"
+                                       class="form-control" ng-change="watchOrgCode()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="ng-scope">Valid from:</label>
+                                <input type="date" ng-model="departmentSelection.selected.validFrom"
+                                       ng-disabled="disableDetails" ng-invalid="departmentSelection.selected.validFrom == ''"
+                                       class="form-control" ng-change="watchOrgValidFrom()">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="ng-scope">Valid to:</label>
+                                <input type="date" ng-model="departmentSelection.selected.validTo"
+                                       ng-disabled="disableDetails" ng-invalid="departmentSelection.selected.validTo == ''"
+                                       class="form-control" ng-change="watchOrgValidTo()">
                             </div>
                         </div>
                     </div>
@@ -64,93 +99,125 @@
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label class="ng-scope">Organization description</label>
-                                <textarea ng-disabled="disableDetails"
-                                       class="form-control">{{departmentSelection.selected.description}}</textarea>
+                                    <textarea ng-disabled="disableDetails"
+                                              class="form-control">{{departmentSelection.selected.description}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" ng-show="!canEdit">
+                            <div class="form-group" style="margin-top: 15px">
+                                <label>&nbsp</label>
+                                <input type="button" ng-click="editOrganization()"
+                                       class="btn btn-info center-block center-btn" value="Edit">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12" ng-show="canEdit">
+
+                            <div class="form-group">
+                                <label>&nbsp</label>
+                                <input type="button" ng-click="saveOrganization()" style="margin-top: 15px"
+                                       ng-disabled="departmentSelection.selected.name == '' ||
+                                       departmentSelection.selected.code == ''"
+                                       class="btn btn-success center-block" value="Save">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12" ng-show="canEdit
+                                 && departmentSelection.selected.name != ''">
+
+                            <div class="form-group">
+                                <label>&nbsp</label>
+                                <input type="button" ng-click="back()" style="margin-left: inherit; margin-top: 15px"
+                                       class="btn btn-warning center-block" value="Back">
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-            <div class="panel panel-default panel-without-overflow">
-                <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Perspectives</b></div>
-                <div class="panel-body">
+        </div>
+    </div>
+    <div class="panel panel-default panel-without-overflow" ng-show="departmentSelection.selected.name != ''
+                    && departmentSelection.selected.name != undefined">
+        <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>OU Perspectives</b></div>
+        <div class="panel-body">
 
-                    <div class="col-md-12">
+            <div class="col-md-12">
 
-                        <div class="row">
-                            <ul class="nav nav-tabs" role="tablist" style="float: left; border-bottom: 0">
-                                <li role="presentation" ng-repeat="perspective in departmentSelection.selected.perspectives"
-                                    ng-class="{'active':$index == (departmentSelection.selected.perspectives.length - 1)}">
-                                    <a ng-href="#{{'perspective'+$index}}" aria-controls="{{perspective.name}}" role="tab"
-                                       data-toggle="tab">{{perspective.name}}</a></li>
+                <div class="row">
+                    <ul class="nav nav-tabs" role="tablist" style="float: left; border-bottom: 0">
+                        <li role="presentation" ng-repeat="perspective in departmentSelection.selected.perspectives"
+                            ng-class="{'active':$index == (departmentSelection.selected.perspectives.length - 1)}">
+                            <a ng-href="#{{'perspective'+$index}}" aria-controls="{{perspective.name}}" role="tab"
+                               data-toggle="tab">{{perspective.name}}</a></li>
 
+                    </ul>
+                        <span>
+                            <ul class="nav nav-tabs">
+                                <li id="add" role="presentation">
+
+                                    <a ng-href="#{{'perspective'+ (departmentSelection.selected.perspectives.length - 1)}}"
+                                       data-toggle="tab" ng-click="addPerspective()" role="tab" id="add-btn"
+                                       style="background-color: #e0e0e0 !important; color:#555 !important">+</a>
+
+                                </li>
                             </ul>
-                            <span>
-                                <ul class="nav nav-tabs">
-                                    <li id="add" role="presentation">
+                        </span>
+                </div>
 
-                                        <a ng-href="#{{'perspective'+ (departmentSelection.selected.perspectives.length - 1)}}"
-                                           data-toggle="tab" ng-click="addPerspective()" role="tab" id="add-btn"
-                                           style="background-color: #e0e0e0 !important; color:#555 !important">+</a>
+                <div class="row">
+                    <div class="tab-content">
 
-                                    </li>
-                                </ul>
-                            </span>
-                        </div>
+                        <div role="tabpanel" class="tab-pane" id="{{'perspective'+$index}}"
+                             ng-repeat="perspective in departmentSelection.selected.perspectives"
+                             ng-class="{'active':$index == (departmentSelection.selected.perspectives.length - 1)}">
 
-                        <div class="row">
-                            <div class="tab-content">
+                            <div class="col-md-12" ng-if="perspective.name != 'new'">
 
-                                <div role="tabpanel" class="tab-pane" id="{{'perspective'+$index}}"
-                                     ng-repeat="perspective in departmentSelection.selected.perspectives"
-                                     ng-class="{'active':$index == (departmentSelection.selected.perspectives.length - 1)}">
-
-                                    <div class="col-md-12" ng-if="perspective.name != 'new'">
-
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
-                                             ng-if="perspective.items != undefined || perspective.items != null">
-                                            <div class="form-group">
-                                                <ou-tree-view ou-tree-data="perspective.items" is-ou-manage="true"
-                                                        edit-url="editUrl">
-                                                </ou-tree-view>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12"
-                                             ng-if="perspective.items == undefined || perspective.items == null">
-
-                                            <div class="form-group">
-                                                <label class="ng-scope">&nbsp</label>
-                                                <input type="button" ng-click="editPerspective()"
-                                                       class="btn btn-success center-block" value="Edit Perspective">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-12" ng-if="perspective.name == 'new'">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-
-                                                    <div class="form-group">
-                                                        <label class="ng-scope">Perspective name</label>
-                                                        <input type="text" class="form-control" ng-model="newPerspectiveName">
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
-
-                                                    <div class="form-group">
-                                                        <label class="ng-scope">&nbsp</label>
-                                                        <input type="submit" class="btn btn-primary center-block"
-                                                               ng-click="saveNewPerspective(newPerspectiveName, $index)" value="Save">
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </form>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
+                                     ng-if="perspective.items != undefined || perspective.items != null">
+                                    <div class="form-group">
+                                        <ou-tree-view ou-tree-data="perspective.items" is-ou-manage="true"
+                                                      edit-url="editUrl">
+                                        </ou-tree-view>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12"
+                                     ng-if="perspective.items == undefined || perspective.items == null">
+
+                                    <div class="form-group">
+                                        <label class="ng-scope">&nbsp</label>
+                                        <input type="button" ng-click="editPerspective()"
+                                               class="btn btn-info center-block" value="Edit Perspective">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12" ng-if="perspective.name == 'new'">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                                            <div class="form-group">
+                                                <label class="ng-scope">Perspective name</label>
+                                                <input type="text" class="form-control" ng-model="newPerspectiveName">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                                            <div class="form-group">
+                                                <input type="submit" class="btn btn-success center-block"
+                                                       ng-disabled="newPerspectiveName == ''"
+                                                       ng-click="saveNewPerspective(newPerspectiveName, $index)"
+                                                       value="Save">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
