@@ -1,18 +1,24 @@
 <script type="text/ng-template" id="items_renderer.html">
-    <div ui-tree-handle>
-        <a class="btn btn-success btn-xs" ng-if="item.items && item.items.length > 0"
-           data-nodrag ng-click="toggle(this); $event.stopPropagation();">
+    <div ui-tree-handle class="list-group-item" id="menu-handle-{{item.id}}">
+        <button class="tree-btn icon-only" ng-if="item.items && item.items.length > 0" aria-label=""
+           data-nodrag ng-click="toggle(this); $event.stopPropagation();" style="margin-right: 10px">
             <span class="glyphicon"
                   ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
             </span>
-        </a>
+        </button>
 
         {{item.code}}
 
-        <a class="pull-right btn btn-primary btn-xs" ng-click="insertNewElement(item); $event.stopPropagation();"
-           data-nodrag style="margin-right: 2px;" collapsed="false" ng-show="!isOuManage">
-            <span class="glyphicon glyphicon-plus"></span>
-        </a>
+        <div data-nodrag class="pull-right show-on-hover">
+            <button class="tree-btn icon-only" ng-click="insertNewElement(item); $event.stopPropagation();"
+               data-nodrag collapsed="false" ng-show="!isOuManage" aria-label="">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <button class="tree-btn icon-only" ng-click="deleteElement($event, this, item); $event.stopPropagation();"
+               data-nodrag collapsed="false" ng-show="!isOuManage" aria-label="" style="margin-right: 10px">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
     </div>
     <ol ui-tree-nodes="" ng-model="item.items" ng-class="{hidden: collapsed}">
         <li ng-repeat="item in item.items | filter: search" ui-tree-node

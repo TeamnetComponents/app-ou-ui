@@ -64,3 +64,21 @@ section .md-button {
     margin-right: auto;
     margin-left: auto
 }
+
+.tree-btn {
+    background-color: #ddd;
+    color: #333;
+    border: 0;
+    padding: 4px;
+    width: 30px;
+    height: 30px;
+    line-height: 24px;
+    position: relative;
+    outline: 0;
+    cursor: pointer;
+    transition: all .3s ease-in !important;
+}
+
+button.tree-btn:hover {
+    background-color: #c4c4c4;
+}

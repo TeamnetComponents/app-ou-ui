@@ -57,6 +57,11 @@ ouControllers.
             $scope.updateOuInformation(object, item);
         };
 
+        $scope.deleteElement = function (ev, scope, item) {
+            // TODO
+
+        };
+
         $scope.createNewChildForPerspective = function () {
             var object = {
                 code: "New",
