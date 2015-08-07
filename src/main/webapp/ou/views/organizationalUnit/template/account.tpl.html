@@ -19,6 +19,7 @@
                          data-drag="!clickBool"
                          ng-model='selectedOu.accounts'
                          ng-show='selectedAccount.login !== undefined'
+                         ng-click="clickOnAccount(selectedAccount)"
                          data-jqyoui-options="{revert: 'invalid',
                                                helper: 'clone',
                                                appendTo: 'body',
@@ -35,34 +36,23 @@
         </div>
     </div>
 
-    <div ng-show="isEdit" class="col-lg-4 col-md-4 col-sm-12 col-xs-12 animate-show">
+    <div ng-show="isEdit && clicked" class="col-lg-4 col-md-4 col-sm-12 col-xs-12 animate-show">
         <div class="thumbnail"
              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
              data-drop="true"
-             ng-model='selectedOu.accounts'
+             ng-model="objToList"
              data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedOu.accounts])'}"
              jqyoui-droppable="{multiple:true}">
-             <div ng-repeat="selectedAccount in selectedOu.accounts">
-                <div ng-repeat="selectedFunction in selectedAccount.functions">
-                    <div class="form-group">
-                        <div class="checkbox-container">
-                            <input id="check1" type="checkbox" name="check" value="check1" checked>
-                            <label class="custom-select" for="check1">
-                                <div ng-model='selectedAccount.functions'
-                                     ng-show='selectedFunction.description !== undefined'
-                                     data-jqyoui-options="{revert: 'invalid',
-                                                           helper: 'clone',
-                                                           appendTo: 'body',
-                                                           containment: 'window',
-                                                           scroll: false}">
-                                    {{selectedFunction.description}}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-             </div>
+             <div class="form-group">
+            <ui-select multiple ng-model="objToListCopy.functions">
+                <ui-select-match>
+                    {{$item.description}}
+                </ui-select-match>
+                <ui-select-choices repeat="selectedFunction in objToList.functions | filter:$select.search">
+                    <div ng-bind-html="selectedFunction.code | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
         </div>
     </div>
 

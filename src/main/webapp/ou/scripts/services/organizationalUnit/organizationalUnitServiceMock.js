@@ -42,7 +42,122 @@ ouServices
                         "activationKey":null,
                         "gender":null,
                         "roles":null,
-                        "moduleRights":null
+                        "moduleRights":null,
+                         functions: [
+                            {
+                                "id":1,
+                                "code":"Function_User",
+                                "description":"User Function",
+                                "validFrom":"2012-07-08",
+                                "validTo":"2050-05-03",
+                                "active":true,
+                                "moduleRights": [
+                                    {
+                                        "id":12,
+                                        "version":1,
+                                        "right":1,
+                                        "moduleRightCode": "READ_ACCESS"
+                                    },
+                                    {
+                                        "id":11,
+                                        "version":1,
+                                        "right":1,
+                                        "moduleRightCode":"READ_ACCESS"
+                                    }]
+                            },
+                             {
+                                 "id":2,
+                                 "code":"Function_Operator",
+                                 "description":"Operator Function",
+                                 "validFrom":"2012-07-08",
+                                 "validTo":"2050-05-03",
+                                 "active":true,
+                                 "moduleRights": [
+                                     {
+                                         "id":12,
+                                         "version":1,
+                                         "right":1,
+                                         "moduleRightCode": "READ_ACCESS"
+                                     },
+                                     {
+                                         "id":11,
+                                         "version":1,
+                                         "right":1,
+                                         "moduleRightCode":"READ_ACCESS"
+                                     }]
+                             }
+                         ]
+                    },
+                    {
+                        "id":2,
+                        "login":"admin",
+                        "firstName":"Admin",
+                        "lastName":"Admin",
+                        "email":"admin@email.com",
+                        "activated":true,
+                        "langKey":"en",
+                        "activationKey":null,
+                        "gender":null,
+                        "roles":null,
+                        "moduleRights":null,
+                        functions: [
+                            {
+                                "id":2,
+                                "code":"Function_Admin",
+                                "description":"Admin Function",
+                                "validFrom":"2012-07-08",
+                                "validTo":"2050-05-03",
+                                "active":true,
+                                "moduleRights": [
+                                    {
+                                        "id":12,
+                                        "version":1,
+                                        "right":1,
+                                        "moduleRightCode": "READ_ACCESS"
+                                    },
+                                    {
+                                        "id":11,
+                                        "version":1,
+                                        "right":1,
+                                        "moduleRightCode":"READ_ACCESS"
+                                    }]
+                            }
+                        ]
+                    },
+                    {
+                        "id":3,
+                        "login":"system",
+                        "firstName":"System",
+                        "lastName":"System",
+                        "email":"system@email.com",
+                        "activated":true,
+                        "langKey":"en",
+                        "activationKey":null,
+                        "gender":null,
+                        "roles":null,
+                        "moduleRights":null,
+                        functions: [
+                            //{
+                            //    "id":3,
+                            //    "code":"Function_System",
+                            //    "description":"System Function",
+                            //    "validFrom":"2012-07-08",
+                            //    "validTo":"2050-05-03",
+                            //    "active":true,
+                            //    "moduleRights": [{
+                            //            "id":12,
+                            //            "version":1,
+                            //            "right":1,
+                            //            "moduleRightCode": "READ_ACCESS"
+                            //        },
+                            //        {
+                            //            "id":11,
+                            //            "version":1,
+                            //            "right":1,
+                            //            "moduleRightCode":"READ_ACCESS"
+                            //        }]
+                            //}
+                        ]
                     }
                 ],
                 items: [

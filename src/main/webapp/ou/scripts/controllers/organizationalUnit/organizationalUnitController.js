@@ -1,8 +1,6 @@
 'use strict';
 ouControllers
-   
-    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
-        function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
+    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU', function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
 
         $scope.showDropDownForPerspective = false;
         $scope.isPerspectiveSelected = false;
@@ -22,15 +20,25 @@ ouControllers
         $scope.selectedOu = {};
         $scope.accounts = [];
         $scope.functions = [];
+        $scope.functionsCopy = [];
 
         $scope.search = '';
         $scope.selectedSearch = '';
         $scope.loading = false;
+        $scope.clicked = false;
+
 
         $scope.isSelected = function(organizationalUnit){
             return organizationalUnit.id === $scope.selectedOu.id;
         };
-
+        $scope.objToList = {};
+        $scope.objToList.functions = [];
+        $scope.clickOnAccount = function(account) {
+            $scope.objToList = {};
+            $scope.objToList.functions = [];
+            $scope.objToList = account;
+            $scope.clicked = true;
+        };
         $scope.findByProperty = function(array, key, val) {
             for (var i = 0; i < array.length; i++) {
                 if (array[i][key] === val) {
@@ -88,6 +96,10 @@ ouControllers
 
         $scope.stopFnc = function(){
             arguments[0].target.style.visibility = '';
+        };
+
+        $scope.cacamaca = function() {
+            console.log("cacamaca!!!");
         };
 
         var init = function() {
