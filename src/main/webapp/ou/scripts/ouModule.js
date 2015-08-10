@@ -18,5 +18,32 @@ ouModule
                 access: {
                     authorizedModules: [AUTH_BOOTSTRAP.all]
                 }
+            }).when('/functions', {
+                templateUrl: 'ou/views/function/function.html',
+                controller: 'FunctionController',
+                access: {
+                    authorizedModules: [AUTH_BOOTSTRAP.all]
+                }
             })
+    }).run(function ($rootScope) {
+
+        $rootScope.$on("event:get-account-information", function(event, args) {
+            if (args.moduleRights.function_READ_ACCESS != null) {
+                $rootScope.checkIfAccountFunctionHaveRights = true;
+            } else {
+                $rootScope.checkIfAccountFunctionHaveRights = false;
+            }
+
+            if (args.moduleRights.organization_READ_ACCESS != null) {
+                $rootScope.organizationIsEnable = true;
+            } else {
+                $rootScope.organizationIsEnable = false;
+            }
+
+            if (args.moduleRights.organizationalUnit_READ_ACCESS != null) {
+                $rootScope.organizationalUnitIsEnable = true;
+            } else {
+                $rootScope.organizationalUnitIsEnable = false;
+            }
+        });
     });
