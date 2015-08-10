@@ -5,7 +5,10 @@ ouConstants.constant('OU', {
         "manageFunctions": "",
         "template": "ou/views/organizationalUnit/template/",
         "account": "account.tpl.html",
-        "functions": "function.tpl.html"
+        "functions": "function.tpl.html",
+        "restOrganizationalUnit": "app/rest/organizationalUnit",
+        "functionTemplate": 'ou/views/function/template/',
+        "functionTpl": 'function.tpl.html'
     },
     "convertDate": function (date) {
         var splitDate = date.split("-");

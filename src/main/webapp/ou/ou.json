@@ -19,6 +19,8 @@
         "ou/scripts/controllers/organizationalUnit/organizationalUnitController.js",
         "ou/scripts/services/organizationalUnit/organizationalUnitService.js",
         "ou/scripts/controllers/manageOrganizationalUnit/ouManage.json",
-        "ou/scripts/services/organizationalUnit/organizationalUnitServiceMock.js"
+        "ou/scripts/services/organizationalUnit/organizationalUnitServiceMock.js",
+        "ou/scripts/controllers/function/FunctionController.js",
+        "ou/scripts/services/function/Function.js"
     ]
 }
