@@ -1,6 +1,8 @@
 'use strict';
 ouControllers
-    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU', function ($scope, organizationalUnitService, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
+   
+    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'OuManage', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
+        function ($scope, organizationalUnitService, OuManage, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
 
         $scope.showDropDownForPerspective = false;
         $scope.isPerspectiveSelected = false;
@@ -8,10 +10,12 @@ ouControllers
         $scope.checkIfHaveChildren = false;
         $scope.isView = true;
         $scope.isEdit = false;
+        $scope.showExpandCollapse = false;
         $scope.organization = {};
         $scope.perspective = {};
         $scope.objectToUpdate = {};
         $scope.parentOu = {};
+        $scope.objectFromPackage = {};
 
         $scope.accountsTpl = OU.url.template + OU.url.account;
         $scope.functionsTpl = OU.url.template + OU.url.functions;
@@ -26,7 +30,6 @@ ouControllers
         $scope.selectedSearch = '';
         $scope.loading = false;
         $scope.clicked = false;
-
 
         $scope.isSelected = function(organizationalUnit){
             return organizationalUnit.id === $scope.selectedOu.id;
@@ -51,13 +54,13 @@ ouControllers
         $scope.selectOrganizationalUnit = function(organizationalUnit) {
             $scope.loading = true;
             //TODO getByCode in repository & service (backend + frontend)
-            organizationalUnitServiceMock.getByCode({ouCode: organizationalUnit.code}, function(res) {
-
-                $scope.selectedOu = res;
-
-                $scope.functions = angular.copy($scope.allFunctions);
-                $scope.accounts = angular.copy($scope.allAccounts);
-            });
+            //organizationalUnitServiceMock.getByCode({ouCode: organizationalUnit.code}, function(res) {
+            //
+            //    $scope.selectedOu = res;
+            //
+            //    $scope.functions = angular.copy($scope.allFunctions);
+            //    $scope.accounts = angular.copy($scope.allAccounts);
+            //});
         };
 
         $scope.editOrganizationalUnit = function(){
@@ -66,17 +69,26 @@ ouControllers
         };
 
         $scope.saveOrganizationalUnit = function() {
+
             $scope.saveUpdateOuInformation($scope.objectToUpdate);
+
+            $scope.objectFromPackage = $scope.objectToUpdate;
+            /*OuManage.get({id: $scope.objectToUpdate.id}, function(res) {
+                $scope.objectFromPackage = res;
+            });*/
+
+            $scope.objectFromPackage.code = $scope.objectToUpdate.code;
+            $scope.objectFromPackage.description = $scope.objectToUpdate.description;
+            $scope.objectFromPackage.validFrom = $scope.objectToUpdate.validFrom;
+            $scope.objectFromPackage.validTo = $scope.objectToUpdate.validTo;
+
+            organizationalUnitService.update({id: $scope.objectToUpdate.id}, $scope.objectToUpdate, function(value) {
+                Notification.success('Function updated');
+                $scope.objectToUpdate.id = value.id;
+            });
+
             $scope.isView = true;
             $scope.isEdit = false;
-
-            //TODO updateOrganizationalUnit in repository & service (backend + frontend)
-            organizationalUnitServiceMock.updateOrganizationalUnit($scope.selectedOu, function() {
-                Notification.success('OrganizationalUnit updated');
-                $scope.backOrganizationalUnit();
-            }, function(error) {
-                Notification.error(error.data.errMsg);
-            });
         };
 
         $scope.backOrganizationalUnit = function(){
@@ -98,10 +110,6 @@ ouControllers
             arguments[0].target.style.visibility = '';
         };
 
-        $scope.cacamaca = function() {
-            console.log("cacamaca!!!");
-        };
-
         var init = function() {
             //TODO getAllOrganizationalUnits in service & repository (backend + frontend)
             organizationalUnitServiceMock.getAllOrganizationalUnits({}, function(res) {
@@ -112,6 +120,15 @@ ouControllers
                         $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
                     }
                 });
+
+                OuManage.getAll(function(res) {
+                    $scope.organizationalUnitList = res;
+                });
+
+                organizationalUnitService.getAll(function(res) {
+                    $scope.currentOuList = res;
+                });
+
                 FunctionMock.getAll(function(res){
                     $scope.allFunctions = res;
                     if(!_.isEmpty($scope.organizationalUnits)){
@@ -123,6 +140,12 @@ ouControllers
 
         init();
 
+            $scope.selectOu = function (funct) {
+                organizationalUnitService.getById({id: funct.id}, function (res) {
+                    $scope.organizationalUnitList = res;
+                });
+            };
+
         $scope.showPerspectiveSelect = function () {
             $scope.showDropDownForPerspective = true;
         };
@@ -133,19 +156,25 @@ ouControllers
 
         $scope.className = function () {
             if ($scope.isTreePerspectiveSelected == true) {
-                return "col-lg-4 col-md-4 col-sm-12 col-xs-12";
+                return "col-lg-5 col-md-5 col-sm-12 col-xs-12";
             }
             return "col-lg-6 col-md-6 col-sm-12 col-xs-12";
         };
 
-        organizationalUnitService.getAllOu().then(function(response) {
-            $scope.organizationalUnitList = response.content;
+        //organizationalUnitService.getAllOu().then(function(response) {
+        //    $scope.organizationalUnitList = response.content;
+        //
+        //    $scope.organization.selected = $scope.organizationalUnitList[0];
+        //    if($scope.organization.selected.id != "") {
+        //        $scope.showDropDownForPerspective = true;
+        //    }
+        //});
 
             //$scope.organization.selected = $scope.organizationalUnitList[0];
             //if($scope.organization.selected.id != "") {
             //    $scope.showDropDownForPerspective = true;
             //}
-        });
+        //});
 
         /*click on a tree node and you will get in args all the for the clicked node.
          parentOu will have the parent information
@@ -160,6 +189,7 @@ ouControllers
             $scope.isTreePerspectiveSelected = args.isTreePerspectiveSelected;
             $scope.search = args.search;
             $scope.isEditingAnOu = args.isEditingAnOu;
+            //$scope.showExpandCollapse = args.isShowExpandCollapse;
 
             $scope.code = $scope.objectToUpdate.code;
             $scope.description = $scope.objectToUpdate.description;

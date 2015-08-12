@@ -16,12 +16,12 @@
                                    ng-model="organization.selected" theme="selectize">
 
                             <ui-select-match placeholder="Organizatie">
-                                {{$select.selected.name}}
+                                {{$select.selected.code}}
                             </ui-select-match>
 
                             <ui-select-choices
-                                    repeat="org in organizationalUnits | filter: $select.search">
-                                <div ng-bind-html="org.name | highlight: $select.search"></div>
+                                    repeat="org in organizationalUnitList | filter: $select.search">
+                                <div ng-bind-html="org.code | highlight: $select.search"></div>
                                 <small>
                                     Name: {{org.description}}
                                 </small>
@@ -41,7 +41,7 @@
                             </ui-select-match>
 
                             <ui-select-choices
-                                    repeat="perspective in organization.selected.items | filter: $select.search">
+                                    repeat="perspective in organization.selected.perspectives | filter: $select.search">
                                 <div ng-bind-html="perspective.code | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" ng-show="isTreePerspectiveSelected">
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" ng-show="isTreePerspectiveSelected">
 
                 <div class="row m0">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

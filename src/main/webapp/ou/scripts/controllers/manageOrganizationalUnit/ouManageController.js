@@ -1,7 +1,7 @@
 /**
  * Created by Radu.Hoaghe on 7/16/2015.
  */
-ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$location', function ($scope, $http, OU, $location) {
+ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$location', 'OuManage', 'Notification', function ($scope, $http, OU, $location, OuManage, Notification) {
     $scope.departmentSelection = {};
     $scope.disableDetails = true;
     $scope.newPerspectiveName = "";
@@ -9,8 +9,9 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
     $scope.editUrl = OU.url.manageOrganizationUnits;
     $scope.canEdit = false;
     $scope.invalidForm = false;
+    $scope.objectToUpdate = {};
 
-    $http.get('/ou/scripts/controllers/manageOrganizationalUnit/ouManage.json')
+    /*$http.get('/ou/scripts/controllers/manageOrganizationalUnit/ouManage.json')
         .success(function(data) {
             $scope.departments = data.content.organizations;
             $scope.initialDepartments = data.content.organizations;
@@ -23,7 +24,16 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
         })
         .error(function(data) {
 
+        });*/
+
+    var init = function() {
+        OuManage.getAll(function(res) {
+            $scope.departments = res;
         });
+    };
+
+    init();
+
 
     $scope.disableEditing = function () {
         $scope.canEdit = false;
@@ -47,6 +57,30 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
 
     $scope.saveOrganization = function () {
         // TODO save new modifications to DB
+        $scope.objectToUpdate = {
+            id: null,
+            code: null,
+            description: null,
+            validFrom: null,
+            validTo: null,
+            "active": null,
+            "perspective": [],
+            "jpaId": null,
+            "perspectivesNeo": [],
+            "roots": []
+        };
+        $scope.objectToUpdate.code = $scope.departmentSelection.selected.name;
+        $scope.objectToUpdate.description = $scope.departmentSelection.selected.code;
+        $scope.objectToUpdate.validFrom = $scope.departmentSelection.selected.validFrom;
+        $scope.objectToUpdate.validTo = $scope.departmentSelection.selected.validTo;
+        $scope.objectToUpdate.active = true;
+        OuManage.createOrganization($scope.objectToUpdate, function(value) {
+            Notification.success('Organization created');
+            $scope.objectToUpdate.id = value.id;
+            $scope.objectToUpdate.jpaId = value.id;
+        }, function(error) {
+            Notification.error(error.data.errMsg);
+        });
     };
 
     $scope.back = function () {

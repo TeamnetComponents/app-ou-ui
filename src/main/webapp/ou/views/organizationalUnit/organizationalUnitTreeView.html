@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="items_renderer.html">
     <div ui-tree-handle class="list-group-item" id="menu-handle-{{item.id}}">
-        <button class="tree-btn icon-only" ng-if="item.items && item.items.length > 0" aria-label=""
+        <button class="tree-btn icon-only" ng-if="item.children && item.children.length > 0" aria-label=""
            data-nodrag ng-click="toggle(this); $event.stopPropagation();" style="margin-right: 10px">
             <span class="glyphicon"
                   ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
@@ -14,14 +14,14 @@
                data-nodrag collapsed="false" ng-show="!isOuManage" aria-label="">
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
-            <button class="tree-btn icon-only" ng-click="deleteElement($event, this, item); $event.stopPropagation();"
+            <button class="tree-btn icon-only" ng-click="deleteElement(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
                data-nodrag collapsed="false" ng-show="!isOuManage" aria-label="" style="margin-right: 10px">
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
         </div>
     </div>
-    <ol ui-tree-nodes="" ng-model="item.items" ng-class="{hidden: collapsed}">
-        <li ng-repeat="item in item.items | filter: search" ui-tree-node
+    <ol ui-tree-nodes="" ng-model="item.children" ng-class="{hidden: collapsed}">
+        <li ng-repeat="item in item.children | filter: search" ui-tree-node
             ng-click="updateOuInformation(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
             ng-include="'items_renderer.html'"></li>
     </ol>
@@ -35,7 +35,7 @@
     <div ui-tree id="tree-root">
         <ol ui-tree-nodes ng-model="ouTreeData">
             <li ng-click="updateOuInformation(item, $parentNodesScope.$modelValue); $event.stopPropagation();"
-                ng-repeat="item in ouTreeData.items | filter: search" ui-tree-node
+                ng-repeat="item in ouTreeData.organizationalUnitSet | filter: search" ui-tree-node
                 ng-include="'items_renderer.html'" data-nodrag></li>
         </ol>
     </div>
