@@ -9,10 +9,11 @@ ouModule
                 isArray: true
             },
             'update': {
+                url: 'app/rest/organization/saveOrganization',
                 method: 'PUT'
             },
-            'createOrganization': {
-                url: 'app/rest/organization/createOrganization',
+            'save': {
+                url: 'app/rest/organization/saveOrganization',
                 method: 'POST'
             }
         });
