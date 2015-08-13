@@ -7,7 +7,7 @@
         "ou/scripts/controllers/ouMainController.js",
         "ou/scripts/filters/ouFilters.js",
         "ou/scripts/filters/organizationUnitFilter.js",
-        "ou/scripts/controllers/manageOrganizationalUnit/ouManageController.js",
+        "ou/scripts/controllers/organization/organizationController.js",
         "ou/scripts/services/ouServices.js",
         "ou/scripts/services/ouMainService.js",
         "ou/scripts/directives/ouDirectives.js",
@@ -18,11 +18,11 @@
         "ou/scripts/constants/OU.js",
         "ou/scripts/controllers/organizationalUnit/organizationalUnitController.js",
         "ou/scripts/services/organizationalUnit/organizationalUnitService.js",
-        "ou/scripts/controllers/manageOrganizationalUnit/ouManage.json",
+        "ou/scripts/controllers/organization/organization.json",
         "ou/scripts/services/organizationalUnit/organizationalUnitServiceMock.js",
         "ou/scripts/controllers/function/FunctionController.js",
         "ou/scripts/services/function/Function.js",
         "ou/scripts/services/function/FunctionMock.js",
-        "ou/scripts/services/manageOrganizationalUnit/ouManage.js"
+        "ou/scripts/services/organization/organizationService.js"
     ]
 }

@@ -9,7 +9,7 @@ ouControllers.
          You must listen with $on for the sendData event.
          */
         $scope.updateOuInformation = function (item, father) {
-            if ($scope.isOuManage) {
+            if ($scope.isOrganization) {
                 $location.path($scope.editUrl); // TODO send perspective id on url
 
             } else {

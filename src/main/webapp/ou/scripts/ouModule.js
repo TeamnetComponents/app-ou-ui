@@ -13,8 +13,8 @@ ouModule
                 }
             })
             .when('/organizationUnit/manage', {
-                templateUrl: 'ou/views/manageOrganizationalUnit/manageOrganizationalUnit.html',
-                controller: 'ouManageController',
+                templateUrl: 'ou/views/organization/manageOrganization.html',
+                controller: 'OrganizationController',
                 access: {
                     authorizedModules: [AUTH_BOOTSTRAP.all]
                 }

@@ -13,7 +13,7 @@ ouDirectives.
             templateUrl: 'ou/views/organizationalUnit/organizationalUnitTreeView.html',
             scope: {
                 ouTreeData: '=',
-                isOuManage: '=',
+                isOrganization: '=',
                 editUrl: '='
             },
             controller: 'ouTreeViewController',

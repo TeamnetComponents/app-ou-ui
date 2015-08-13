@@ -1,7 +1,7 @@
 'use strict';
 
 ouModule
-    .factory('OuManage', ['$resource', function ($resource) {
+    .factory('Organization', ['$resource', function ($resource) {
         return $resource('app/rest/organization/:id', {}, {
             'getAll': {
                 url: 'app/rest/organization/getAllOrganizations',

@@ -1,7 +1,7 @@
 /**
  * Created by Radu.Hoaghe on 7/16/2015.
  */
-ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$location', 'OuManage', 'Notification', function ($scope, $http, OU, $location, OuManage, Notification) {
+ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$location', 'Organization', 'Notification', function ($scope, $http, OU, $location, Organization, Notification) {
     $scope.organizationSelection = {};
     $scope.disableDetails = true;
     $scope.newPerspectiveName = "";
@@ -11,7 +11,7 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
     $scope.invalidForm = false;
     $scope.objectToUpdate = {};
 
-    /*$http.get('/ou/scripts/controllers/manageOrganizationalUnit/ouManage.json')
+    /*$http.get('/ou/scripts/controllers/organization/organization.json')
         .success(function(data) {
             $scope.organizations = data.content.organizations;
             $scope.initialDepartments = data.content.organizations;
@@ -27,7 +27,7 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
         });*/
 
     var init = function() {
-        OuManage.getAll(function(res) {
+        Organization.getAll(function(res) {
             $scope.organizations = res;
         });
     };
@@ -80,7 +80,7 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
         $scope.objectToUpdate.validFrom = $scope.organizationSelection.selected.validFrom;
         $scope.objectToUpdate.validTo = $scope.organizationSelection.selected.validTo;
         $scope.objectToUpdate.active = true;
-        OuManage.createOrganization($scope.objectToUpdate, function(value) {
+        Organization.createOrganization($scope.objectToUpdate, function(value) {
             Notification.success('Organization created');
             $scope.objectToUpdate.id = value.id;
             $scope.objectToUpdate.jpaId = value.id;

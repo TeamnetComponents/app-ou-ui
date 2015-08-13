@@ -1,8 +1,8 @@
 'use strict';
 ouControllers
    
-    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'OuManage', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
-        function ($scope, organizationalUnitService, OuManage, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
+    .controller('organizationalUnitController',['$scope', 'organizationalUnitService', 'Organization', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
+        function ($scope, organizationalUnitService, Organization, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
 
         $scope.showDropDownForPerspective = false;
         $scope.isPerspectiveSelected = false;
@@ -73,7 +73,7 @@ ouControllers
             $scope.saveUpdateOuInformation($scope.objectToUpdate);
 
             $scope.objectFromPackage = $scope.objectToUpdate;
-            /*OuManage.get({id: $scope.objectToUpdate.id}, function(res) {
+            /*Organization.get({id: $scope.objectToUpdate.id}, function(res) {
                 $scope.objectFromPackage = res;
             });*/
 
@@ -121,7 +121,7 @@ ouControllers
                     }
                 });
 
-                OuManage.getAll(function(res) {
+                Organization.getAll(function(res) {
                     $scope.organizationalUnitList = res;
                 });
 
