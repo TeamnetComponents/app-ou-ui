@@ -11,21 +11,6 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
         $scope.canEdit = false;
         $scope.invalidForm = false;
 
-        /*$http.get('/ou/scripts/controllers/organization/organization.json')
-         .success(function(data) {
-         $scope.organizations = data.content.organizations;
-         $scope.initialDepartments = data.content.organizations;
-         for(var i = 0; i < $scope.organizations.length; i++){
-
-         $scope.organizations[i].validFrom = OU.convertDate($scope.organizations[i].validFrom);
-
-         $scope.organizations[i].validTo = OU.convertDate($scope.organizations[i].validTo);
-         }
-         })
-         .error(function(data) {
-
-         });*/
-
         var init = function () {
             Organization.getAll(function (res) {
                 $scope.organizations = res;
@@ -49,6 +34,10 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             };
         }
 
+        $scope.refresh = function() {
+            init();
+        };
+
         $scope.disableEditing = function () {
             $scope.canEdit = false;
             $scope.disableDetails = !$scope.canEdit;
@@ -65,10 +54,6 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $scope.savedObject = jQuery.extend(true, {}, $scope.organizationSelection.selected);
             $scope.canEdit = true;
             $scope.disableDetails = !$scope.canEdit;
-        };
-
-        $scope.refresh = function() {
-            init();
         };
 
         $scope.saveOrganization = function () {
@@ -88,16 +73,6 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             });
         };
 
-        /**
-         * Pentru salvarea datelor folosesc un deep copy oferit de jquery, iar la click pe back
-         * se face referinta catre acel obiect.
-         */
-        $scope.back = function () {
-            $scope.canEdit = false;
-            $scope.disableDetails = !$scope.canEdit;
-            $scope.organizationSelection.selected = $scope.savedObject;
-        };
-
         $scope.deleteOrganization = function () {
             Organization.delete($scope.organizationSelection.selected, function (value) {
                 Notification.success('Organization deleted');
@@ -108,6 +83,16 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             }, function (error) {
                 Notification.error(error.data.error);
             });
+        };
+
+        /**
+         * Pentru salvarea datelor folosesc un deep copy oferit de jquery, iar la click pe back
+         * se face referinta catre acel obiect.
+         */
+        $scope.back = function () {
+            $scope.canEdit = false;
+            $scope.disableDetails = !$scope.canEdit;
+            $scope.organizationSelection.selected = $scope.savedObject;
         };
 
         $scope.addPerspective = function () {

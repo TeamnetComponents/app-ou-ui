@@ -8,12 +8,12 @@ ouModule
                 method: 'GET',
                 isArray: true
             },
-            'update': {
-                url: 'app/rest/organization/saveOrganization',
-                method: 'PUT'
-            },
             'save': {
                 url: 'app/rest/organization/saveOrganization',
+                method: 'POST'
+            },
+            'delete': {
+                url: 'app/rest/organization/deleteOrganization',
                 method: 'POST'
             }
         });
