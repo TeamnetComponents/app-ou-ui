@@ -2,7 +2,7 @@
  * Created by Radu.Hoaghe on 7/16/2015.
  */
 ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$location', 'OuManage', 'Notification', function ($scope, $http, OU, $location, OuManage, Notification) {
-    $scope.departmentSelection = {};
+    $scope.organizationSelection = {};
     $scope.disableDetails = true;
     $scope.newPerspectiveName = "";
     $scope.newTab = -1;
@@ -13,13 +13,13 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
 
     /*$http.get('/ou/scripts/controllers/manageOrganizationalUnit/ouManage.json')
         .success(function(data) {
-            $scope.departments = data.content.organizations;
+            $scope.organizations = data.content.organizations;
             $scope.initialDepartments = data.content.organizations;
-            for(var i = 0; i < $scope.departments.length; i++){
+            for(var i = 0; i < $scope.organizations.length; i++){
 
-                $scope.departments[i].validFrom = OU.convertDate($scope.departments[i].validFrom);
+                $scope.organizations[i].validFrom = OU.convertDate($scope.organizations[i].validFrom);
 
-                $scope.departments[i].validTo = OU.convertDate($scope.departments[i].validTo);
+                $scope.organizations[i].validTo = OU.convertDate($scope.organizations[i].validTo);
             }
         })
         .error(function(data) {
@@ -28,7 +28,7 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
 
     var init = function() {
         OuManage.getAll(function(res) {
-            $scope.departments = res;
+            $scope.organizations = res;
         });
     };
 
@@ -41,10 +41,16 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
     };
 
     $scope.createOrganization = function () {
-        $scope.departmentSelection.selected = {
-            "name": "",
-            "code": "",
-            "description": ""
+        $scope.organizationSelection.selected = {
+            code: null,
+            description: null,
+            validFrom: null,
+            validTo: null,
+            active: null,
+            perspective: [],
+            jpaId: null,
+            perspectivesNeo: [],
+            roots: []
         };
         $scope.canEdit = true;
         $scope.disableDetails = !$scope.canEdit;
@@ -63,16 +69,16 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
             description: null,
             validFrom: null,
             validTo: null,
-            "active": null,
-            "perspective": [],
-            "jpaId": null,
-            "perspectivesNeo": [],
-            "roots": []
+            active: null,
+            perspective: [],
+            jpaId: null,
+            perspectivesNeo: [],
+            roots: []
         };
-        $scope.objectToUpdate.code = $scope.departmentSelection.selected.name;
-        $scope.objectToUpdate.description = $scope.departmentSelection.selected.code;
-        $scope.objectToUpdate.validFrom = $scope.departmentSelection.selected.validFrom;
-        $scope.objectToUpdate.validTo = $scope.departmentSelection.selected.validTo;
+        $scope.objectToUpdate.code = $scope.organizationSelection.selected.code;
+        $scope.objectToUpdate.description = $scope.organizationSelection.selected.description;
+        $scope.objectToUpdate.validFrom = $scope.organizationSelection.selected.validFrom;
+        $scope.objectToUpdate.validTo = $scope.organizationSelection.selected.validTo;
         $scope.objectToUpdate.active = true;
         OuManage.createOrganization($scope.objectToUpdate, function(value) {
             Notification.success('Organization created');
@@ -98,9 +104,9 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
     };
 
     $scope.addPerspective = function () {
-        $scope.departmentSelection.selected.perspectives
-            [$scope.departmentSelection.selected.perspectives.length] = {"name": "new"};
-        $scope.newTab = $scope.departmentSelection.selected.perspectives.length;
+        $scope.organizationSelection.selected.perspectives
+            [$scope.organizationSelection.selected.perspectives.length] = {"name": "new"};
+        $scope.newTab = $scope.organizationSelection.selected.perspectives.length;
 
     };
 
@@ -109,7 +115,7 @@ ouControllers.controller('ouManageController', ['$scope', '$http', 'OU', '$locat
     };
 
     $scope.saveNewPerspective = function (newPerspectiveName, index) {
-        $scope.departmentSelection.selected.perspectives[index].name = newPerspectiveName;
+        $scope.organizationSelection.selected.perspectives[index].name = newPerspectiveName;
     };
 
 }]);

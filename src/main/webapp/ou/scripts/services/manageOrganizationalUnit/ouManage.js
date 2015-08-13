@@ -4,7 +4,7 @@ ouModule
     .factory('OuManage', ['$resource', function ($resource) {
         return $resource('app/rest/organization/:id', {}, {
             'getAll': {
-                url: 'app/rest/organization/getAll',
+                url: 'app/rest/organization/getAllOrganizations',
                 method: 'GET',
                 isArray: true
             },
