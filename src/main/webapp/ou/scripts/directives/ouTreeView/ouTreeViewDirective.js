@@ -12,9 +12,9 @@ ouDirectives.
             restrict: 'EA',
             templateUrl: 'ou/views/organizationalUnit/organizationalUnitTreeView.html',
             scope: {
-                ouTreeData: '=',
-                isOrganization: '=',
-                editUrl: '='
+                ouTreeData: '='
+                /*isOrganization: '=',*/
+                /*editUrl: '='*/
             },
             controller: 'ouTreeViewController',
             link: function($scope, $element, $attrs) {

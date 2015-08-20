@@ -1,7 +1,9 @@
-<script type="text/ng-template" id="items_renderer.html">
+<script type="text/ng-template" id="children_renderer.html">
+
     <div ui-tree-handle class="list-group-item" id="menu-handle-{{item.id}}">
+
         <button class="tree-btn icon-only" ng-if="item.children && item.children.length > 0" aria-label=""
-           data-nodrag ng-click="toggle(this); $event.stopPropagation();" style="margin-right: 10px">
+                data-nodrag ng-click="toggle(this); $event.stopPropagation();" style="margin-right: 10px">
             <span class="glyphicon"
                   ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
             </span>
@@ -10,20 +12,22 @@
         {{item.code}}
 
         <div data-nodrag class="pull-right show-on-hover">
-            <button class="tree-btn icon-only" ng-click="insertNewElement(item); $event.stopPropagation();"
-               data-nodrag collapsed="false" ng-show="!isOrganization" aria-label="">
+            <button class="tree-btn icon-only" ng-click="createOU(item); $event.stopPropagation();"
+                    data-nodrag collapsed="false" aria-label="">
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
-            <button class="tree-btn icon-only" ng-click="deleteElement(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
-               data-nodrag collapsed="false" ng-show="!isOrganization" aria-label="" style="margin-right: 10px">
+            <button class="tree-btn icon-only"
+                    ng-click="remove(this); deleteElement(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
+                    data-nodrag collapsed="false" aria-label="" style="margin-right: 10px">
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
         </div>
     </div>
+
     <ol ui-tree-nodes="" ng-model="item.children" ng-class="{hidden: collapsed}">
         <li ng-repeat="item in item.children | filter: search" ui-tree-node
-            ng-click="updateOuInformation(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
-            ng-include="'items_renderer.html'"></li>
+            ng-click="editOU(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
+            ng-include="'children_renderer.html'"></li>
     </ol>
 </script>
 
@@ -32,42 +36,23 @@
 
     <input type="text" class="form-control" ng-model="search" placeholder="Search"/>
 
-    <div ui-tree id="tree-root">
-        <ol ui-tree-nodes ng-model="ouTreeData">
-            <li ng-click="updateOuInformation(item, $parentNodesScope.$modelValue); $event.stopPropagation();"
-                ng-repeat="item in ouTreeData.organizationalUnitSet | filter: search" ui-tree-node
-                ng-include="'items_renderer.html'" data-nodrag></li>
-        </ol>
-    </div>
-
-    <div ng-show="!isOrganization">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="separator mt5 mb15"></div>
-            </div>
-        </div>
+    <div>
+        <br>
         <div class="row m0">
-            <div class="col-md-12 text-right mb15">
-
-                <!--<div class="col-md-4">-->
-                    <!--<button class="btn btn-success"-->
-                            <!--ng-click="collapseAll()">-->
-                        <!--Collapse-->
-                    <!--</button>-->
-                <!--</div>-->
-
-                <!--<div class="col-md-4">-->
-                    <!--<button class="btn btn-success"-->
-                            <!--ng-click="expandAll()">-->
-                        <!--Expand-->
-                    <!--</button>-->
-                <!--</div>-->
-
-                <button class="btn btn-success"
-                        ng-click="createNewChildForPerspective()">
-                    Add OU
+            <div class="col-md-12 text-left mb15">
+                <button class="btn btn-info"
+                        ng-click="createRootOU()">
+                    +
                 </button>
             </div>
         </div>
+    </div>
+
+    <div ui-tree id="tree-root">
+        <ol ui-tree-nodes ng-model="ouTreeData">
+            <li ng-click="editOU(item, $parentNodesScope.$modelValue); $event.stopPropagation();"
+                ng-repeat="item in ouTreeData | filter: search" ui-tree-node
+                ng-include="'children_renderer.html'" data-nodrag></li>
+        </ol>
     </div>
 </div>

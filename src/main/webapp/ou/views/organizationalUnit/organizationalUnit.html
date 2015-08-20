@@ -5,22 +5,27 @@
             <h4>Organizational Unit</h4>
         </div>
 
-        <div class="panel-body">
+        <div>
+            <button class="btn btn-info" ng-click="getTree()">
+                GetTree
+            </button>
+        </div>
 
-            <div ng-class="className()">
+        <div class="panel-body">
+            <div ng-class="getPanelClass()">
+
                 <div class="row m0">
                     <div class="form-group">
                         <label> Selecteaza organizatie : </label>
 
-                        <ui-select on-select="showPerspectiveSelect()" name="organizationSelect"
-                                   ng-model="organization.selected" theme="selectize">
+                        <ui-select on-select="selectOrganization()" name="organizationSelect"
+                                   ng-model="selectedOrganization" theme="selectize">
 
                             <ui-select-match placeholder="Organizatie">
                                 {{$select.selected.code}}
                             </ui-select-match>
 
-                            <ui-select-choices
-                                    repeat="org in organizationalUnitList | filter: $select.search">
+                            <ui-select-choices repeat="org in organizationalUnitList | filter: $select.search">
                                 <div ng-bind-html="org.code | highlight: $select.search"></div>
                                 <small>
                                     Name: {{org.description}}
@@ -30,37 +35,45 @@
                     </div>
                 </div>
 
-                <div class="row m0" ng-show="showDropDownForPerspective">
+                <div class="row m0" ng-show="showPerspectiveDropDown">
                     <div class="form-group">
                         <label class="my-md-label"> Selecteaza perspectiva : </label>
-                        <ui-select on-select="showTreePerspective()" name="perspectiveSelect"
-                                   ng-model="perspective.selected" theme="selectize">
+                        <ui-select on-select="selectPerspective()" name="perspectiveSelect"
+                                   ng-model="selectedPerspective" theme="selectize">
 
                             <ui-select-match placeholder="Perspectiva">
                                 {{$select.selected.code}}
                             </ui-select-match>
 
                             <ui-select-choices
-                                    repeat="perspective in organization.selected.perspectives | filter: $select.search">
+                                    repeat="perspective in selectedOrganization.perspectives | filter: $select.search">
                                 <div ng-bind-html="perspective.code | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
                 </div>
 
-                <div class="admin-menu-holder">
-                    <div ng-show="isPerspectiveSelected" ou-tree-view ou-tree-data="perspective.selected"
-                         is-ou-manage="false"></div>
+                <div class="row m0">
+                    <div class="form-group">
+                        <div class="admin-menu-holder">
+                            <label class="my-md-label"> Organizational Units Tree : </label>
+
+                            <!--<div ng-show="isPerspectiveSelected" ou-tree-view ou-tree-data="perspective.selected"
+                                 is-ou-manage="false"></div>-->
+                            <div ou-tree-view ou-tree-data="orgUnitsTree"
+                                 is-ou-manage="false"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" ng-show="isTreePerspectiveSelected">
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" ng-show="isTreeOUSelected">
 
                 <div class="row m0">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
-                            <label> Organizational Unit Parinte :</label>
-                            <input type="text" name="ouCode" class="form-control" ng-model="parentOu.code" readonly/>
+                            <label> Organizational Unit Parent :</label>
+                            <input type="text" name="ouCode" class="form-control" ng-model="newOrgUnit.parent.code" readonly/>
                         </div>
                     </div>
                 </div>
@@ -69,13 +82,13 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Code :</label>
-                            <input type="text" name="ouCode" class="form-control" ng-model="code" ng-readonly="isView">
+                            <input type="text" name="ouCode" class="form-control" ng-model="newOrgUnit.code" ng-readonly="!isCreatedOrEdited ">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Description :</label>
-                            <input type="text" class="form-control" ng-model="description" ng-readonly="isView">
+                            <input type="text" class="form-control" ng-model="newOrgUnit.description" ng-readonly="!isCreatedOrEdited ">
                         </div>
                     </div>
                 </div>
@@ -84,20 +97,20 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Valid from :</label>
-                            <input type="date" class="form-control" ng-model="validFrom" ng-readonly="isView">
+                            <input type="date" class="form-control" ng-model="newOrgUnit.validFrom" ng-readonly="!isCreatedOrEdited ">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Valid to :</label>
-                            <input type="date" class="form-control" ng-model="validTo" ng-readonly="isView">
+                            <input type="date" class="form-control" ng-model="newOrgUnit.validTo" ng-readonly="!isCreatedOrEdited ">
                         </div>
                     </div>
                 </div>
 
-                <div class="row m0" ng-show="isEditingAnOu">
+                <div class="row m0" ng-show="isCreatedOrEdited">
                     <p style="font-size: 12px; text-align: center;">
-                        <b>Acum editati Organizational Unit: {{code}}</b>
+                        <b>Acum editati Organizational Unit: {{newOrgUnit.code}}</b>
                     </p>
                 </div>
 
@@ -111,17 +124,17 @@
                     <div class="col-md-12 text-right mb15">
 
                         <button class="btn btn-info"
-                                ng-show="isView"
+                                ng-show="!isCreatedOrEdited"
                                 ng-click="editOrganizationalUnit()">
                             Edit
                         </button>
                         <button class="btn btn-success"
-                                ng-show="isEdit"
+                                ng-show="isCreatedOrEdited"
                                 ng-click="saveOrganizationalUnit()">
                             Save
                         </button>
                         <button class="btn btn-warning"
-                                ng-show="!isView"
+                                ng-show="isCreatedOrEdited"
                                 ng-click="backOrganizationalUnit()">
                             Back
                         </button>
