@@ -24,16 +24,34 @@ ouControllers
 
             $scope.loading = false;
 
-            $scope.$emit('sendData', true);
-
-            $scope.isSelected = function (functionn) {
-                return functionn.id == $scope.selectedFunction.id;
+            $scope.open_validFrom = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened_validFrom = true;
             };
 
-            $scope.selectFunction = function (functionn) {
-                $scope.loading = true;
+            $scope.open_validTo = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened_validTo = true;
+            };
 
-                Function.getById({id : functionn.id}, function(res) {
+            $scope.dateOptions = {
+                format: 'dd/MM/yyyy',
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            $scope.$emit('sendData', true);
+
+            $scope.isSelected = function (aFunction) {
+                return aFunction.id == $scope.selectedFunction.id;
+            };
+
+            $scope.selectFunction = function (aFunction) {
+                $scope.loading = true;
+                $scope.selectedFunction = aFunction;
+                Function.get({functionId : aFunction.id}, function(res) {
                     clearSelectedModuleRights();
 
                     var mrs = window.localStorage.getObj('moduleRights');
@@ -42,8 +60,6 @@ ouControllers
                         $scope.pushModuleRight($scope.selectedModules, moduleRight);
                     });
                     $scope.selectedFunction = res;
-                    $scope.selectedFunction.validFrom = new Date($scope.selectedFunction.validFrom);
-                    $scope.selectedFunction.validTo = new Date($scope.selectedFunction.validTo)
                     getAllModuleRights().then(function () {
                         $scope.selectedFunction.moduleRights.forEach(function (item) {
                             var module = $scope.findByProperty($scope.modules, 'code', item.module.code);
@@ -85,10 +101,10 @@ ouControllers
                 });
                 $scope.selectedFunction.moduleRights = $scope.functions.moduleRights;
                 if($scope.selectedFunction.id !== undefined) {
-                    Function.update({functionId: $scope.selectedFunction.id}, $scope.selectedFunction, function(value) {
+                    Function.update($scope.selectedFunction, function(value) {
                         Notification.success('Function updated');
                         $scope.selectedFunction.id = value.id;
-                        $scope.backFunction();
+                        getFunctions().then($scope.backFunction);
                     });
                 }else{
                     Function.save($scope.selectedFunction, function (value) {
@@ -157,7 +173,7 @@ ouControllers
 
             var getFunctions = function () {
                 var deferred = $q.defer();
-                Function.getAll({}, function (data) {
+                Function.query({}, function (data) {
                         $scope.functions = data;
                         deferred.resolve();
                     },

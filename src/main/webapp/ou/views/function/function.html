@@ -35,30 +35,90 @@
                         </div>
                         <div class="row m0">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
+                                <div class="form-group"  ng-hide="isView"
+                                     ng-class="{'has-success': formCreateOrEdit.selectedFunction_validFrom.$dirty && formCreateOrEdit.selectedFunction_validFrom.$valid, 'has-error': formCreateOrEdit.selectedFunction_validFrom.$dirty && formCreateOrEdit.selectedFunction_validFrom.$invalid}">
+
                                     <label>Valid from</label>
-                                    <input type="date" class="form-control" ng-model="selectedFunction.validFrom" ng-readonly="isView">
+
+                                    <p class="input-group">
+                                        <input type="text" class="form-control" is-open="opened_validFrom"
+                                               placeholder="Valid from" datepicker-popup="{{dateOptions.format}}"
+                                               datepicker-options="dateOptions" ng-model="selectedFunction.validFrom"
+                                               required close-text="Close"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open_validFrom($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    </p>
+
+                                    <div ng-show="formCreateOrEdit.selectedFunction_validFrom.$dirty && formCreateOrEdit.selectedFunction_validFrom.$invalid">
+                                        <p class="help-block"
+                                           ng-show="formCreateOrEdit.selectedFunction_validFrom.$error.required">
+                                            Acest camp este obligatoriu
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="dropdown" ng-hide="!isView">
+
+                                    <label><b>Valid from:</b></label>
+
+                                    <div class="form-control" readonly>
+                                        {{selectedFunction.validFrom |
+                                        date:"dd/MM/yyyy"}}
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
+                                <div class="form-group" ng-hide="isView"
+                                     ng-class="{'has-success': formCreateOrEdit.selectedFunction_validTo.$dirty && formCreateOrEdit.selectedFunction_validTo.$valid, 'has-error': formCreateOrEdit.selectedFunction_validTo.$dirty && formCreateOrEdit.selectedFunction_validTo.$invalid}">
+
                                     <label>Valid to</label>
-                                    <input type="date" class="form-control" ng-model="selectedFunction.validTo" ng-readonly="isView">
+
+                                    <p class="input-group">
+                                        <input type="text" class="form-control" is-open="opened_validTo"
+                                               placeholder="Valid to" datepicker-popup="{{dateOptions.format}}"
+                                               datepicker-options="dateOptions" ng-model="selectedFunction.validTo" required
+                                               close-text="Close"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open_validTo($event)"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    </p>
+
+                                    <div ng-show="formCreateOrEdit.selectedFunction_validTo.$dirty && formCreateOrEdit.selectedFunction_validTo.$invalid">
+                                        <p class="help-block"
+                                           ng-show="formCreateOrEdit.selectedFunction_validTo.$error.required">
+                                            Acest camp este obligatoriu
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="dropdown" ng-hide="!isView">
+
+                                    <label><b>Valid to:</b></label>
+
+                                    <div class="form-control" readonly>
+                                        {{selectedFunction.validTo |
+                                        date:"dd/MM/yyyy"}}
+                                    </div>
                                 </div>
                             </div>
+
+
                         </div>
+
                         <div class="row m0">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label>Active</label>
-                                    <div class="inline-selects">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Option 1
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Option 2
-                                        </label>
-                                    </div>
+                                <!-- empty div fr alignment -->
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="checkbox-container">
+                                    <input id="active" type="checkbox" name="active"
+                                           ng-disabled="isView"
+                                           ng-model="selectedFunction.active"
+                                           ng-checked="selectedFunction.active"
+                                           class="mr5">
+                                    <label class="custom-select" for="active">Active</label>
                                 </div>
                             </div>
                         </div>
