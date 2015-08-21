@@ -95,11 +95,10 @@ ouControllers
                 $scope.selectedModules.forEach(function(module) {
                     module.moduleRights.forEach(function(moduleRight) {
                         moduleRight.module.moduleRights = undefined;
-                        //moduleRights[module.code+'-'+moduleRight.moduleRightCode] = moduleRight;
                         moduleRights.push(moduleRight);
                     })
                 });
-                $scope.selectedFunction.moduleRights = $scope.functions.moduleRights;
+                $scope.selectedFunction.moduleRights = moduleRights;
                 if($scope.selectedFunction.id !== undefined) {
                     Function.update($scope.selectedFunction, function(value) {
                         Notification.success('Function updated');
@@ -255,7 +254,7 @@ ouControllers
 
             var angularIndexOf = function (array, elem) {
                 for (var x = 0; x < array.length; x++) {
-                    if (angular.equals(array[x], elem))
+                    if (angular.equals(array[x].id, elem.id))
                         return x;
                 }
                 return -1;
