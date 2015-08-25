@@ -7,13 +7,13 @@
 </div>
 <div class="row permissions-editor">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-class="{'col-anim': isEdit}">
-        <div  class="thumbnail"
-              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
-              data-drop="true"
-              ng-model='selectedFunctions'
-              data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedFunctions])'}"
-              jqyoui-droppable="{multiple:true}">
-            <div  class="list-group">
+        <div class="thumbnail"
+             style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
+             data-drop="true"
+             ng-model='selectedFunctions'
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedFunctions])'}"
+             jqyoui-droppable="{multiple:true}">
+            <div class="list-group">
                 <div ng-repeat="selectedFunction in selectedFunctions">
                     <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
                          data-drag="!clickBool"
@@ -35,16 +35,16 @@
             </div>
         </div>
     </div>
-    <div  ng-show="isEdit"
-          class="col-lg-6 col-md-6 col-sm-12 col-xs-12 animate-show">
-        <div  class="thumbnail"
-              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
-              data-drop="true"
-              ng-model='availableFunctions'
-              data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=availableFunctions])'}"
-              jqyoui-droppable="{multiple:true}">
+    <div ng-show="isEdit"
+         class="col-lg-6 col-md-6 col-sm-12 col-xs-12 animate-show">
+        <div class="thumbnail"
+             style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
+             data-drop="true"
+             ng-model='availableFunctions'
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=availableFunctions])'}"
+             jqyoui-droppable="{multiple:true}">
 
-            <div  class="list-group">
+            <div class="list-group">
                 <div ng-repeat="function in availableFunctions">
                     <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
                          data-drag="isEdit"

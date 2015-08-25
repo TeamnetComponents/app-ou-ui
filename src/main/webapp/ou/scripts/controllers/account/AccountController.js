@@ -11,8 +11,8 @@ ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notif
         $scope.accountFunctions = [];
         $scope.selectedFunctions = [];
 
-        $scope.$on('onSelectAccount', function(event){
-            AccountFunction.query({accountId:$scope.selectedAccount.id}, function(data){
+        $scope.$on('onSelectAccount', function(event, accountId){
+            AccountFunction.query({accountId:accountId}, function(data){
                 $scope.accountFunctions = data;
                 $scope.selectedFunctions = angular.copy($scope.accountFunctions);
                 $scope.availableFunctions = angular.copy($scope.allFunctions);
@@ -48,9 +48,7 @@ ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notif
 
         var init = function () {
             Function.query(function (res) {
-                console.log('all functions:');
                 $scope.allFunctions = res;
-                console.log($scope.allFunctions);
             });
         };
         init();
