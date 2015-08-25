@@ -67,8 +67,7 @@
                       data-drop="true"
                       ng-model='modules'
                       jqyoui-droppable="{multiple:true}"
-                      add-func='addFunction'
-                        >
+                      add-func='addFunction'>
                     <div class="list-group" ng-repeat="module in modules | filter: {description: search}">
                         <div class="list-group btn-draggable"
                              data-drag="isAdd || isEdit"

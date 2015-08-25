@@ -23,6 +23,8 @@
         "ou/scripts/controllers/function/FunctionController.js",
         "ou/scripts/services/function/Function.js",
         "ou/scripts/services/function/FunctionMock.js",
-        "ou/scripts/services/organization/organizationService.js"
+        "ou/scripts/services/organization/organizationService.js",
+        "ou/scripts/controllers/account/AccountController.js",
+        "ou/scripts/services/function/AccountFunction.js"
     ]
 }

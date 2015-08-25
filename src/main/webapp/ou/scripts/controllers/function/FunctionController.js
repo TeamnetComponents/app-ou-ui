@@ -3,9 +3,7 @@
 ouControllers
     .controller('FunctionController', ['$scope', '$http', '$q', 'Notification', '$animate', 'Function', 'OU',
         function ($scope, $http, $q, Notification, $animate, Function, OU) {
-
-            //$scope.functionTpl = OU.functionTemplate + OU.functionTpl;
-            $scope.functionTpl = 'ou/views/function/template/function.tpl.html';
+            $scope.functionPermissionsTpl = 'ou/views/function/template/functionPermissions.tpl.html';
             $scope.selectedFunction = {};
             $scope.functions = [];
             $scope.allFunctions = [];
