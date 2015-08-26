@@ -77,7 +77,7 @@ ouControllers
                 clearState();
                 $scope.isAdd = true;
 
-                $scope.selectedFunction = {};
+                $scope.selectedFunction = {active:false};
                 clearSelectedModuleRights();
                 getAllModuleRights();
 

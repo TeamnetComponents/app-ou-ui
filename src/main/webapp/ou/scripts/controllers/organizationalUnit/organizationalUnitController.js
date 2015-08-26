@@ -4,32 +4,49 @@ ouControllers
     .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnitService', 'Organization', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
         function (Notification, $scope, OrganizationalUnitService, Organization, PerspectiveService, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
 
+            $scope.open_validFrom = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened_validFrom = true;
+            };
 
-            /* $scope.isPerspectiveSelected = false;
-            $scope.isEditingAnOu = false;
-            $scope.checkIfHaveChildren = false;
-            $scope.isView = true;
-            $scope.isEdit = false;
-            $scope.showExpandCollapse = false;
-            $scope.organization = {};
-            $scope.perspective = {};
-            $scope.objectToUpdate = {};
-            $scope.parentOu = {};
-            $scope.objectFromPackage = {};
+            $scope.open_validTo = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened_validTo = true;
+            };
 
-            $scope.accountsTpl = OU.url.template + OU.url.account;
-            $scope.functionsTpl = OU.url.template + OU.url.functions;
+            $scope.dateOptions = {
+                format: 'dd/MM/yyyy',
+                formatYear: 'yy',
+                startingDay: 1
+            };
 
-            $scope.organizationalUnits = [];
-            $scope.selectedOu = {};
-            $scope.accounts = [];
-            $scope.functions = [];
-            $scope.functionsCopy = [];
+            //$scope.isPerspectiveSelected = false;
+            //$scope.isEditingAnOu = false;
+            //$scope.checkIfHaveChildren = false;
+            //$scope.isView = true;
+            //$scope.isEdit = false;
+            //$scope.showExpandCollapse = false;
+            //$scope.organization = {};
+            //$scope.perspective = {};
+            //$scope.objectToUpdate = {};
+            //$scope.parentOu = {};
+            //$scope.objectFromPackage = {};
 
-            $scope.search = '';
-            $scope.selectedSearch = '';
-            $scope.loading = false;
-            $scope.clicked = false;*/
+            //$scope.accountsTpl = OU.url.template + OU.url.account;
+            //$scope.functionsTpl = OU.url.template + OU.url.functions;
+
+            //$scope.organizationalUnits = [];
+            //$scope.selectedOu = {};
+            //$scope.accounts = [];
+            //$scope.functions = [];
+            //$scope.functionsCopy = [];
+            //
+            //$scope.search = '';
+            //$scope.selectedSearch = '';
+            //$scope.loading = false;
+            //$scope.clicked = false;
 
             $scope.showPerspectiveDropDown = false;
             $scope.showOrgUnitsTree = false;
@@ -43,7 +60,7 @@ ouControllers
                     description: null,
                     validFrom : null,
                     validTo : null,
-                    active : null,
+                    active : false,
                     perspective : null,
                     parent : {},
                     children : [],
@@ -51,7 +68,7 @@ ouControllers
                 };
 
                 return newOrgUnit;
-            }
+            };
 
             var init = function () {
                 /*//TODO getAllOrganizationalUnits in service & repository (backend + frontend)

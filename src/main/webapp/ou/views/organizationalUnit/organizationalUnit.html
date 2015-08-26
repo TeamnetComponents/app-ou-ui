@@ -82,28 +82,99 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Code :</label>
-                            <input type="text" name="ouCode" class="form-control" ng-model="newOrgUnit.code" ng-readonly="!isCreatedOrEdited ">
+                            <input type="text" name="ouCode" class="form-control" ng-model="newOrgUnit.code" ng-readonly="!isCreatedOrEdited " required>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Description :</label>
-                            <input type="text" class="form-control" ng-model="newOrgUnit.description" ng-readonly="!isCreatedOrEdited ">
+                            <textarea class="form-control" ng-model="newOrgUnit.description" ng-readonly="!isCreatedOrEdited " />
                         </div>
                     </div>
                 </div>
 
                 <div class="row m0">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <label> Valid from :</label>
-                            <input type="date" class="form-control" ng-model="newOrgUnit.validFrom" ng-readonly="!isCreatedOrEdited ">
+                        <div class="form-group"  ng-hide="!isCreatedOrEdited"
+                             ng-class="{'has-success': formCreateOrEdit.newOrgUnit_validFrom.$dirty && formCreateOrEdit.newOrgUnit_validFrom.$valid, 'has-error': formCreateOrEdit.newOrgUnit_validFrom.$dirty && formCreateOrEdit.newOrgUnit_validFrom.$invalid}">
+
+                            <label>Valid from</label>
+
+                            <p class="input-group">
+                                <input type="text" class="form-control" is-open="opened_validFrom"
+                                       placeholder="Valid from" datepicker-popup="{{dateOptions.format}}"
+                                       datepicker-options="dateOptions" ng-model="newOrgUnit.validFrom"
+                                       required close-text="Close"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open_validFrom($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+
+                            <div ng-show="formCreateOrEdit.newOrgUnit_validFrom.$dirty && formCreateOrEdit.newOrgUnit_validFrom.$invalid">
+                                <p class="help-block"
+                                   ng-show="formCreateOrEdit.newOrgUnit_validFrom.$error.required">
+                                    Acest camp este obligatoriu
+                                </p>
+                            </div>
+                        </div>
+                        <div class="dropdown" ng-hide="isCreatedOrEdited">
+
+                            <label><b>Valid from:</b></label>
+
+                            <div class="form-control" readonly>
+                                {{newOrgUnit.validFrom |
+                                date:"dd/MM/yyyy"}}
+                            </div>
                         </div>
                     </div>
+
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <label> Valid to :</label>
-                            <input type="date" class="form-control" ng-model="newOrgUnit.validTo" ng-readonly="!isCreatedOrEdited ">
+                        <div class="form-group" ng-hide="!isCreatedOrEdited"
+                             ng-class="{'has-success': formCreateOrEdit.newOrgUnit_validTo.$dirty && formCreateOrEdit.newOrgUnit_validTo.$valid, 'has-error': formCreateOrEdit.newOrgUnit_validTo.$dirty && formCreateOrEdit.newOrgUnit_validTo.$invalid}">
+
+                            <label>Valid to</label>
+
+                            <p class="input-group">
+                                <input type="text" class="form-control" is-open="opened_validTo"
+                                       placeholder="Valid to" datepicker-popup="{{dateOptions.format}}"
+                                       datepicker-options="dateOptions" ng-model="newOrgUnit.validTo" required
+                                       close-text="Close"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open_validTo($event)"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                            </p>
+
+                            <div ng-show="formCreateOrEdit.newOrgUnit_validTo.$dirty && formCreateOrEdit.newOrgUnit_validTo.$invalid">
+                                <p class="help-block"
+                                   ng-show="formCreateOrEdit.newOrgUnit_validTo.$error.required">
+                                    Acest camp este obligatoriu
+                                </p>
+                            </div>
+                        </div>
+                        <div class="dropdown" ng-hide="isCreatedOrEdited">
+
+                            <label><b>Valid to:</b></label>
+
+                            <div class="form-control" readonly>
+                                {{newOrgUnit.validTo |
+                                date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m0">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <!-- empty div fr alignment -->
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="checkbox-container">
+                            <input id="active" type="checkbox" name="active"
+                                   ng-disabled="!isCreatedOrEdited"
+                                   ng-model="newOrgUnit.active"
+                                   class="mr5">
+                            <label class="custom-select" for="active">Active</label>
                         </div>
                     </div>
                 </div>
