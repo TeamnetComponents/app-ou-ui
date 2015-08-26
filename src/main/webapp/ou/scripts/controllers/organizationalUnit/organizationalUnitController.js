@@ -1,8 +1,8 @@
 'use strict';
 ouControllers
 
-    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction',
-        function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction) {
+    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction', 'OU',
+        function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction, OU) {
 
             $scope.open_validFrom = function($event) {
                 $event.preventDefault();
@@ -22,8 +22,7 @@ ouControllers
                 startingDay: 1
             };
 
-            var baseTemplateUrl = 'ou/views/account/template/';
-            $scope.functionsTpl = baseTemplateUrl + 'functions.tpl.html';
+            $scope.functionsTpl = OU.template.functionsTab;
             $scope.availableFunctions = [];
             $scope.selectedFunctions = [];
             $scope.ouFunctions = [];
@@ -160,7 +159,7 @@ ouControllers
                 $scope.showPerspectiveDropDown = true;
 
                 //TODO: This is not absolutely necessary because the perspectives are brought with organizations
-                PerspectiveService.getByOrganizationId(
+                Perspective.getByOrganizationId(
                     {id: $scope.selectedOrganization.id},
                     function(data) {
                         $scope.perspectives = data;
