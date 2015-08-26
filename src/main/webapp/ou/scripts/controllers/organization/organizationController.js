@@ -1,8 +1,8 @@
 /**
  * Created by Radu.Hoaghe on 7/16/2015.
  */
-ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$location', 'Organization', 'Notification',
-    function ($scope, $http, OU, $location, Organization, Notification) {
+ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$location', 'Organization', 'Notification', 'Perspective',
+    function ($scope, $http, OU, $location, Organization, Notification,Perspective) {
 
         $scope.organizationSelection = {};
         $scope.disableDetails = true;
@@ -21,18 +21,17 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
 
         $scope.clearSelected = function() {
             $scope.organizationSelection.selected = {
-                neoId: null,
-                jpaId: null,
+                id: null,
                 code: null,
                 description: null,
                 validFrom: null,
                 validTo: null,
                 active: null,
-                perspective: [],
+                perspectives: [],
                 perspectivesNeo: [],
                 roots: []
             };
-        }
+        };
 
         $scope.refresh = function() {
             init();
@@ -41,6 +40,8 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
         $scope.disableEditing = function () {
             $scope.canEdit = false;
             $scope.disableDetails = !$scope.canEdit;
+            $scope.getPerspectivesByOrganization();
+
         };
 
         $scope.createOrganization = function () {
@@ -48,12 +49,20 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $scope.savedObject = jQuery.extend(true, {}, $scope.organizationSelection.selected);
             $scope.canEdit = true;
             $scope.disableDetails = !$scope.canEdit;
+            $scope.refresh();
         };
 
         $scope.editOrganization = function () {
+
             $scope.savedObject = jQuery.extend(true, {}, $scope.organizationSelection.selected);
             $scope.canEdit = true;
             $scope.disableDetails = !$scope.canEdit;
+        };
+
+        $scope.getPerspectivesByOrganization = function(){
+            Perspective.getByOrganizationId({id: $scope.organizationSelection.selected.id}, function(res) {
+                $scope.organizationSelection.selected.perspectives = angular.copy(res);
+            });
         };
 
         $scope.saveOrganization = function () {
@@ -67,6 +76,7 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
                     Notification.success('Organization created');
                 }
                 $scope.organizationSelection.selected = value;
+                //$scope.getPerspectivesByOrganization();
                 $scope.refresh();
             }, function (error) {
                 Notification.error(error.data.error);
@@ -78,8 +88,9 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
                 Notification.success('Organization deleted');
                 $scope.canEdit = false;
                 $scope.disableDetails = !$scope.canEdit;
-                $scope.organizationSelection.selected = $scope.clearSelected;
+                $scope.back();
                 $scope.refresh();
+
             }, function (error) {
                 Notification.error(error.data.error);
             });
@@ -96,8 +107,8 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
         };
 
         $scope.addPerspective = function () {
-            $scope.organizationSelection.selected.perspectives
-                [$scope.organizationSelection.selected.perspectives.length] = {"name": "new"};
+            $scope.organizationSelection.selected.
+                perspectives[$scope.organizationSelection.selected.perspectives.length] = {code: "new", description: ""};
             $scope.newTab = $scope.organizationSelection.selected.perspectives.length;
 
         };
@@ -106,8 +117,32 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $location.path(OU.url.manageOrganizationUnits); // TODO url params
         };
 
-        $scope.saveNewPerspective = function (newPerspectiveName, index) {
-            $scope.organizationSelection.selected.perspectives[index].name = newPerspectiveName;
+        $scope.saveNewPerspective = function (newPerspectiveCode, newPerspectiveDescription, index) {
+
+            $scope.organizationSelection.selected.perspectives[index] = {
+                code : newPerspectiveCode,
+                description : newPerspectiveDescription
+            };
+
+            var perspective = {
+                code : newPerspectiveCode,
+                description : newPerspectiveDescription,
+                organizationDto : {}
+            };
+//            perspective.organizationDto.perspectives = null;
+
+
+            angular.copy($scope.organizationSelection.selected,perspective.organizationDto);
+            perspective.organizationDto.perspectives = null;
+
+            Perspective.save(perspective, function (value) {
+                Notification.success('Permission created');
+
+                $scope.getPerspectivesByOrganization();
+
+            }, function (error) {
+                Notification.error(error);
+            });
         };
 
     }]);

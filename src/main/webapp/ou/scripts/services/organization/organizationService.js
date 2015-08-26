@@ -9,11 +9,7 @@ ouModule
                 isArray: true
             },
             'save': {
-                url: 'app/rest/organization/saveOrganization',
-                method: 'POST'
-            },
-            'delete': {
-                url: 'app/rest/organization/deleteOrganization',
+                url: 'app/rest/organization/save',
                 method: 'POST'
             }
         });
