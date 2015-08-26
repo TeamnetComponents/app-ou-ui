@@ -54,7 +54,7 @@ ouControllers
             $scope.selectedPerspective = {};
 
             var initNewOrgUnit = function() {
-                var newOrgUnit = {
+                return {
                     id : null,
                     code : null,
                     description: null,
@@ -66,8 +66,6 @@ ouControllers
                     children : [],
                     accounts : []
                 };
-
-                return newOrgUnit;
             };
 
             var init = function () {
@@ -142,21 +140,25 @@ ouControllers
                 return "col-lg-6 col-md-6 col-sm-12 col-xs-12";
             };
 
+            $scope.setEdit = function(editMode) {
+                $scope.isEdit = editMode;
+                $scope.isView = !editMode;
+            };
             $scope.createNewOrgUnit = function() {
                 $scope.newOrgUnit = initNewOrgUnit();
-                $scope.isCreatedOrEdited = true;
+                $scope.setEdit(true);
             };
 
             $scope.saveOrganizationalUnit = function() {
-                $scope.isCreatedOrEdited = false;
+                $scope.setEdit(false);
             };
 
             $scope.editOrganizationalUnit = function() {
-                $scope.isCreatedOrEdited = true;
+                $scope.setEdit(true);
             };
 
             $scope.backOrganizationalUnit = function() {
-                $scope.isCreatedOrEdited = false;
+                $scope.setEdit(false);
             };
 
             $scope.$on('editNode', function(e, data) {
@@ -167,7 +169,7 @@ ouControllers
                        function(result) {
                            $scope.newOrgUnit = data;
                            $scope.isTreeOUSelected = true;
-                           $scope.isCreatedOrEdited = false;
+                           $scope.setEdit(false);
                        },
                        function(error) {
                            Notification.error("Couldn't fetch Organizational Unit!");

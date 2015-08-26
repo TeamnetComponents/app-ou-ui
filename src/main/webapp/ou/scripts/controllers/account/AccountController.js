@@ -1,7 +1,7 @@
  'use strict';
 
-ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notification', '$animate', 'Function', 'AccountFunction', 'OU',
-    function ($scope, $http, $q, Notification, $animate, Function, AccountFunction, OU) {
+ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notification', '$animate', 'Function', 'AccountFunction',
+    function ($scope, $http, $q, Notification, $animate, Function, AccountFunction) {
 
         var baseTemplateUrl = 'ou/views/account/template/';
         $scope.functionTpl = baseTemplateUrl + 'functions.tpl.html';

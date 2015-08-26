@@ -82,20 +82,20 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Code :</label>
-                            <input type="text" name="ouCode" class="form-control" ng-model="newOrgUnit.code" ng-readonly="!isCreatedOrEdited " required>
+                            <input type="text" name="ouCode" class="form-control" ng-model="newOrgUnit.code" ng-readonly="isView " required>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Description :</label>
-                            <textarea class="form-control" ng-model="newOrgUnit.description" ng-readonly="!isCreatedOrEdited " />
+                            <textarea class="form-control" ng-model="newOrgUnit.description" ng-readonly="isView " />
                         </div>
                     </div>
                 </div>
 
                 <div class="row m0">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <div class="form-group"  ng-hide="!isCreatedOrEdited"
+                        <div class="form-group"  ng-show="isEdit"
                              ng-class="{'has-success': formCreateOrEdit.newOrgUnit_validFrom.$dirty && formCreateOrEdit.newOrgUnit_validFrom.$valid, 'has-error': formCreateOrEdit.newOrgUnit_validFrom.$dirty && formCreateOrEdit.newOrgUnit_validFrom.$invalid}">
 
                             <label>Valid from</label>
@@ -118,7 +118,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown" ng-hide="isCreatedOrEdited">
+                        <div class="dropdown" ng-show="isView">
 
                             <label><b>Valid from:</b></label>
 
@@ -130,7 +130,7 @@
                     </div>
 
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <div class="form-group" ng-hide="!isCreatedOrEdited"
+                        <div class="form-group" ng-show="isEdit"
                              ng-class="{'has-success': formCreateOrEdit.newOrgUnit_validTo.$dirty && formCreateOrEdit.newOrgUnit_validTo.$valid, 'has-error': formCreateOrEdit.newOrgUnit_validTo.$dirty && formCreateOrEdit.newOrgUnit_validTo.$invalid}">
 
                             <label>Valid to</label>
@@ -153,7 +153,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown" ng-hide="isCreatedOrEdited">
+                        <div class="dropdown" ng-show="isView">
 
                             <label><b>Valid to:</b></label>
 
@@ -171,7 +171,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="checkbox-container">
                             <input id="active" type="checkbox" name="active"
-                                   ng-disabled="!isCreatedOrEdited"
+                                   ng-disabled="isView"
                                    ng-model="newOrgUnit.active"
                                    class="mr5">
                             <label class="custom-select" for="active">Active</label>
@@ -179,7 +179,7 @@
                     </div>
                 </div>
 
-                <div class="row m0" ng-show="isCreatedOrEdited">
+                <div class="row m0" ng-show="isEdit">
                     <p style="font-size: 12px; text-align: center;">
                         <b>Acum editati Organizational Unit: {{newOrgUnit.code}}</b>
                     </p>
@@ -195,17 +195,17 @@
                     <div class="col-md-12 text-right mb15">
 
                         <button class="btn btn-info"
-                                ng-show="!isCreatedOrEdited"
+                                ng-show="isView"
                                 ng-click="editOrganizationalUnit()">
                             Edit
                         </button>
                         <button class="btn btn-success"
-                                ng-show="isCreatedOrEdited"
+                                ng-show="isEdit"
                                 ng-click="saveOrganizationalUnit()">
                             Save
                         </button>
                         <button class="btn btn-warning"
-                                ng-show="isCreatedOrEdited"
+                                ng-show="isEdit"
                                 ng-click="backOrganizationalUnit()">
                             Back
                         </button>
