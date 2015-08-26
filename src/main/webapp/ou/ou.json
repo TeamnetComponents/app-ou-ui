@@ -26,6 +26,7 @@
         "ou/scripts/services/organization/organizationService.js",
         "ou/scripts/controllers/account/AccountController.js",
         "ou/scripts/services/function/AccountFunction.js",
+        "ou/scripts/services/function/OUFunction.js",
         "ou/scripts/services/organization/organizationService.js",
         "ou/scripts/services/perspective/perspectiveService.js"
     ]

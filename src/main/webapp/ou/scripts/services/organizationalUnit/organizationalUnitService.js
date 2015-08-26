@@ -1,7 +1,7 @@
 'use strict';
 
 ouServices
-    .factory("OrganizationalUnitService", ['$resource', '$http', '$q', 'OU', function ($resource, $http, $q, OU) {
+    .factory("OrganizationalUnit", ['$resource', '$http', '$q', 'OU', function ($resource, $http, $q, OU) {
 
         return $resource('app/rest/organizationalUnit/:id', {}, {
             'getById': {

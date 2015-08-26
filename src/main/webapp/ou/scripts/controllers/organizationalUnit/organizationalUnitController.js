@@ -1,8 +1,8 @@
 'use strict';
 ouControllers
 
-    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnitService', 'Organization', 'organizationalUnitServiceMock', 'AccountMock', 'FunctionMock', 'OU',
-        function (Notification, $scope, OrganizationalUnitService, Organization, PerspectiveService, organizationalUnitServiceMock, AccountMock, FunctionMock, OU) {
+    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction',
+        function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction) {
 
             $scope.open_validFrom = function($event) {
                 $event.preventDefault();
@@ -20,6 +20,54 @@ ouControllers
                 format: 'dd/MM/yyyy',
                 formatYear: 'yy',
                 startingDay: 1
+            };
+
+            var baseTemplateUrl = 'ou/views/account/template/';
+            $scope.functionsTpl = baseTemplateUrl + 'functions.tpl.html';
+            $scope.availableFunctions = [];
+            $scope.selectedFunctions = [];
+            $scope.ouFunctions = [];
+
+            $scope.startFnc = function () {
+                arguments[0].target.style.visibility = 'hidden';
+            };
+
+            $scope.stopFnc = function () {
+                arguments[0].target.style.visibility = '';
+            };
+
+            //$scope.$on('onSelectOU', function(event, ouId){
+            //    OUFunction.query({ouId:ouId}, function(data){
+            //        $scope.ouFunctions = data;
+            //        $scope.selectedFunctions = angular.copy($scope.ouFunctions);
+            //        $scope.availableFunctions = angular.copy($scope.allFunctions);
+            //        $scope.ouFunctions.forEach(function(item){
+            //            var idx = angularIndexOf($scope.availableFunctions, item);
+            //            if(idx > -1){
+            //                $scope.availableFunctions.splice(idx, 1);
+            //            }
+            //        });
+            //    });
+            //});
+            //$scope.$on('onSaveOU', function(event, ouId){
+            //    $scope.selectedFunctions.forEach(function(selectedFunction){
+            //        if (angularIndexOf($scope.ouFunctions, selectedFunction) < 0) {
+            //            OUFunction.save({ouId: ouId}, selectedFunction);
+            //        }
+            //    });
+            //    $scope.ouFunctions.forEach(function(ouFunction){
+            //        if (angularIndexOf($scope.selectedFunctions, ouFunction) < 0) {
+            //            OUFunction.delete({ouId: ouId, functionId: ouFunction.id});
+            //        }
+            //    });
+            //});
+
+            var angularIndexOf = function (array, elem) {
+                for (var x = 0; x < array.length; x++) {
+                    if (angular.equals(array[x].id, elem.id))
+                        return x;
+                }
+                return -1;
             };
 
             //$scope.isPerspectiveSelected = false;
@@ -79,28 +127,28 @@ ouControllers
                  }
                  });*/
 
-                Organization.getAll(
-                    function (result) {
-                        $scope.organizationalUnitList = result;
-                    });
+                Organization.getAll(function (result) {
+                    $scope.organizationalUnitList = result;
+                });
 
-                /* OrganizationalUnitService.getAll(function (res) {
+                /* OrganizationalUnit.getAll(function (res) {
                  $scope.currentOuList = res;
-                 });
-
-                 FunctionMock.getAll(function (res) {
-                 $scope.allFunctions = res;
-                 if (!_.isEmpty($scope.organizationalUnits)) {
-                 $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
-                 }
-                 });
                  });*/
+
+                Function.query(function (res) {
+                    $scope.allFunctions = res;
+                    $scope.availableFunctions = angular.copy($scope.allFunctions);
+                });
+
+                 /*if (!_.isEmpty($scope.organizationalUnits)) {
+                 $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
+                 }*/
             };
 
             init();
 
             $scope.getTree = function () {
-                OrganizationalUnitService.getTree(
+                OrganizationalUnit.getTree(
                     {id: 231},
                     function (data) {
                         console.log(data);
@@ -123,7 +171,7 @@ ouControllers
             $scope.selectPerspective = function() {
                 $scope.showOrgUnitsTree = true;
 
-                OrganizationalUnitService.getTree(
+                OrganizationalUnit.getTree(
                     {id: $scope.selectedPerspective.organizationalUnit.id},
                     function (data) {
                         $scope.orgUnitsTree = data;
@@ -164,7 +212,7 @@ ouControllers
             $scope.$on('editNode', function(e, data) {
                 console.log(data);
                if (data != undefined && data != null) {
-                   OrganizationalUnitService.getById(
+                   OrganizationalUnit.getById(
                        {id : data.id},
                        function(result) {
                            $scope.newOrgUnit = data;
@@ -268,7 +316,7 @@ ouControllers
                 $scope.objectFromPackage.validFrom = $scope.objectToUpdate.validFrom;
                 $scope.objectFromPackage.validTo = $scope.objectToUpdate.validTo;
 
-                OrganizationalUnitService.update({id: $scope.objectToUpdate.id}, $scope.objectToUpdate, function (value) {
+                OrganizationalUnit.update({id: $scope.objectToUpdate.id}, $scope.objectToUpdate, function (value) {
                     Notification.success('Function updated');
                     $scope.objectToUpdate.id = value.id;
                 });
@@ -299,7 +347,7 @@ ouControllers
 
 
             $scope.selectOu = function (funct) {
-                OrganizationalUnitService.getById({id: funct.id}, function (res) {
+                OrganizationalUnit.getById({id: funct.id}, function (res) {
                     $scope.organizationalUnitList = res;
                 });
             };
@@ -314,7 +362,7 @@ ouControllers
 
             */
 
-            //OrganizationalUnitService.getAllOu().then(function(response) {
+            //OrganizationalUnit.getAllOu().then(function(response) {
             //    $scope.organizationalUnitList = response.content;
             //
             //    $scope.organization.selected = $scope.organizationalUnitList[0];
