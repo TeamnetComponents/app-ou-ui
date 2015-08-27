@@ -20,13 +20,13 @@ ouControllers
                 $scope.showOrgUnitsTree = true;
 
                 OrganizationalUnit.getTree(
-                    {id: $scope.selectedPerspective.organizationalUnit.id},
+                    {id: $scope.ouTree.perspective.organizationalUnit.id},
                     function (data) {
                         $scope.orgUnitsTree = data;
                         console.log(data);
                     });
 
-            }
+            };
 
             $scope.open_validFrom = function($event) {
                 $event.preventDefault();
