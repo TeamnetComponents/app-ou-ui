@@ -10,13 +10,13 @@ ouControllers
             $scope.showPerspectiveDropDown = false;
             $scope.showOrgUnitsTree = false;
 
-            $scope.selectOrganization = function() {
+            $scope.selectOrganization = function () {
                 $scope.showPerspectiveDropDown = true;
                 $scope.ouTree.perspective = {};
                 $scope.showOrgUnitsTree = false;
             };
 
-            $scope.selectPerspective = function() {
+            $scope.selectPerspective = function () {
                 $scope.showOrgUnitsTree = true;
 
                 OrganizationalUnit.getTree(
@@ -28,13 +28,13 @@ ouControllers
 
             };
 
-            $scope.open_validFrom = function($event) {
+            $scope.open_validFrom = function ($event) {
                 $event.preventDefault();
                 $event.stopPropagation();
                 $scope.opened_validFrom = true;
             };
 
-            $scope.open_validTo = function($event) {
+            $scope.open_validTo = function ($event) {
                 $event.preventDefault();
                 $event.stopPropagation();
                 $scope.opened_validTo = true;
@@ -119,18 +119,18 @@ ouControllers
             //$scope.loading = false;
             //$scope.clicked = false;
 
-            var initNewOrgUnit = function() {
+            var initNewOrgUnit = function () {
                 return {
-                    id : null,
-                    code : null,
+                    id: null,
+                    code: null,
                     description: null,
-                    validFrom : null,
-                    validTo : null,
-                    active : false,
-                    perspective : null,
-                    parent : {},
-                    children : [],
-                    accounts : []
+                    validFrom: null,
+                    validTo: null,
+                    active: false,
+                    perspective: null,
+                    parent: {},
+                    children: [],
+                    accounts: []
                 };
             };
 
@@ -158,7 +158,7 @@ ouControllers
                     $scope.availableFunctions = angular.copy($scope.allFunctions);
                 });
 
-                 /*if (!_.isEmpty($scope.organizationalUnits)) {
+                /*if (!_.isEmpty($scope.organizationalUnits)) {
                  $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
                  }*/
             };
@@ -206,42 +206,44 @@ ouControllers
                 return "col-lg-6 col-md-6 col-sm-12 col-xs-12";
             };
 
-            $scope.setEdit = function(editMode) {
+            $scope.setEdit = function (editMode) {
                 $scope.isEdit = editMode;
                 $scope.isView = !editMode;
             };
-            $scope.createNewOrgUnit = function() {
+            $scope.createNewOrgUnit = function () {
                 $scope.newOrgUnit = initNewOrgUnit();
                 $scope.setEdit(true);
             };
 
-            $scope.saveOrganizationalUnit = function() {
+            $scope.saveOrganizationalUnit = function () {
                 $scope.setEdit(false);
+                OrganizationalUnit.save($scope.newOrgUnit);
             };
 
-            $scope.editOrganizationalUnit = function() {
+            $scope.editOrganizationalUnit = function () {
                 $scope.setEdit(true);
             };
 
-            $scope.backOrganizationalUnit = function() {
+            $scope.backOrganizationalUnit = function () {
                 $scope.setEdit(false);
             };
 
-            $scope.$on('editNode', function(e, data) {
+            $scope.$on('editNode', function (e, data) {
                 console.log(data);
-               if (data != undefined && data != null) {
-                   OrganizationalUnit.getById(
-                       {id : data.id},
-                       function(result) {
-                           $scope.newOrgUnit = data;
-                           $scope.isTreeOUSelected = true;
-                           $scope.setEdit(false);
-                       },
-                       function(error) {
-                           Notification.error("Couldn't fetch Organizational Unit!");
-                       }
-                   );
-               };
+                if (data != undefined && data != null) {
+                    OrganizationalUnit.get(
+                        {id: data.id},
+                        function (result) {
+                            $scope.newOrgUnit = result;
+                            $scope.isTreeOUSelected = true;
+                            $scope.setEdit(false);
+                        },
+                        function (error) {
+                            Notification.error("Couldn't fetch Organizational Unit!");
+                        }
+                    );
+                }
+                ;
             });
             /*click on a tree node and you will get in args all the for the clicked node.
              parentOu will have the parent information
@@ -282,103 +284,105 @@ ouControllers
             $scope.$on('$destroy', unbind);
 
             /*$scope.isSelected = function (organizationalUnit) {
-                return organizationalUnit.id === $scope.selectedOu.id;
-            };
+             return organizationalUnit.id === $scope.selectedOu.id;
+             };
 
-            $scope.objToList = {};
-            $scope.objToList.functions = [];
-            $scope.clickOnAccount = function (account) {
-                $scope.objToList = {};
-                $scope.objToList.functions = [];
-                $scope.objToList = account;
-                $scope.clicked = true;
-            };
+             $scope.objToList = {};
+             $scope.objToList.functions = [];
+             $scope.clickOnAccount = function (account) {
+             $scope.objToList = {};
+             $scope.objToList.functions = [];
+             $scope.objToList = account;
+             $scope.clicked = true;
+             };
 
-            $scope.findByProperty = function (array, key, val) {
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i][key] === val) {
-                        return array[i];
-                    }
-                }
-                return false;
-            };
+             $scope.findByProperty = function (array, key, val) {
+             for (var i = 0; i < array.length; i++) {
+             if (array[i][key] === val) {
+             return array[i];
+             }
+             }
+             return false;
+             };
 
-            $scope.selectOrganizationalUnit = function (organizationalUnit) {
-                $scope.loading = true;
-                //TODO getByCode in repository & service (backend + frontend)
-                //organizationalUnitServiceMock.getByCode({ouCode: organizationalUnit.code}, function(res) {
-                //
-                //    $scope.selectedOu = res;
-                //
-                //    $scope.functions = angular.copy($scope.allFunctions);
-                //    $scope.accounts = angular.copy($scope.allAccounts);
-                //});
-            };
+             $scope.selectOrganizationalUnit = function (organizationalUnit) {
+             $scope.loading = true;
+             //TODO getByCode in repository & service (backend + frontend)
+             //organizationalUnitServiceMock.getByCode({ouCode: organizationalUnit.code}, function(res) {
+             //
+             //    $scope.selectedOu = res;
+             //
+             //    $scope.functions = angular.copy($scope.allFunctions);
+             //    $scope.accounts = angular.copy($scope.allAccounts);
+             //});
+             };
 
-            $scope.editOrganizationalUnit = function () {
-                $scope.isView = false;
-                $scope.isEdit = true;
-            };
+             $scope.editOrganizationalUnit = function () {
+             $scope.isView = false;
+             $scope.isEdit = true;
+             };
 
-            $scope.saveOrganizationalUnit = function () {
+             $scope.saveOrganizationalUnit = function () {
 
-                $scope.saveUpdateOuInformation($scope.objectToUpdate);
+             $scope.saveUpdateOuInformation($scope.objectToUpdate);
 
-                $scope.objectFromPackage = $scope.objectToUpdate;
-                *//*Organization.get({id: $scope.objectToUpdate.id}, function(res) {
-                 $scope.objectFromPackage = res;
-                 });*//*
+             $scope.objectFromPackage = $scope.objectToUpdate;
+             */
+            /*Organization.get({id: $scope.objectToUpdate.id}, function(res) {
+             $scope.objectFromPackage = res;
+             });*/
+            /*
 
-                $scope.objectFromPackage.code = $scope.objectToUpdate.code;
-                $scope.objectFromPackage.description = $scope.objectToUpdate.description;
-                $scope.objectFromPackage.validFrom = $scope.objectToUpdate.validFrom;
-                $scope.objectFromPackage.validTo = $scope.objectToUpdate.validTo;
+             $scope.objectFromPackage.code = $scope.objectToUpdate.code;
+             $scope.objectFromPackage.description = $scope.objectToUpdate.description;
+             $scope.objectFromPackage.validFrom = $scope.objectToUpdate.validFrom;
+             $scope.objectFromPackage.validTo = $scope.objectToUpdate.validTo;
 
-                OrganizationalUnit.update({id: $scope.objectToUpdate.id}, $scope.objectToUpdate, function (value) {
-                    Notification.success('Function updated');
-                    $scope.objectToUpdate.id = value.id;
-                });
+             OrganizationalUnit.update({id: $scope.objectToUpdate.id}, $scope.objectToUpdate, function (value) {
+             Notification.success('Function updated');
+             $scope.objectToUpdate.id = value.id;
+             });
 
-                $scope.isView = true;
-                $scope.isEdit = false;
-            };
+             $scope.isView = true;
+             $scope.isEdit = false;
+             };
 
-            $scope.backOrganizationalUnit = function () {
-                $scope.isView = true;
-                $scope.isEdit = false;
+             $scope.backOrganizationalUnit = function () {
+             $scope.isView = true;
+             $scope.isEdit = false;
 
-                if ($scope.selectedOu.id != undefined) {
-                    //$scope.selectOrganizationalUnit($scope.selectedOu);
-                } else {
-                    //$scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
-                }
-            };
+             if ($scope.selectedOu.id != undefined) {
+             //$scope.selectOrganizationalUnit($scope.selectedOu);
+             } else {
+             //$scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
+             }
+             };
 
-            $scope.startFnc = function () {
-                arguments[0].target.style.visibility = 'hidden';
-            };
+             $scope.startFnc = function () {
+             arguments[0].target.style.visibility = 'hidden';
+             };
 
-            $scope.stopFnc = function () {
-                arguments[0].target.style.visibility = '';
-            };
+             $scope.stopFnc = function () {
+             arguments[0].target.style.visibility = '';
+             };
 
 
 
-            $scope.selectOu = function (funct) {
-                OrganizationalUnit.getById({id: funct.id}, function (res) {
-                    $scope.organizationalUnitList = res;
-                });
-            };
+             $scope.selectOu = function (funct) {
+             OrganizationalUnit.getById({id: funct.id}, function (res) {
+             $scope.organizationalUnitList = res;
+             });
+             };
 
-            $scope.showPerspectiveSelect = function () {
-                $scope.showPerspectiveDropDown = true;
-            };
+             $scope.showPerspectiveSelect = function () {
+             $scope.showPerspectiveDropDown = true;
+             };
 
-            $scope.showTreePerspective = function () {
-                $scope.isPerspectiveSelected = true;
-            };
+             $scope.showTreePerspective = function () {
+             $scope.isPerspectiveSelected = true;
+             };
 
-            */
+             */
 
             //OrganizationalUnit.getAllOu().then(function(response) {
             //    $scope.organizationalUnitList = response.content;
@@ -396,30 +400,29 @@ ouControllers
             //});
 
 
-
             /*
-            $scope.saveOu = function () {
-                $scope.saveUpdateOuInformation($scope.objectToUpdate);
-                $scope.isView = true;
-                $scope.isEdit = false;
-            };
+             $scope.saveOu = function () {
+             $scope.saveUpdateOuInformation($scope.objectToUpdate);
+             $scope.isView = true;
+             $scope.isEdit = false;
+             };
 
-            $scope.saveUpdateOuInformation = function (objToUpdate) {
-                objToUpdate.code = $scope.code;
-                objToUpdate.description = $scope.description;
-                objToUpdate.validFrom = $scope.validFrom;
-                objToUpdate.validTo = $scope.validTo;
-            };
+             $scope.saveUpdateOuInformation = function (objToUpdate) {
+             objToUpdate.code = $scope.code;
+             objToUpdate.description = $scope.description;
+             objToUpdate.validFrom = $scope.validFrom;
+             objToUpdate.validTo = $scope.validTo;
+             };
 
-            $scope.editAccount = function () {
-                $scope.isView = false;
-                $scope.isEdit = true;
-            };
+             $scope.editAccount = function () {
+             $scope.isView = false;
+             $scope.isEdit = true;
+             };
 
-            $scope.backAccount = function () {
-                $scope.isView = true;
-                $scope.isEdit = false;
-                //$scope.isTreeOUSelected = false;
-                //$scope.className();
-            };*/
+             $scope.backAccount = function () {
+             $scope.isView = true;
+             $scope.isEdit = false;
+             //$scope.isTreeOUSelected = false;
+             //$scope.className();
+             };*/
         }]);
