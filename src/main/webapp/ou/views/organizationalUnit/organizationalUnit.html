@@ -18,14 +18,16 @@
                     <div class="form-group">
                         <label> Selecteaza organizatie : </label>
 
-                        <ui-select on-select="selectOrganization()" name="organizationSelect"
-                                   ng-model="selectedOrganization" theme="selectize">
+                        <ui-select ng-model="ouTree.organization"
+                                   name="organizationSelect"
+                                   on-select="selectOrganization()"
+                                   theme="selectize">
 
                             <ui-select-match placeholder="Organizatie">
                                 {{$select.selected.code}}
                             </ui-select-match>
 
-                            <ui-select-choices repeat="org in organizationalUnitList | filter: $select.search">
+                            <ui-select-choices repeat="org in organizations | filter: $select.search">
                                 <div ng-bind-html="org.code | highlight: $select.search"></div>
                                 <small>
                                     Name: {{org.description}}
@@ -38,25 +40,27 @@
                 <div class="row m0" ng-show="showPerspectiveDropDown">
                     <div class="form-group">
                         <label class="my-md-label"> Selecteaza perspectiva : </label>
-                        <ui-select on-select="selectPerspective()" name="perspectiveSelect"
-                                   ng-model="selectedPerspective" theme="selectize">
+                        <ui-select on-select="selectPerspective()"
+                                   name="perspectiveSelect"
+                                   ng-model="ouTree.perspective"
+                                   theme="selectize">
 
                             <ui-select-match placeholder="Perspectiva">
                                 {{$select.selected.code}}
                             </ui-select-match>
 
                             <ui-select-choices
-                                    repeat="perspective in selectedOrganization.perspectives | filter: $select.search">
+                                    repeat="perspective in ouTree.organization.perspectives | filter: $select.search">
                                 <div ng-bind-html="perspective.code | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
                     </div>
                 </div>
 
-                <div class="row m0">
+                <div class="row m0" ng-show="showOrgUnitsTree">
                     <div class="form-group">
                         <div class="admin-menu-holder">
-                            <label class="my-md-label"> Organizational Units Tree : </label>
+                            <label class="my-md-label"> Organizational Units : </label>
 
                             <!--<div ng-show="isPerspectiveSelected" ou-tree-view ou-tree-data="perspective.selected"
                                  is-ou-manage="false"></div>-->

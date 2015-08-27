@@ -1,8 +1,32 @@
 'use strict';
-ouControllers
 
+ouControllers
     .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction', 'OU',
         function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction, OU) {
+
+            $scope.ouTree = {};
+            $scope.ouTree.organization = {};
+            $scope.ouTree.perspective = {};
+            $scope.showPerspectiveDropDown = false;
+            $scope.showOrgUnitsTree = false;
+
+            $scope.selectOrganization = function() {
+                $scope.showPerspectiveDropDown = true;
+                $scope.ouTree.perspective = {};
+                $scope.showOrgUnitsTree = false;
+            };
+
+            $scope.selectPerspective = function() {
+                $scope.showOrgUnitsTree = true;
+
+                OrganizationalUnit.getTree(
+                    {id: $scope.selectedPerspective.organizationalUnit.id},
+                    function (data) {
+                        $scope.orgUnitsTree = data;
+                        console.log(data);
+                    });
+
+            }
 
             $scope.open_validFrom = function($event) {
                 $event.preventDefault();
@@ -60,14 +84,14 @@ ouControllers
             //        }
             //    });
             //});
-
-            var angularIndexOf = function (array, elem) {
-                for (var x = 0; x < array.length; x++) {
-                    if (angular.equals(array[x].id, elem.id))
-                        return x;
-                }
-                return -1;
-            };
+            //
+            //var angularIndexOf = function (array, elem) {
+            //    for (var x = 0; x < array.length; x++) {
+            //        if (angular.equals(array[x].id, elem.id))
+            //            return x;
+            //    }
+            //    return -1;
+            //};
 
             //$scope.isPerspectiveSelected = false;
             //$scope.isEditingAnOu = false;
@@ -94,11 +118,6 @@ ouControllers
             //$scope.selectedSearch = '';
             //$scope.loading = false;
             //$scope.clicked = false;
-
-            $scope.showPerspectiveDropDown = false;
-            $scope.showOrgUnitsTree = false;
-            $scope.selectedOrganization = {};
-            $scope.selectedPerspective = {};
 
             var initNewOrgUnit = function() {
                 return {
@@ -127,7 +146,7 @@ ouControllers
                  });*/
 
                 Organization.getAll(function (result) {
-                    $scope.organizationalUnitList = result;
+                    $scope.organizations = result;
                 });
 
                 /* OrganizationalUnit.getAll(function (res) {
@@ -155,29 +174,29 @@ ouControllers
                     });
             }
 
-            $scope.selectOrganization = function() {
-                $scope.showPerspectiveDropDown = true;
-
-                //TODO: This is not absolutely necessary because the perspectives are brought with organizations
-                Perspective.getByOrganizationId(
-                    {id: $scope.selectedOrganization.id},
-                    function(data) {
-                        $scope.perspectives = data;
-                    }
-                )
-            }
-
-            $scope.selectPerspective = function() {
-                $scope.showOrgUnitsTree = true;
-
-                OrganizationalUnit.getTree(
-                    {id: $scope.selectedPerspective.organizationalUnit.id},
-                    function (data) {
-                        $scope.orgUnitsTree = data;
-                        console.log(data);
-                    });
-
-            }
+            //$scope.selectOrganization = function() {
+            //    $scope.showPerspectiveDropDown = true;
+            //    $scope.perspectives = $scope.selectedOrganization.perspectives;
+            //    ////TODO: This is not absolutely necessary because the perspectives are brought with organizations
+            //    //Perspective.getByOrganizationId(
+            //    //    {id: $scope.selectedOrganization.id},
+            //    //    function(data) {
+            //    //        $scope.perspectives = data;
+            //    //    }
+            //    //)
+            //}
+            //
+            //$scope.selectPerspective = function() {
+            //    $scope.showOrgUnitsTree = true;
+            //
+            //    OrganizationalUnit.getTree(
+            //        {id: $scope.selectedPerspective.organizationalUnit.id},
+            //        function (data) {
+            //            $scope.orgUnitsTree = data;
+            //            console.log(data);
+            //        });
+            //
+            //}
 
             //TODO : WHATTTT?
             $scope.getPanelClass = function () {
