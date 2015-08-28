@@ -18,14 +18,16 @@ ouControllers
 
             $scope.selectPerspective = function () {
                 $scope.showOrgUnitsTree = true;
+                $scope.getTree();
+            };
 
+            $scope.getTree = function () {
                 OrganizationalUnit.getTree(
                     {id: $scope.ouTree.perspective.ouTreeRoot.id},
                     function (data) {
                         $scope.orgUnitsTree = data;
-                        console.log(data);
-                    });
-
+                    }
+                );
             };
 
             $scope.open_validFrom = function ($event) {
@@ -59,39 +61,13 @@ ouControllers
                 arguments[0].target.style.visibility = '';
             };
 
-            //$scope.$on('onSelectOU', function(event, ouId){
-            //    OUFunction.query({ouId:ouId}, function(data){
-            //        $scope.ouFunctions = data;
-            //        $scope.selectedFunctions = angular.copy($scope.ouFunctions);
-            //        $scope.availableFunctions = angular.copy($scope.allFunctions);
-            //        $scope.ouFunctions.forEach(function(item){
-            //            var idx = angularIndexOf($scope.availableFunctions, item);
-            //            if(idx > -1){
-            //                $scope.availableFunctions.splice(idx, 1);
-            //            }
-            //        });
-            //    });
-            //});
-            //$scope.$on('onSaveOU', function(event, ouId){
-            //    $scope.selectedFunctions.forEach(function(selectedFunction){
-            //        if (angularIndexOf($scope.ouFunctions, selectedFunction) < 0) {
-            //            OUFunction.save({ouId: ouId}, selectedFunction);
-            //        }
-            //    });
-            //    $scope.ouFunctions.forEach(function(ouFunction){
-            //        if (angularIndexOf($scope.selectedFunctions, ouFunction) < 0) {
-            //            OUFunction.delete({ouId: ouId, functionId: ouFunction.id});
-            //        }
-            //    });
-            //});
-            //
-            //var angularIndexOf = function (array, elem) {
-            //    for (var x = 0; x < array.length; x++) {
-            //        if (angular.equals(array[x].id, elem.id))
-            //            return x;
-            //    }
-            //    return -1;
-            //};
+            var angularIndexOf = function (array, elem) {
+                for (var x = 0; x < array.length; x++) {
+                    if (angular.equals(array[x].id, elem.id))
+                        return x;
+                }
+                return -1;
+            };
 
             //$scope.isPerspectiveSelected = false;
             //$scope.isEditingAnOu = false;
@@ -135,68 +111,17 @@ ouControllers
             };
 
             var init = function () {
-                /*//TODO getAllOrganizationalUnits in service & repository (backend + frontend)
-                 organizationalUnitServiceMock.getAllOrganizationalUnits({}, function (res) {
-                 $scope.organizationalUnits = res;
-                 AccountMock.getAll(function (res) {
-                 $scope.allAccounts = res;
-                 if (!_.isEmpty($scope.organizationalUnits)) {
-                 $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
-                 }
-                 });*/
-
                 Organization.getAll(function (result) {
                     $scope.organizations = result;
                 });
-
-                /* OrganizationalUnit.getAll(function (res) {
-                 $scope.currentOuList = res;
-                 });*/
 
                 Function.query(function (res) {
                     $scope.allFunctions = res;
                     $scope.availableFunctions = angular.copy($scope.allFunctions);
                 });
-
-                /*if (!_.isEmpty($scope.organizationalUnits)) {
-                 $scope.selectOrganizationalUnit($scope.organizationalUnits[0]);
-                 }*/
             };
 
             init();
-
-            $scope.getTree = function () {
-                OrganizationalUnit.getTree(
-                    {id: 231},
-                    function (data) {
-                        console.log(data);
-                        $scope.orgUnitsTree = data;
-                    });
-            }
-
-            //$scope.selectOrganization = function() {
-            //    $scope.showPerspectiveDropDown = true;
-            //    $scope.perspectives = $scope.selectedOrganization.perspectives;
-            //    ////TODO: This is not absolutely necessary because the perspectives are brought with organizations
-            //    //Perspective.getByOrganizationId(
-            //    //    {id: $scope.selectedOrganization.id},
-            //    //    function(data) {
-            //    //        $scope.perspectives = data;
-            //    //    }
-            //    //)
-            //}
-            //
-            //$scope.selectPerspective = function() {
-            //    $scope.showOrgUnitsTree = true;
-            //
-            //    OrganizationalUnit.getTree(
-            //        {id: $scope.selectedPerspective.organizationalUnit.id},
-            //        function (data) {
-            //            $scope.orgUnitsTree = data;
-            //            console.log(data);
-            //        });
-            //
-            //}
 
             //TODO : WHATTTT?
             $scope.getPanelClass = function () {
@@ -216,8 +141,23 @@ ouControllers
             };
 
             $scope.saveOrganizationalUnit = function () {
-                $scope.setEdit(false);
-                OrganizationalUnit.save($scope.newOrgUnit);
+                OrganizationalUnit.save($scope.newOrgUnit, function (data) {
+                    $scope.newOrgUnit.id = data.id;
+                    $scope.selectedFunctions.forEach(function(selectedFunction){
+                        if (angularIndexOf($scope.ouFunctions, selectedFunction) < 0) {
+                            OUFunction.save({ouId: data.id}, selectedFunction);
+                        }
+                    });
+                    $scope.ouFunctions.forEach(function(ouFunction){
+                        if (angularIndexOf($scope.selectedFunctions, ouFunction) < 0) {
+                            OUFunction.delete({ouId: data.id, functionId: ouFunction.id});
+                        }
+                    });
+                    $scope.getTree();
+                    $scope.setEdit(false);
+                    Notification.success('Organizational unit saved');
+
+                });
             };
 
             $scope.editOrganizationalUnit = function () {
@@ -235,7 +175,7 @@ ouControllers
                         {id: data.id},
                         function (result) {
                             $scope.newOrgUnit = result;
-                            if($scope.newOrgUnit.parent === undefined || $scope.newOrgUnit.parent === null) {
+                            if ($scope.newOrgUnit.parent === undefined || $scope.newOrgUnit.parent === null) {
                                 $scope.newOrgUnit.perspective = $scope.ouTree.perspective;
                             }
                             $scope.isTreeOUSelected = true;
@@ -245,8 +185,18 @@ ouControllers
                             Notification.error("Couldn't fetch Organizational Unit!");
                         }
                     );
+                    OUFunction.query({ouId:data.id}, function(data){
+                        $scope.ouFunctions = data;
+                        $scope.selectedFunctions = angular.copy($scope.ouFunctions);
+                        $scope.availableFunctions = angular.copy($scope.allFunctions);
+                        $scope.ouFunctions.forEach(function(item){
+                            var idx = angularIndexOf($scope.availableFunctions, item);
+                            if(idx > -1){
+                                $scope.availableFunctions.splice(idx, 1);
+                            }
+                        });
+                    });
                 }
-                ;
             });
             /*click on a tree node and you will get in args all the for the clicked node.
              parentOu will have the parent information
@@ -268,7 +218,7 @@ ouControllers
                 else if (data != undefined && data != null) {
                     $scope.isTreeOUSelected = true;
                     $scope.createNewOrgUnit();
-                    $scope.newOrgUnit.parent = {id:data.id};
+                    $scope.newOrgUnit.parent = {id: data.id, code: data.code};
                 }
 
                 /* if (args != undefined && args != null) {
