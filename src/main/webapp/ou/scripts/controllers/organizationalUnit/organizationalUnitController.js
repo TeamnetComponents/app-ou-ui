@@ -235,6 +235,9 @@ ouControllers
                         {id: data.id},
                         function (result) {
                             $scope.newOrgUnit = result;
+                            if($scope.newOrgUnit.parent === undefined || $scope.newOrgUnit.parent === null) {
+                                $scope.newOrgUnit.perspective = $scope.ouTree.perspective;
+                            }
                             $scope.isTreeOUSelected = true;
                             $scope.setEdit(false);
                         },
@@ -259,12 +262,13 @@ ouControllers
                     $scope.isTreeOUSelected = true;
                     $scope.createNewOrgUnit();
                     $scope.newOrgUnit.parent.id = null;
+                    $scope.newOrgUnit.perspective = $scope.ouTree.perspective
                 }
                 //Create OU
                 else if (data != undefined && data != null) {
                     $scope.isTreeOUSelected = true;
                     $scope.createNewOrgUnit();
-                    $scope.newOrgUnit.parent = data;
+                    $scope.newOrgUnit.parent = {id:data.id};
                 }
 
                 /* if (args != undefined && args != null) {
