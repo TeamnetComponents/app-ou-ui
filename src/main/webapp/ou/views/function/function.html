@@ -21,15 +21,19 @@
                     <div class="col-lg-9 col-md-9 col-sm-4">
                         <div class="row m0">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label>Function Code</label>
-                                    <input type="text" class="form-control" ng-model="selectedFunction.code" ng-readonly="isView">
+                                <div class="form-group"
+                                     ng-class="{'has-success': formCreateOrEdit.selectedFunction_code.$dirty && formCreateOrEdit.selectedFunction_code.$valid, 'has-error': formCreateOrEdit.selectedFunction_code.$dirty && formCreateOrEdit.selectedFunction_code.$invalid}">
+
+                                <label>Function Code</label>
+                                    <input type="text" name="selectedFunction_code" class="form-control" ng-model="selectedFunction.code" ng-readonly="isView" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label>Function Description</label>
-                                    <input type="text" class="form-control" ng-model="selectedFunction.description" ng-readonly="isView">
+                                <div class="form-group"
+                                     ng-class="{'has-success': formCreateOrEdit.selectedFunction_desc.$dirty && formCreateOrEdit.selectedFunction_desc.$valid, 'has-error': formCreateOrEdit.selectedFunction_desc.$dirty && formCreateOrEdit.selectedFunction_desc.$invalid}">
+
+                                <label>Function Description</label>
+                                    <input type="text" name="selectedFunction_desc" class="form-control" ng-model="selectedFunction.description" ng-readonly="isView" required>
                                 </div>
                             </div>
                         </div>
@@ -41,10 +45,10 @@
                                     <label>Valid from</label>
 
                                     <p class="input-group">
-                                        <input type="text" class="form-control" is-open="opened_validFrom"
-                                               placeholder="Valid from" datepicker-popup="{{dateOptions.format}}"
-                                               datepicker-options="dateOptions" ng-model="selectedFunction.validFrom"
-                                               required close-text="Close"/>
+                                        <input type="text" name="selectedFunction_validFrom" class="form-control"
+                                               is-open="opened_validFrom" placeholder="Valid from" close-text="Close"
+                                               datepicker-popup="{{dateOptions.format}}" datepicker-options="dateOptions"
+                                               ng-model="selectedFunction.validFrom" ng-required="true" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="open_validFrom($event)">
                                             <i class="glyphicon glyphicon-calendar"></i></button>
@@ -63,12 +67,10 @@
                                     <label><b>Valid from:</b></label>
 
                                     <div class="form-control" readonly>
-                                        {{selectedFunction.validFrom |
-                                        date:"dd/MM/yyyy"}}
+                                        {{selectedFunction.validFrom | date: dateOptions.format}}
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group" ng-hide="isView"
                                      ng-class="{'has-success': formCreateOrEdit.selectedFunction_validTo.$dirty && formCreateOrEdit.selectedFunction_validTo.$valid, 'has-error': formCreateOrEdit.selectedFunction_validTo.$dirty && formCreateOrEdit.selectedFunction_validTo.$invalid}">
@@ -76,10 +78,10 @@
                                     <label>Valid to</label>
 
                                     <p class="input-group">
-                                        <input type="text" class="form-control" is-open="opened_validTo"
-                                               placeholder="Valid to" datepicker-popup="{{dateOptions.format}}"
-                                               datepicker-options="dateOptions" ng-model="selectedFunction.validTo" required
-                                               close-text="Close"/>
+                                        <input type="text" name="selectedFunction_validTo" class="form-control"
+                                               is-open="opened_validTo" placeholder="Valid to" close-text="Close"
+                                               datepicker-popup="{{dateOptions.format}}" datepicker-options="dateOptions"
+                                               ng-model="selectedFunction.validTo" ng-required="true" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="open_validTo($event)"><i
                                                 class="glyphicon glyphicon-calendar"></i></button>
@@ -98,8 +100,7 @@
                                     <label><b>Valid to:</b></label>
 
                                     <div class="form-control" readonly>
-                                        {{selectedFunction.validTo |
-                                        date:"dd/MM/yyyy"}}
+                                        {{selectedFunction.validTo | date: dateOptions.format}}
                                     </div>
                                 </div>
                             </div>

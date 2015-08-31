@@ -57,7 +57,11 @@ ouControllers
                         moduleRight.module = mrs[moduleRight.id].module;
                         $scope.pushModuleRight($scope.selectedModules, moduleRight);
                     });
+
                     $scope.selectedFunction = res;
+                    $scope.selectedFunction.validFrom = moment($scope.selectedFunction.validFrom).toDate();
+                    $scope.selectedFunction.validTo = moment($scope.selectedFunction.validTo).toDate();
+
                     getAllModuleRights().then(function () {
                         $scope.selectedFunction.moduleRights.forEach(function (item) {
                             var module = $scope.findByProperty($scope.modules, 'code', item.module.code);
