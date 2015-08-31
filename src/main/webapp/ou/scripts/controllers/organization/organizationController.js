@@ -127,12 +127,12 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             var perspective = {
                 code : newPerspectiveCode,
                 description : newPerspectiveDescription,
-                organization : {}
+                organizationDto : {}
             };
-//            perspective.organization.perspectives = null;
+//            perspective.organizationDto.perspectives = null;
 
 
-            angular.copy($scope.organizationSelection.selected,perspective.organization);
+            perspective.organization = angular.copy($scope.organizationSelection.selected);
             perspective.organization.perspectives = null;
 
             Perspective.save(perspective, function (value) {
