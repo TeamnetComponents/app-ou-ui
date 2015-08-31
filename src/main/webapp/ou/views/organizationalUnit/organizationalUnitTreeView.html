@@ -12,12 +12,12 @@
         {{item.code}}
 
         <div data-nodrag class="pull-right show-on-hover">
-            <button class="tree-btn icon-only" ng-click="createOU(item); $event.stopPropagation();"
+            <button class="tree-btn icon-only" ng-click="createTreeNode(item); $event.stopPropagation();"
                     data-nodrag collapsed="false" aria-label="">
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
             <button class="tree-btn icon-only"
-                    ng-click="remove(this); deleteElement(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
+                    ng-click="remove(this); deleteTreeNode(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
                     data-nodrag collapsed="false" aria-label="" style="margin-right: 10px">
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
@@ -26,7 +26,7 @@
 
     <ol ui-tree-nodes="" ng-model="item.children" ng-class="{hidden: collapsed}">
         <li ng-repeat="item in item.children | filter: search" ui-tree-node
-            ng-click="editOU(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
+            ng-click="selectTreeNode(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
             ng-include="'children_renderer.html'"></li>
     </ol>
 </script>
@@ -50,7 +50,7 @@
 
     <div ui-tree id="tree-root">
         <ol ui-tree-nodes ng-model="ouTreeData">
-            <li ng-click="editOU(item, $parentNodesScope.$modelValue); $event.stopPropagation();"
+            <li ng-click="selectTreeNode(item, $parentNodesScope.$modelValue); $event.stopPropagation();"
                 ng-repeat="item in ouTreeData | filter: search" ui-tree-node
                 ng-include="'children_renderer.html'" data-nodrag></li>
         </ol>
