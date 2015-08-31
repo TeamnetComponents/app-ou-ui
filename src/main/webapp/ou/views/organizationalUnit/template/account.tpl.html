@@ -10,15 +10,15 @@
         <div class="thumbnail"
              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
              data-drop="true"
-             ng-model='selectedOu.accounts'
+             ng-model='selectedAccounts'
              data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccount.functions])'}"
              jqyoui-droppable="{multiple:true}">
              <div  class="list-group">
-                <div ng-repeat="selectedAccount in selectedOu.accounts">
+                <div ng-repeat="selectedAccount in selectedAccounts">
                     <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
                          data-drag="!clickBool"
-                         ng-model='selectedOu.accounts'
-                         ng-show='selectedAccount.login !== undefined'
+                         ng-model='selectedAccounts'
+                         ng-show='selectedAccount.username !== undefined'
                          ng-click="clickOnAccount(selectedAccount)"
                          data-jqyoui-options="{revert: 'invalid',
                                                helper: 'clone',
@@ -29,7 +29,7 @@
                                             deepCopy : true,
                                             onStart: 'startFnc',
                                             onStop: 'stopFnc'}">
-                        {{selectedAccount.login}}
+                        {{selectedAccount.username}}
                     </div>
                 </div>
              </div>
@@ -41,7 +41,7 @@
              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
              data-drop="true"
              ng-model="objToList"
-             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedOu.accounts])'}"
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccounts])'}"
              jqyoui-droppable="{multiple:true}">
              <div class="form-group">
             <ui-select multiple ng-model="objToListCopy.functions">
@@ -61,15 +61,15 @@
         <div class="thumbnail"
              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
              data-drop="true"
-             ng-model='accounts'
-             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=accounts])'}"
+             ng-model='availableAccounts'
+             data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=availableAccounts])'}"
              jqyoui-droppable="{multiple:true}">
              <div  class="list-group">
-                <div ng-repeat="account in accounts">
+                <div ng-repeat="account in availableAccounts">
                     <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
                          data-drag="!clickBool"
-                         ng-model='accounts'
-                         ng-show='account.login !== undefined'
+                         ng-model='availableAccounts'
+                         ng-show='account.username !== undefined'
                          data-jqyoui-options="{revert: 'invalid',
                                                helper: 'clone',
                                                appendTo: 'body',
@@ -79,7 +79,7 @@
                                             deepCopy : true,
                                             onStart: 'startFnc',
                                             onStop: 'stopFnc'}">
-                        {{account.login}}
+                        {{account.username}}
                     </div>
                 </div>
              </div>

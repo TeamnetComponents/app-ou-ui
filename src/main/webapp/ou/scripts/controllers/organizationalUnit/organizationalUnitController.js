@@ -1,8 +1,8 @@
 'use strict';
 
 ouControllers
-    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction', 'OU',
-        function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction, OU) {
+    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction', 'OUAccount', 'OU',
+        function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction, OUAccount, OU) {
 
             $scope.ouTree = {};
             $scope.ouTree.organization = {};
@@ -31,9 +31,13 @@ ouControllers
             };
 
             $scope.functionsTpl = OU.template.functionsTab;
+            $scope.accountsTpl = OU.template.ouAccountsTab;
             $scope.availableFunctions = [];
             $scope.selectedFunctions = [];
             $scope.ouFunctions = [];
+            $scope.availableAccounts = [];
+            $scope.selectedAccounts = [];
+            $scope.ouAccounts = [];
 
             var init = function () {
                 Organization.getAll(function (result) {
@@ -55,6 +59,7 @@ ouControllers
                     var ouId = data.id;
                     getOuDetails(ouId);
                     getSelectedAndAvailableFunctions(ouId);
+                    getSelectedAndEligibleAccounts(ouId);
                 }
             });
 
@@ -132,6 +137,23 @@ ouControllers
                     });
                 });
             };
+            var getSelectedAndEligibleAccounts = function (ouId) {
+                OUAccount.query({ouId: ouId}, function (accounts) {
+                    $scope.ouAccounts = accounts;
+                    $scope.selectedAccounts = angular.copy($scope.ouAccounts);
+                    OUAccount.queryEligible({ouId: ouId}, function (eligibleAccounts) {
+                        $scope.eligibleAccounts = eligibleAccounts;
+                        $scope.availableAccounts = angular.copy($scope.eligibleAccounts);
+                        $scope.ouFunctions.forEach(function (item) {
+                            var idx = angularIndexOf($scope.availableAccounts, item);
+                            if (idx > -1) {
+                                $scope.availableAccounts.splice(idx, 1);
+                            }
+                        });
+                    });
+                });
+            };
+
 
             $scope.open_validFrom = function ($event) {
                 $event.preventDefault();
