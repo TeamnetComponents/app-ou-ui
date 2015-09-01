@@ -130,11 +130,6 @@ ouControllers
             };
 
             var saveOrganizationalUnitAccounts = function (ouId) {
-                $scope.ouAccounts.forEach(function (ouAccount) {
-                    if (angularIndexOf($scope.selectedAccounts, ouAccount) < 0) {
-                        OUAccount.delete({ouId: ouId, accountId: ouAccount.id});
-                    }
-                });
                 OUAccount.save({ouId: ouId}, $scope.selectedAccounts);
             };
 
@@ -185,7 +180,7 @@ ouControllers
                     OUAccount.queryEligible({ouId: ouId}, function (eligibleAccounts) {
                         $scope.eligibleAccounts = eligibleAccounts;
                         $scope.availableAccounts = angular.copy($scope.eligibleAccounts);
-                        $scope.ouFunctions.forEach(function (item) {
+                        $scope.ouAccounts.forEach(function (item) {
                             var idx = angularIndexOf($scope.availableAccounts, item);
                             if (idx > -1) {
                                 $scope.availableAccounts.splice(idx, 1);

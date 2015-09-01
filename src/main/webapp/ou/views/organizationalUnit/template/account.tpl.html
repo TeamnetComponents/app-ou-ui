@@ -46,9 +46,9 @@
              <div class="form-group">
             <ui-select multiple ng-model="selectedAccount.functions">
                 <ui-select-match>
-                    {{$item.description}}
+                    {{$item.code}}
                 </ui-select-match>
-                <ui-select-choices repeat="selectedFunction in selectedAccount.availableFunctions | filter:$select.search">
+                <ui-select-choices repeat="selectedFunction.id as selectedFunction in selectedAccount.availableFunctions | filter:$select.search">
                     <div ng-bind-html="selectedFunction.code | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
