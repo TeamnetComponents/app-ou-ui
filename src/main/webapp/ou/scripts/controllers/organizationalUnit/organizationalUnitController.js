@@ -50,24 +50,28 @@ ouControllers
 
             $scope.functionsTpl = OU.template.functionsTab;
             $scope.accountsTpl = OU.template.ouAccountsTab;
-            $scope.availableFunctions = [];
-            $scope.selectedFunctions = [];
-            $scope.ouFunctions = [];
-            $scope.availableAccounts = [];
-            $scope.selectedAccounts = [];
-            $scope.ouAccounts = [];
-            $scope.selectedAccount = {functions: [], availableFunctions: []};
-            $scope.displayAccountFunctions = false;
 
-            var init = function () {
-                Organization.getAll(function (result) {
-                    $scope.organizations = result;
-                });
+            var initAvailableFunctionsAndAccounts = function() {
+                $scope.availableFunctions = [];
+                $scope.selectedFunctions = [];
+                $scope.ouFunctions = [];
+                $scope.availableAccounts = [];
+                $scope.selectedAccounts = [];
+                $scope.ouAccounts = [];
+                $scope.selectedAccount = {functions: [], availableFunctions: []};
+                $scope.displayAccountFunctions = false;
 
                 Function.query(function (res) {
                     $scope.allFunctions = res;
                     $scope.availableFunctions = angular.copy($scope.allFunctions);
                 });
+            };
+
+            var init = function () {
+                Organization.getAll(function (result) {
+                    $scope.organizations = result;
+                });
+                initAvailableFunctionsAndAccounts();
             };
 
             init();
@@ -80,6 +84,7 @@ ouControllers
 
             $scope.$on('onCreateTreeNode', function (e, data) {
                 $scope.isTreeOUSelected = true;
+                initAvailableFunctionsAndAccounts();
                 $scope.createNewOrgUnit();
                 //Create root OU
                 if (data == null) {
@@ -108,6 +113,7 @@ ouControllers
                     $scope.organizationalUnit.id = data.id;
                     saveOrganizationalUnitFunctions(data.id);
                     saveOrganizationalUnitAccounts(data.id);
+                    //todo: show wait animation and retrieve tree when function and account saving is done
                     $scope.getTree();
                     $scope.setEdit(false);
                     selectOrganizationalUnit(data.id);
@@ -265,6 +271,7 @@ ouControllers
 
             $scope.clickOnAccount = function (account) {
                 $scope.selectedAccount = account;
+                //fixme: fix multiselect - selectedAccount.functions and selectedAccount.availableFunctions both contain objects that are not equal for equal ids, therefore ui-select allows selecting the same element twice (the one in functions is found to be different than the one in availableFunctions).
                 $scope.displayAccountFunctions = true;
             };
 
