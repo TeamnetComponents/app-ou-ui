@@ -9,6 +9,22 @@ ouControllers
             $scope.ouTree.perspective = {};
             $scope.showPerspectiveDropDown = false;
             $scope.showOrgUnitsTree = false;
+            $scope.organizationalUnits = null;
+
+            $scope.getParentOrgUnitsById = function(nodeId) {
+
+                OrganizationalUnit.getParentOrgUnitsById(
+                    {rootId : $scope.ouTree.perspective.ouTreeRoot.id,
+                     id : nodeId},
+                    function(data) {
+                        $scope.organizationalUnits = data;
+                        console.log($scope.organizationalUnits);
+                    },
+                    function(error) {
+                        $scope.organizationalUnits = null
+                        Notification.error("Cannot retrieve Organizational Units!");
+                    });
+            };
 
             $scope.selectOrganization = function () {
                 $scope.showPerspectiveDropDown = true;
@@ -60,7 +76,9 @@ ouControllers
                     getOuDetails(ouId);
                     getSelectedAndAvailableFunctions(ouId);
                     getSelectedAndEligibleAccounts(ouId);
+                    $scope.getParentOrgUnitsById(ouId);
                 }
+
             });
 
             $scope.$on('onCreateTreeNode', function (e, data) {
@@ -68,7 +86,7 @@ ouControllers
                 $scope.createNewOrgUnit();
                 //Create root OU
                 if (data == null) {
-                    $scope.organizationalUnit.perspective = $scope.ouTree.perspective
+                    $scope.organizationalUnit.perspective = $scope.ouTree.perspective;
                 }
                 //Create OU
                 else if (data != undefined && data != null) {
@@ -101,7 +119,6 @@ ouControllers
                             OUFunction.delete({ouId: data.id, functionId: ouFunction.id});
                         }
                     });
-                    $scope.getTree();
                     $scope.setEdit(false);
                     Notification.success('Organizational unit saved');
 

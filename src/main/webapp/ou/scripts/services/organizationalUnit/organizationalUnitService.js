@@ -6,6 +6,15 @@ ouServices
             'update': {
                 method: 'PUT'
             },
+            'getParentOrgUnitsById': {
+                url : 'app/rest/organizationalUnit/getParentOrgUnitsById/:rootId/:id',
+                method: 'GET',
+                isArray: true,
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            },
             'getTree' : {
                 url: 'app/rest/organizationalUnit/getTree/:id',
                 method: 'GET',

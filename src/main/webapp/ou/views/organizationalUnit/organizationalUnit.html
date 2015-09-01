@@ -71,7 +71,21 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Parent :</label>
-                            <input type="text" name="ouCode" class="form-control" ng-model="organizationalUnit.parent.code" readonly/>
+
+                            <ui-select name="OUParentSelect"
+                                       ng-model="organizationalUnit.parent"
+                                       theme="selectize"
+                                       ng-disabled="isView">
+
+                                <ui-select-match placeholder="Parent Org Unit">
+                                    {{$select.selected.code}}
+                                </ui-select-match>
+
+                                <ui-select-choices
+                                        repeat="OUParent in organizationalUnits | filter: $select.search">
+                                    <div ng-bind-html="OUParent.code | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
                 </div>
@@ -80,7 +94,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label> Organizational Unit Code :</label>
-                            <input type="text" name="ouCode" class="form-control" ng-model="organizationalUnit.code" ng-readonly="isView " required>
+                            <input type="text" name="ouCode" class="form-control" ng-model="organizationalUnit.code" ng-readonly="isView" ng-required="true">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -102,7 +116,7 @@
                                 <input type="text" class="form-control" is-open="opened_validFrom"
                                        placeholder="Valid from" datepicker-popup="{{dateOptions.format}}"
                                        datepicker-options="dateOptions" ng-model="organizationalUnit.validFrom"
-                                       required close-text="Close"/>
+                                       close-text="Close"/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="open_validFrom($event)">
                                             <i class="glyphicon glyphicon-calendar"></i></button>
@@ -136,7 +150,7 @@
                             <p class="input-group">
                                 <input type="text" class="form-control" is-open="opened_validTo"
                                        placeholder="Valid to" datepicker-popup="{{dateOptions.format}}"
-                                       datepicker-options="dateOptions" ng-model="organizationalUnit.validTo" required
+                                       datepicker-options="dateOptions" ng-model="organizationalUnit.validTo"
                                        close-text="Close"/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="open_validTo($event)"><i
