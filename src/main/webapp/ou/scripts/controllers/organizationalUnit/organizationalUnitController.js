@@ -54,6 +54,8 @@ ouControllers
             $scope.availableAccounts = [];
             $scope.selectedAccounts = [];
             $scope.ouAccounts = [];
+            $scope.selectedAccount = {};
+            $scope.displayAccountFunctions = false;
 
             var init = function () {
                 Organization.getAll(function (result) {
@@ -69,16 +71,9 @@ ouControllers
             init();
 
             $scope.$on('onSelectTreeNode', function (e, data) {
-                $scope.isTreeOUSelected = true;
-                $scope.setEdit(false);
-                if (data != undefined && data != null) {
-                    var ouId = data.id;
-                    getOuDetails(ouId);
-                    getSelectedAndAvailableFunctions(ouId);
-                    getSelectedAndEligibleAccounts(ouId);
-                    $scope.getParentOrgUnitsById(ouId);
+                if (data !== undefined && data !== null && data.id !== undefined && data.id !== null) {
+                    selectOrganizationalUnit(data.id);
                 }
-
             });
 
             $scope.$on('onCreateTreeNode', function (e, data) {
@@ -119,10 +114,23 @@ ouControllers
                             OUFunction.delete({ouId: data.id, functionId: ouFunction.id});
                         }
                     });
+                    $scope.getTree();
                     $scope.setEdit(false);
+                    selectOrganizationalUnit(data.id);
                     Notification.success('Organizational unit saved');
 
                 });
+            };
+
+            var selectOrganizationalUnit = function (ouId) {
+                $scope.isTreeOUSelected = true;
+                $scope.selectedAccount = {};
+                $scope.displayAccountFunctions = false;
+                $scope.setEdit(false);
+                getOuDetails(ouId);
+                $scope.getParentOrgUnitsById(ouId);
+                getSelectedAndAvailableFunctions(ouId);
+                getSelectedAndEligibleAccounts(ouId);
             };
 
             var getOuDetails = function (ouId) {
@@ -244,13 +252,9 @@ ouControllers
                 return organizationalUnit.id === $scope.organizationalUnit.id;
             };
 
-            $scope.objToList = {};
-            $scope.objToList.functions = [];
             $scope.clickOnAccount = function (account) {
-                $scope.objToList = {};
-                $scope.objToList.functions = [];
-                $scope.objToList = account;
-                $scope.clicked = true;
+                $scope.selectedAccount = account;
+                $scope.displayAccountFunctions = true;
             };
 
             $scope.findByProperty = function (array, key, val) {

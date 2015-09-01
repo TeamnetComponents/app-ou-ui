@@ -15,7 +15,7 @@
              jqyoui-droppable="{multiple:true}">
              <div  class="list-group">
                 <div ng-repeat="selectedAccount in selectedAccounts">
-                    <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
+                    <div class="list-group-item btn-draggable accessPermission simple"
                          data-drag="!clickBool"
                          ng-model='selectedAccounts'
                          ng-show='selectedAccount.username !== undefined'
@@ -36,19 +36,19 @@
         </div>
     </div>
 
-    <div ng-show="isEdit && clicked" class="col-lg-4 col-md-4 col-sm-12 col-xs-12 animate-show">
+    <div ng-show="isEdit && displayAccountFunctions" class="col-lg-4 col-md-4 col-sm-12 col-xs-12 animate-show">
         <div class="thumbnail"
              style=" min-height: 220px; max-height: 220px; overflow-y: scroll"
              data-drop="true"
-             ng-model="objToList"
+             ng-model="selectedAccount"
              data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccounts])'}"
              jqyoui-droppable="{multiple:true}">
              <div class="form-group">
-            <ui-select multiple ng-model="objToListCopy.functions">
+            <ui-select multiple ng-model="selectedAccount.functions">
                 <ui-select-match>
                     {{$item.description}}
                 </ui-select-match>
-                <ui-select-choices repeat="selectedFunction in objToList.functions | filter:$select.search">
+                <ui-select-choices repeat="selectedFunction in selectedAccount.availableFunctions | filter:$select.search">
                     <div ng-bind-html="selectedFunction.code | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -66,7 +66,7 @@
              jqyoui-droppable="{multiple:true}">
              <div  class="list-group">
                 <div ng-repeat="account in availableAccounts">
-                    <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
+                    <div class="list-group-item btn-draggable accessPermission simple"
                          data-drag="!clickBool"
                          ng-model='availableAccounts'
                          ng-show='account.username !== undefined'
