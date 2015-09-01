@@ -11,16 +11,18 @@ ouControllers
             $scope.showOrgUnitsTree = false;
             $scope.organizationalUnits = null;
 
-            $scope.getParentOrgUnitsById = function(nodeId) {
+            $scope.getParentOrgUnitsById = function (nodeId) {
 
                 OrganizationalUnit.getParentOrgUnitsById(
-                    {rootId : $scope.ouTree.perspective.ouTreeRoot.id,
-                     id : nodeId},
-                    function(data) {
+                    {
+                        rootId: $scope.ouTree.perspective.ouTreeRoot.id,
+                        id: nodeId
+                    },
+                    function (data) {
                         $scope.organizationalUnits = data;
                         console.log($scope.organizationalUnits);
                     },
-                    function(error) {
+                    function (error) {
                         $scope.organizationalUnits = null
                         Notification.error("Cannot retrieve Organizational Units!");
                     });
@@ -54,7 +56,7 @@ ouControllers
             $scope.availableAccounts = [];
             $scope.selectedAccounts = [];
             $scope.ouAccounts = [];
-            $scope.selectedAccount = {};
+            $scope.selectedAccount = {functions: [], availableFunctions: []};
             $scope.displayAccountFunctions = false;
 
             var init = function () {
@@ -104,16 +106,8 @@ ouControllers
             $scope.saveOrganizationalUnit = function () {
                 OrganizationalUnit.save($scope.organizationalUnit, function (data) {
                     $scope.organizationalUnit.id = data.id;
-                    $scope.selectedFunctions.forEach(function (selectedFunction) {
-                        if (angularIndexOf($scope.ouFunctions, selectedFunction) < 0) {
-                            OUFunction.save({ouId: data.id}, selectedFunction);
-                        }
-                    });
-                    $scope.ouFunctions.forEach(function (ouFunction) {
-                        if (angularIndexOf($scope.selectedFunctions, ouFunction) < 0) {
-                            OUFunction.delete({ouId: data.id, functionId: ouFunction.id});
-                        }
-                    });
+                    saveOrganizationalUnitFunctions(data.id);
+                    saveOrganizationalUnitAccounts(data.id);
                     $scope.getTree();
                     $scope.setEdit(false);
                     selectOrganizationalUnit(data.id);
@@ -122,9 +116,31 @@ ouControllers
                 });
             };
 
+            var saveOrganizationalUnitFunctions = function (ouId) {
+                $scope.selectedFunctions.forEach(function (selectedFunction) {
+                    if (angularIndexOf($scope.ouFunctions, selectedFunction) < 0) {
+                        OUFunction.save({ouId: ouId}, selectedFunction);
+                    }
+                });
+                $scope.ouFunctions.forEach(function (ouFunction) {
+                    if (angularIndexOf($scope.selectedFunctions, ouFunction) < 0) {
+                        OUFunction.delete({ouId: ouId, functionId: ouFunction.id});
+                    }
+                });
+            };
+
+            var saveOrganizationalUnitAccounts = function (ouId) {
+                $scope.ouAccounts.forEach(function (ouAccount) {
+                    if (angularIndexOf($scope.selectedAccounts, ouAccount) < 0) {
+                        OUAccount.delete({ouId: ouId, accountId: ouAccount.id});
+                    }
+                });
+                OUAccount.save({ouId: ouId}, $scope.selectedAccounts);
+            };
+
             var selectOrganizationalUnit = function (ouId) {
                 $scope.isTreeOUSelected = true;
-                $scope.selectedAccount = {};
+                $scope.selectedAccount = {functions: [], availableFunctions: []};
                 $scope.displayAccountFunctions = false;
                 $scope.setEdit(false);
                 getOuDetails(ouId);
