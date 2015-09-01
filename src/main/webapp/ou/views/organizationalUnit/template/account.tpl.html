@@ -48,7 +48,7 @@
                 <ui-select-match>
                     {{$item.code}}
                 </ui-select-match>
-                <ui-select-choices repeat="selectedFunction.id as selectedFunction in selectedAccount.availableFunctions | filter:$select.search">
+                <ui-select-choices repeat="{id:selectedFunction.id, code:selectedFunction.code} as selectedFunction in selectedAccount.availableFunctions | filter:$select.search">
                     <div ng-bind-html="selectedFunction.code | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
