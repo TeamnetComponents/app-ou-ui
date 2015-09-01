@@ -6,10 +6,6 @@ ouServices.factory('OUAccount',['$resource', function ($resource) {
             url: 'app/rest/organizationalUnit/eligibleAccounts/:ouId',
             method: 'GET',
             isArray: true
-        },
-        'delete' : {
-            url: 'app/rest/organizationalUnit/accounts/:ouId/:accountId',
-            method: 'DELETE'
         }
     });
 }]);
