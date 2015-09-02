@@ -29,6 +29,9 @@
         "ou/scripts/services/function/OUFunction.js",
         "ou/scripts/services/organizationalUnit/OUAccount.js",
         "ou/scripts/services/organization/organizationService.js",
-        "ou/scripts/services/perspective/perspectiveService.js"
+        "ou/scripts/services/perspective/perspectiveService.js",
+        "ou/scripts/directives/ouDropdownSelector/ouDropdownSelectorController.js",
+        "ou/scripts/directives/ouDropdownSelector/ouDropdownSelectorDirective.js",
+        "ou/scripts/services/organizationalUnit/organizationalUnitHierarchyFilterService.js"
     ]
 }

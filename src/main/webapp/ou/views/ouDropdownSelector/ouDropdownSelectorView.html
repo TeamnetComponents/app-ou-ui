@@ -1,0 +1,22 @@
+<div>
+    <div class="form-group">
+        <label> OU asociat : </label>
+
+        <ui-select ng-model="ouAccountSelected"
+                   name="organizationSelect"
+                   on-select="selectOu($item)"
+                   theme="selectize">
+
+            <ui-select-match placeholder="Organizational Unit">
+                {{$select.selected.id}}
+            </ui-select-match>
+
+            <ui-select-choices repeat="ou in ouAccount | filter: $select.search">
+                <div ng-bind-html="ou.id | highlight: $select.search"></div>
+                <small>
+                    Code: {{ou.code}}
+                </small>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
