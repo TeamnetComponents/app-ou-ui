@@ -134,7 +134,7 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
         $scope.addPerspective = function () {
             var perspectivesLength = 0;
             if($scope.organizationSelection.selected.perspectives != null){
-                perspectivesLength = $scope.organizationSelection.selected.perspectives;
+                perspectivesLength = $scope.organizationSelection.selected.perspectives.length;
             }else
             {
                 $scope.organizationSelection.selected.perspectives = [];
