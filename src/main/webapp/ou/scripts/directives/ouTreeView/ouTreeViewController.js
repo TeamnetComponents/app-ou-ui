@@ -16,6 +16,9 @@ ouControllers.
         };
 
         $scope.selectTreeNode = function(item) {
+/*
+            item.color = 'blue';
+*/
             $scope.$emit('onSelectTreeNode', item);
         };
 

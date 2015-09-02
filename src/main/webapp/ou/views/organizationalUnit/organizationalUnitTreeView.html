@@ -27,7 +27,7 @@
     <ol ui-tree-nodes="" ng-model="item.children" ng-class="{hidden: collapsed}">
         <li ng-repeat="item in item.children | filter: search" ui-tree-node
             ng-click="selectTreeNode(item, $parentNodeScope.$modelValue); $event.stopPropagation();"
-            ng-include="'children_renderer.html'"></li>
+            ng-include="'children_renderer.html'" collapsed="false"></li>
     </ol>
 </script>
 
@@ -52,7 +52,7 @@
         <ol ui-tree-nodes ng-model="ouTreeData">
             <li ng-click="selectTreeNode(item, $parentNodesScope.$modelValue); $event.stopPropagation();"
                 ng-repeat="item in ouTreeData | filter: search" ui-tree-node
-                ng-include="'children_renderer.html'" data-nodrag></li>
+                ng-include="'children_renderer.html'" data-nodrag  collapsed="false"></li>
         </ol>
     </div>
 </div>

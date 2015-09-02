@@ -109,6 +109,8 @@ ouControllers
             });
 
             $scope.saveOrganizationalUnit = function () {
+                $scope.editedOrgUnitCopy = angular.copy($scope.organizationalUnit);
+
                 OrganizationalUnit.save($scope.organizationalUnit, function (data) {
                     $scope.organizationalUnit.id = data.id;
                     saveOrganizationalUnitFunctions(data.id);
@@ -249,6 +251,14 @@ ouControllers
             $scope.setEdit = function (editMode) {
                 $scope.isEdit = editMode;
                 $scope.isView = !editMode;
+
+                //Daca se da click pe back, copiem vechile valori.
+                if (editMode == false) {
+                    $scope.organizationalUnit = angular.copy($scope.editedOrgUnitCopy);
+                }
+                else {
+                    $scope.editedOrgUnitCopy = angular.copy($scope.organizationalUnit);
+                }
             };
             $scope.createNewOrgUnit = function () {
                 $scope.organizationalUnit = initNewOrgUnit();
