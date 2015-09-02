@@ -13,13 +13,17 @@ ouServices.
                 method: 'POST'
             },
             'update': {
-                url: 'app/rest/perspective/save',
+                url: 'app/rest/perspective',
                 method: 'PUT'
             },
             'getByOrganizationId': {
                 url: 'app/rest/perspective/getByOrganizationId/:id',
                 method: 'GET',
                 isArray: true
+            },
+            'delete': {
+                url: 'app/rest/perspective/delete',
+                method: 'POST'
             }
         });
     }]);

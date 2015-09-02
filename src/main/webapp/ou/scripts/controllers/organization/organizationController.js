@@ -6,10 +6,17 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
 
         $scope.organizationSelection = {};
         $scope.disableDetails = true;
-        $scope.newPerspectiveName = null;
+        //$scope.newPerspectiveName = null;
+        //$scope.newPerspectiveDescription = null;
         $scope.newTab = -1;
         $scope.canEdit = false;
         $scope.invalidForm = false;
+        $scope.selectedPerspective = {
+            id : null,
+            code : null,
+            description : null
+        };
+        $scope.canEditPerspective = false;
 
         var init = function () {
             Organization.getAll(function (res) {
@@ -18,6 +25,18 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
         };
 
         init();
+
+        $scope.setPerspective = function(index){
+            $scope.selectedPerspective = angular.copy($scope.organizationSelection.selected.perspectives[index]);
+    };
+
+        $scope.clearSelectedPerspective = function() {
+            $scope.selectedPerspective = {
+                id : null,
+                code : null,
+                description : null
+            };
+        };
 
         $scope.clearSelected = function() {
             $scope.organizationSelection.selected = {
@@ -42,6 +61,9 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $scope.disableDetails = !$scope.canEdit;
             $scope.getPerspectivesByOrganization();
 
+            $scope.canEditPerspective = false;
+
+
         };
 
         $scope.createOrganization = function () {
@@ -57,11 +79,14 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $scope.savedObject = jQuery.extend(true, {}, $scope.organizationSelection.selected);
             $scope.canEdit = true;
             $scope.disableDetails = !$scope.canEdit;
-        };
+                 };
 
         $scope.getPerspectivesByOrganization = function(){
             Perspective.getByOrganizationId({id: $scope.organizationSelection.selected.id}, function(res) {
                 $scope.organizationSelection.selected.perspectives = angular.copy(res);
+                var perspectiveIndex = $scope.organizationSelection.selected.perspectives.length;
+                $scope.selectedPerspective = angular.copy($scope.organizationSelection.selected.perspectives[perspectiveIndex-1]);
+
             });
         };
 
@@ -107,42 +132,65 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
         };
 
         $scope.addPerspective = function () {
-            $scope.organizationSelection.selected.
-                perspectives[$scope.organizationSelection.selected.perspectives.length] = {code: "new", description: ""};
-            $scope.newTab = $scope.organizationSelection.selected.perspectives.length;
+            var perspectivesLength = 0;
+            if($scope.organizationSelection.selected.perspectives != null){
+                perspectivesLength = $scope.organizationSelection.selected.perspectives;
+            }else
+            {
+                $scope.organizationSelection.selected.perspectives = [];
+            }
+           $scope.organizationSelection.selected.
+                perspectives[perspectivesLength] = {code: "new", description: ""};
+           $scope.newTab = perspectivesLength;
+
+           $scope.clearSelectedPerspective();
 
         };
 
         $scope.editPerspective = function () {
-            $location.path(OU.url.manageOrganizationUnits); // TODO url params
+            $scope.canEditPerspective = true;
         };
 
-        $scope.saveNewPerspective = function (newPerspectiveCode, newPerspectiveDescription, index) {
+        $scope.deletePerspective = function () {
+           Perspective.delete($scope.selectedPerspective, function(){
+               Notification.success("Perspective deleted");
+               $scope.getPerspectivesByOrganization();
+           }, function(httpResponse){
+               Notification.error('Forbidden operation!');
+           });
+        };
 
-            $scope.organizationSelection.selected.perspectives[index] = {
-                code : newPerspectiveCode,
-                description : newPerspectiveDescription
-            };
+        $scope.savePerspective = function (index) {
+
+            $scope.organizationSelection.selected.perspectives[index] = angular.copy($scope.selectedPerspective);
 
             var perspective = {
-                code : newPerspectiveCode,
-                description : newPerspectiveDescription,
-                organizationDto : {}
+                id: $scope.selectedPerspective.id,
+                code: $scope.selectedPerspective.code,
+                description: $scope.selectedPerspective.description,
+                organization: {},
+                ouTreeRoot: {}
             };
-//            perspective.organizationDto.perspectives = null;
-
 
             perspective.organization = angular.copy($scope.organizationSelection.selected);
+            perspective.ouTreeRoot = angular.copy($scope.selectedPerspective.ouTreeRoot);
             perspective.organization.perspectives = null;
+            if ($scope.selectedPerspective.id != null) {
+                Perspective.update(perspective, function (value) {
+                    Notification.success('Perspective updated');
+                    $scope.getPerspectivesByOrganization();
+                }, function (error) {
+                    Notification.error(error);
+                });
+            } else{
+                Perspective.save(perspective, function (value) {
+                    Notification.success('Perspective created');
+                    $scope.getPerspectivesByOrganization();
+                }, function (error) {
+                    Notification.error(error);
+                });
+            }
 
-            Perspective.save(perspective, function (value) {
-                Notification.success('Perspective created');
-
-                $scope.getPerspectivesByOrganization();
-
-            }, function (error) {
-                Notification.error(error);
-            });
+            $scope.canEditPerspective = false;
         };
-
     }]);

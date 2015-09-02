@@ -154,7 +154,7 @@
             </div>
         </div>
     </div>
-
+     Selected perspective::   {{selectedPerspective}}
     <div class="panel panel-default panel-without-overflow" ng-show="organizationSelection.selected != undefined
                         && organizationSelection.selected != null">
         <div class="panel-heading" style="border-bottom-color: #a9a9a9"><b>Organization perspectives</b></div>
@@ -165,7 +165,7 @@
                 <div class="row">
                     <ul class="nav nav-tabs" role="tablist" style="float: left; border-bottom: 0">
                         <li role="presentation" ng-repeat="perspective in organizationSelection.selected.perspectives"
-                            ng-class="{'active':$index == (organizationSelection.selected.perspectives.length - 1)}">
+                            ng-class="{'active':$index == (organizationSelection.selected.perspectives.length - 1)}" ng-click="setPerspective($index)">
                             <a ng-href="#{{'perspective'+$index}}" aria-controls="{{perspective.code}}" role="tab"
                                data-toggle="tab">{{perspective.code}}</a></li>
                     </ul>
@@ -188,7 +188,7 @@
                              ng-repeat="perspective in organizationSelection.selected.perspectives"
                              ng-class="{'active':$index == (organizationSelection.selected.perspectives.length - 1)}">
 
-                            <div class="col-md-12" ng-if="perspective.code != 'new'">
+                            <div class="col-md-12" ng-if="perspective.code != 'new' && !canEditPerspective">
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
                                      ng-if="perspective.items != undefined || perspective.items != null">
                                     <div class="form-group">
@@ -198,24 +198,33 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12"
-                                     ng-if="perspective.items == undefined || perspective.items == null">
-
-                                    <div class="form-group">
-                                        <label class="ng-scope">&nbsp</label>
-                                        <input type="button" ng-click="editPerspective()"
-                                               class="btn btn-info center-block" value="Edit Perspective">
+                                <div ng-if="perspective.items == undefined || perspective.items == null">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="ng-scope">&nbsp</label>
+                                                <input type="button" ng-click="editPerspective()"
+                                                       class="btn btn-info center-block" value="Edit">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="ng-scope">&nbsp</label>
+                                                <input type="button" ng-click="deletePerspective()"
+                                                       class="btn btn-danger center-block" value="Delete">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-12" ng-if="perspective.code == 'new'">
+                            <div class="col-md-12" ng-if="perspective.code == 'new' || canEditPerspective">
                                 <form>
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label class="ng-scope">Perspective code</label>
-                                                <input type="text" class="form-control" ng-model="newPerspectiveName">
+                                                <input type="text" class="form-control" ng-model="selectedPerspective.code">
                                             </div>
                                         </div>
 
@@ -223,7 +232,7 @@
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label class="ng-scope">Perspective description</label>
-                                                <input type="text" class="form-control" ng-model="newPerspectiveDescription">
+                                                <input type="text" class="form-control" ng-model="selectedPerspective.description">
                                             </div>
                                         </div>
                                     </div>
@@ -234,7 +243,7 @@
                                             <div class="form-group">
                                                 <input type="submit" class="btn btn-success center-block"
                                                        ng-disabled="newPerspectiveName == ''"
-                                                       ng-click="saveNewPerspective(newPerspectiveName, newPerspectiveDescription, $index)"
+                                                       ng-click="savePerspective($index)"
                                                        value="Save">
                                             </div>
                                         </div>
