@@ -51,7 +51,7 @@ ouControllers
             $scope.functionsTpl = OU.template.functionsTab;
             $scope.accountsTpl = OU.template.ouAccountsTab;
 
-            var initAvailableFunctionsAndAccounts = function() {
+            var initAvailableFunctionsAndAccounts = function () {
                 $scope.availableFunctions = [];
                 $scope.selectedFunctions = [];
                 $scope.ouFunctions = [];
@@ -111,34 +111,95 @@ ouControllers
             $scope.saveOrganizationalUnit = function () {
                 $scope.editedOrgUnitCopy = angular.copy($scope.organizationalUnit);
 
-                OrganizationalUnit.save($scope.organizationalUnit, function (data) {
-                    $scope.organizationalUnit.id = data.id;
-                    saveOrganizationalUnitFunctions(data.id);
-                    saveOrganizationalUnitAccounts(data.id);
-                    //todo: show wait animation and retrieve tree when function and account saving is done
-                    $scope.getTree();
-                    $scope.setEdit(false);
-                    selectOrganizationalUnit(data.id);
-                    Notification.success('Organizational unit saved');
+                //Chained saving of OU, OUFunctions, OUAccounts
+                OrganizationalUnit.save($scope.organizationalUnit,
+                    function (data) {
+                        $scope.organizationalUnit.id = data.id;
 
-                });
+                        saveOrganizationalUnitFunctions(
+                            data.id,
+                            function (funcResult) {
+                                console.log("SAVEOUF : " + funcResult);
+                                if (funcResult == true) {
+                                    saveOrganizationalUnitAccounts(
+                                        data.id,
+                                        function (accResult) {
+                                            console.log("SAVEOUACC : " + accResult);
+                                            if (accResult == true) {
+                                                //todo: show wait animation and retrieve tree when function and account saving is done
+                                                $scope.getTree();
+                                                $scope.setEdit(false);
+                                                selectOrganizationalUnit(data.id);
+                                                Notification.success('Organizational unit saved!');
+                                            }
+                                        });
+                                }
+                            });
+                    },
+                    function(error) {
+                        Notification.error('Organizational unit save failed!');
+                    });
             };
 
-            var saveOrganizationalUnitFunctions = function (ouId) {
+            //Pe functia de callback : true - in caz de succes, false - in caz de eroare
+            var saveOrganizationalUnitFunctions = function (ouId, callbackFunc) {
+                var functionsToSave = 0;
+                var functionsSaved = 0;
+                var functionsToDelete = 0;
+                var functionsDeleted = 0;
+
                 $scope.selectedFunctions.forEach(function (selectedFunction) {
                     if (angularIndexOf($scope.ouFunctions, selectedFunction) < 0) {
-                        OUFunction.save({ouId: ouId}, selectedFunction);
+                        functionsToSave++;
+                        OUFunction.save({ouId: ouId}, selectedFunction,
+                            function (succes) {
+                                functionsSaved++;
+                                console.log("SAVE: " + functionsToSave + " " + functionsSaved);
+
+                                if (functionsToSave == functionsSaved && functionsToDelete == functionsDeleted) {
+                                    if (callbackFunc) return callbackFunc(true);
+                                }
+                            },
+                            function (error) {
+                                return callbackFunc(false);
+                            });
                     }
                 });
+
                 $scope.ouFunctions.forEach(function (ouFunction) {
                     if (angularIndexOf($scope.selectedFunctions, ouFunction) < 0) {
-                        OUFunction.delete({ouId: ouId, functionId: ouFunction.id});
+                        functionsToDelete++;
+                        OUFunction.delete({ouId: ouId, functionId: ouFunction.id},
+                            function (succes) {
+                                functionsDeleted++;
+                                console.log("DELETE : " + functionsToDelete + " " + functionsDeleted);
+
+                                if (functionsToDelete == functionsDeleted && functionsToSave == functionsSaved) {
+                                    if (callbackFunc) callbackFunc(true);
+                                }
+                            },
+                            function (error) {
+                                if (callbackFunc) callbackFunc(false);
+                            });
                     }
                 });
+
+                //Daca nu exista functii de salvat/sters, atunci se intoarce un rezultat true pe callback
+                if (functionsToSave == 0 && functionsToDelete == 0) {
+                    if (callbackFunc) callbackFunc(true);
+                }
+
             };
 
-            var saveOrganizationalUnitAccounts = function (ouId) {
-                OUAccount.save({ouId: ouId}, $scope.selectedAccounts);
+            //Pe functia de callback : true - in caz de succes, false - in caz de eroare
+            var saveOrganizationalUnitAccounts = function (ouId, callbackFunc) {
+                OUAccount.save({ouId: ouId}, $scope.selectedAccounts,
+                    function (succes) {
+                        if (callbackFunc) return callbackFunc(true);
+                    },
+                    function (error) {
+                        if (callbackFunc) return callbackFunc(false);
+                    });
             };
 
             var selectOrganizationalUnit = function (ouId) {
