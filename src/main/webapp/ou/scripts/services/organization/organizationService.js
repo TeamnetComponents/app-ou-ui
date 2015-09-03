@@ -14,3 +14,9 @@ ouModule
             }
         });
     }]);
+
+ouModule
+    .factory("ServiceSelectedOU",function(){
+        return {};
+    }
+);

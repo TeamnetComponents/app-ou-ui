@@ -1,8 +1,9 @@
 /**
  * Created by Radu.Hoaghe on 7/16/2015.
  */
-ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$location', 'Organization', 'Notification', 'Perspective',
-    function ($scope, $http, OU, $location, Organization, Notification,Perspective) {
+ouControllers.controller('OrganizationController',
+    ['$scope', '$http', 'OU', '$location', 'OrganizationalUnit', 'Organization', 'Notification', 'Perspective', 'ServiceSelectedOU',
+    function ($scope, $http, OU, $location, OrganizationalUnit, Organization, Notification,Perspective, ServiceSelectedOU) {
 
         $scope.organizationSelection = {};
         $scope.disableDetails = true;
@@ -17,6 +18,26 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             description : null
         };
         $scope.canEditPerspective = false;
+        $scope.selectedPerspectiveOuTree = [];
+
+        $scope.getTree = function () {
+            OrganizationalUnit.getTree(
+                {id: $scope.selectedPerspective.ouTreeRoot.id},
+                function (data) {
+                    $scope.selectedPerspectiveOuTree = data;
+                }
+            );
+        };
+
+        $scope.$on('onSelectTreeNode', function (e, data) {
+            if (data !== undefined && data !== null && data.id !== undefined && data.id !== null) {
+                ServiceSelectedOU.ouId = data.id;
+                ServiceSelectedOU.perspectiveId = $scope.selectedPerspective.id;
+                ServiceSelectedOU.organizationId = $scope.organizationSelection.selected.id;
+
+                $location.path('/organizationalUnit').search({param: 'value'});
+            }
+        });
 
         var init = function () {
             Organization.getAll(function (res) {
@@ -28,7 +49,8 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
 
         $scope.setPerspective = function(index){
             $scope.selectedPerspective = angular.copy($scope.organizationSelection.selected.perspectives[index]);
-    };
+            $scope.getTree();
+        };
 
         $scope.clearSelectedPerspective = function() {
             $scope.selectedPerspective = {
@@ -62,8 +84,6 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $scope.getPerspectivesByOrganization();
 
             $scope.canEditPerspective = false;
-
-
         };
 
         $scope.createOrganization = function () {
@@ -79,14 +99,13 @@ ouControllers.controller('OrganizationController', ['$scope', '$http', 'OU', '$l
             $scope.savedObject = jQuery.extend(true, {}, $scope.organizationSelection.selected);
             $scope.canEdit = true;
             $scope.disableDetails = !$scope.canEdit;
-                 };
+        };
 
         $scope.getPerspectivesByOrganization = function(){
             Perspective.getByOrganizationId({id: $scope.organizationSelection.selected.id}, function(res) {
                 $scope.organizationSelection.selected.perspectives = angular.copy(res);
                 var perspectiveIndex = $scope.organizationSelection.selected.perspectives.length;
-                $scope.selectedPerspective = angular.copy($scope.organizationSelection.selected.perspectives[perspectiveIndex-1]);
-
+                $scope.setPerspective(perspectiveIndex-1);
             });
         };
 

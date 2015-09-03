@@ -1,8 +1,8 @@
 'use strict';
 
 ouControllers
-    .controller('organizationalUnitController', ['Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction', 'OUAccount', 'OU',
-        function (Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction, OUAccount, OU) {
+    .controller('organizationalUnitController', ['ServiceSelectedOU','Notification', '$scope', 'OrganizationalUnit', 'Organization', 'Perspective', 'Function', 'OUFunction', 'OUAccount', 'OU',
+        function (ServiceSelectedOU, Notification, $scope, OrganizationalUnit, Organization, Perspective, Function, OUFunction, OUAccount, OU) {
 
             $scope.ouTree = {};
             $scope.ouTree.organization = {};
@@ -67,9 +67,10 @@ ouControllers
                 });
             };
 
-            var init = function () {
+            var init = function (callback) {
                 Organization.getAll(function (result) {
                     $scope.organizations = result;
+                    if (callback) return callback(result);
                 });
                 initAvailableFunctionsAndAccounts();
             };
@@ -355,4 +356,45 @@ ouControllers
                 return false;
             };
 
+            function resetServiceData() {
+                ServiceSelectedOU.ouId = null;
+                ServiceSelectedOU.perspectiveId = null;
+                ServiceSelectedOU.organizationId = null;
+            }
+
+            //If it's redirected from Organizations, a certain OrgUnit must be opened.
+            if (ServiceSelectedOU.ouId!= undefined && ServiceSelectedOU.ouId !=null) {
+
+                var requestedOUId = ServiceSelectedOU.ouId;
+                var requestedOUPerspectiveId = ServiceSelectedOU.perspectiveId;
+                var requestedOUOrganizationId = ServiceSelectedOU.organizationId;
+
+                resetServiceData();
+
+                $scope.showPerspectiveDropDown = true;
+                $scope.showOrgUnitsTree = true;
+
+                init(function(result) {
+                    $scope.ouTree = {};
+                    $scope.ouTree.organization = {};
+                    $scope.ouTree.perspective = {};
+
+                    $scope.organizations.forEach(function(orgEntry) {
+                        console.log(orgEntry);
+                        if (orgEntry.id == requestedOUOrganizationId) {
+                            console.log(orgEntry);
+                            $scope.ouTree.organization = orgEntry;
+
+                            $scope.ouTree.organization.perspectives.forEach(function(perspEntry) {
+                                if (perspEntry.id == requestedOUPerspectiveId) {
+                                    $scope.ouTree.perspective = perspEntry;
+
+                                    $scope.getTree();
+                                    selectOrganizationalUnit(requestedOUId);
+                                }
+                            });
+                        }
+                    });
+                });
+            }
         }]);
