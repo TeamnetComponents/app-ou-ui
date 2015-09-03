@@ -10,7 +10,7 @@
                     <div class="form-group">
                         <label class="ng-scope">Organization</label>
                         <ui-select ng-model="organizationSelection.selected" theme="selectize"
-                                   on-select="disableEditing()"
+                                   on-select="selectOrganization()"
                                    reset-search-input="false" ng-required="true" name="organizationField">
                             <ui-select-match placeholder="Select organization">
                                 {{$select.selected.code}}
@@ -167,21 +167,20 @@
                 <ul class="nav nav-tabs" role="tablist" style="float: left; border-bottom: 0">
                     <li role="presentation" ng-repeat="perspective in organizationSelection.selected.perspectives"
                         ng-class="{'active':$index == (organizationSelection.selected.perspectives.length - 1)}"
-                        ng-click="setPerspective($index)">
+                        ng-click="selectPerspective($index)">
                         <a ng-href="#{{'perspective'+$index}}" aria-controls="{{perspective.code}}" role="tab"
                            data-toggle="tab">{{perspective.code}}</a></li>
                 </ul>
 
-                    <span>
-                        <ul class="nav nav-tabs">
-                            <li id="add" role="presentation">
-                                <a ng-href="#{{'perspective'+ (organizationSelection.selected.perspectives.length - 1)}}"
-                                   data-toggle="tab" ng-click="addPerspective()" role="tab" id="add-btn"
-                                   style="background-color: #e0e0e0 !important; color:#555 !important">+</a>
-
-                            </li>
-                        </ul>
-                    </span>
+                <span>
+                    <ul class="nav nav-tabs">
+                        <li id="add" role="presentation">
+                            <a ng-href="#{{'perspective'+ (organizationSelection.selected.perspectives.length - 1)}}"
+                                data-toggle="tab" ng-click="addPerspective()" role="tab" id="add-btn"
+                                style="background-color: #e0e0e0 !important; color:#555 !important">+</a>
+                        </li>
+                    </ul>
+                </span>
             </div>
 
             <div class="row">
@@ -223,12 +222,9 @@
                                         ng-click="savePerspective($index)">
                                     <span>Save</span>
 
-                                <button type="button" class="btn btn-danger" ng-click="deletePerspective()">
-                                    <span>Delete</span>
-                                </button>
-
-
-                                </button>
+                                    <button type="button" class="btn btn-danger" ng-click="deletePerspective()">
+                                        <span>Delete</span>
+                                    </button>
                             </div>
                         </div>
 
@@ -243,8 +239,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>

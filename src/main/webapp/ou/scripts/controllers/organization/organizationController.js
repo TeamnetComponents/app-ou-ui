@@ -47,8 +47,9 @@ ouControllers.controller('OrganizationController',
 
         init();
 
-        $scope.setPerspective = function(index){
+        $scope.selectPerspective = function(index){
             $scope.selectedPerspective = angular.copy($scope.organizationSelection.selected.perspectives[index]);
+            $scope.selectedPerspectiveOuTree = [];
             $scope.getTree();
         };
 
@@ -78,12 +79,13 @@ ouControllers.controller('OrganizationController',
             init();
         };
 
-        $scope.disableEditing = function () {
+        $scope.selectOrganization = function () {
             $scope.canEdit = false;
             $scope.disableDetails = !$scope.canEdit;
             $scope.getPerspectivesByOrganization();
 
             $scope.canEditPerspective = false;
+            $scope.selectedPerspectiveOuTree = [];
         };
 
         $scope.createOrganization = function () {
@@ -105,7 +107,7 @@ ouControllers.controller('OrganizationController',
             Perspective.getByOrganizationId({id: $scope.organizationSelection.selected.id}, function(res) {
                 $scope.organizationSelection.selected.perspectives = angular.copy(res);
                 var perspectiveIndex = $scope.organizationSelection.selected.perspectives.length;
-                $scope.setPerspective(perspectiveIndex-1);
+                $scope.selectPerspective(perspectiveIndex-1);
             });
         };
 
@@ -113,15 +115,15 @@ ouControllers.controller('OrganizationController',
             $scope.organizationSelection.selected.active = true;
 
             Organization.save($scope.organizationSelection.selected, function (value) {
-                if ($scope.organizationSelection.selected.neoId != null) {
+                if ($scope.organizationSelection.selected.id != null) {
                     Notification.success('Organization updated');
                 }
                 else {
                     Notification.success('Organization created');
                 }
                 $scope.organizationSelection.selected = value;
-                //$scope.getPerspectivesByOrganization();
                 $scope.refresh();
+                $scope.back();
             }, function (error) {
                 Notification.error(error.data.error);
             });
@@ -199,7 +201,7 @@ ouControllers.controller('OrganizationController',
                     Notification.success('Perspective updated');
                     $scope.getPerspectivesByOrganization();
                 }, function (error) {
-                    Notification.error(error);
+                    Notification.error("Perspective save failed!");
                 });
             } else{
                 Perspective.save(perspective, function (value) {
