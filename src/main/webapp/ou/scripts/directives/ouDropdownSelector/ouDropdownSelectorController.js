@@ -16,4 +16,10 @@ ouControllers
             $scope.$emit('onSelectedFromDropdown', item);
         };
 
+        $scope.$on('onSavedDataFromDropdown', function(e, data) {
+            if(data) {
+                $scope.ouAccountSelected = {};
+            }
+        });
+
     }]);
