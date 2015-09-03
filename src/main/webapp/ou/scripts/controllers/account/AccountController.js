@@ -1,13 +1,14 @@
  'use strict';
 
-ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notification', '$animate', 'Function', 'AccountFunction', 'OU',
-    function ($scope, $http, $q, Notification, $animate, Function, AccountFunction, OU) {
+ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notification', '$animate', 'Function', 'AccountFunction', 'OU','OUAccount',
+    function ($scope, $http, $q, Notification, $animate, Function, AccountFunction, OU, OUAccount) {
         $scope.functionTpl = OU.template.functionsTab;
         $scope.ouTpl = OU.template.accountOusTab;
 
         $scope.availableFunctions = [];
         $scope.accountFunctions = [];
         $scope.selectedFunctions = [];
+        $scope.selectedOUs = [];
 
         $scope.$on('onSelectAccount', function(event, accountId){
             AccountFunction.query({accountId:accountId}, function(data){
@@ -21,6 +22,11 @@ ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notif
                     }
                 });
             });
+
+            OUAccount.getAllByAccountId({accountId:accountId}, function(data){
+                $scope.selectedOUs = data;
+            });
+
         });
 
         $scope.$on('onSaveAccount', function(event, accountId){
