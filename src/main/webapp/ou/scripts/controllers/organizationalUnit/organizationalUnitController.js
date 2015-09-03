@@ -360,15 +360,16 @@ ouControllers
                 ServiceSelectedOU.ouId = null;
                 ServiceSelectedOU.perspectiveId = null;
                 ServiceSelectedOU.organizationId = null;
+                ServiceSelectedOU.ouParent = null;
             }
 
             //If it's redirected from Organizations, a certain OrgUnit must be opened.
-            if (ServiceSelectedOU.ouId!= undefined && ServiceSelectedOU.ouId !=null) {
+            if (ServiceSelectedOU.dataRedirect != undefined && ServiceSelectedOU.dataRedirect == true) {
 
                 var requestedOUId = ServiceSelectedOU.ouId;
                 var requestedOUPerspectiveId = ServiceSelectedOU.perspectiveId;
                 var requestedOUOrganizationId = ServiceSelectedOU.organizationId;
-
+                var requestOuParent = ServiceSelectedOU.ouParent;
                 resetServiceData();
 
                 $scope.showPerspectiveDropDown = true;
@@ -390,7 +391,16 @@ ouControllers
                                     $scope.ouTree.perspective = perspEntry;
 
                                     $scope.getTree();
-                                    selectOrganizationalUnit(requestedOUId);
+
+                                    if (requestedOUId != undefined && requestedOUId != null) {
+                                        selectOrganizationalUnit(requestedOUId);
+                                    }
+                                    else if (requestOuParent != undefined && requestOuParent != null) {
+                                        $scope.isTreeOUSelected = true;
+                                        initAvailableFunctionsAndAccounts();
+                                        $scope.createNewOrgUnit();
+                                        $scope.organizationalUnit.parent = requestOuParent;
+                                    }
                                 }
                             });
                         }

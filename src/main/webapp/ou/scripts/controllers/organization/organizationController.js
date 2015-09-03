@@ -31,12 +31,50 @@ ouControllers.controller('OrganizationController',
 
             $scope.$on('onSelectTreeNode', function (e, data) {
                 if (data !== undefined && data !== null && data.id !== undefined && data.id !== null) {
+
+                    ServiceSelectedOU.dataRedirect = true;
                     ServiceSelectedOU.ouId = data.id;
                     ServiceSelectedOU.perspectiveId = $scope.selectedPerspective.id;
                     ServiceSelectedOU.organizationId = $scope.organizationSelection.selected.id;
 
                     $location.path('/organizationalUnit').search({param: 'value'});
                 }
+            });
+
+            $scope.$on('onCreateTreeNode', function (e, data) {
+                /*$scope.isTreeOUSelected = true;
+                initAvailableFunctionsAndAccounts();
+                $scope.createNewOrgUnit();
+                //Create root OU
+                if (data == null) {
+                    $scope.organizationalUnit.perspective = $scope.ouTree.perspective;
+                }
+                //Create OU
+                else if (data != undefined && data != null) {
+                    $scope.organizationalUnit.parent = {id: data.id, code: data.code};
+                }*/
+
+                if (data != undefined && data != null) {
+                    ServiceSelectedOU.dataRedirect = true;
+                    ServiceSelectedOU.ouId = null;
+                    ServiceSelectedOU.perspectiveId = $scope.selectedPerspective.id;
+                    ServiceSelectedOU.organizationId = $scope.organizationSelection.selected.id;
+                    ServiceSelectedOU.ouParent = {id: data.id, code: data.code};
+
+                    $location.path('/organizationalUnit');
+                }
+            });
+
+            $scope.$on('onDeleteTreeNode', function (e, data) {
+                OrganizationalUnit.delete(
+                    {id: data.id},
+                    function () {
+                        Notification.success("Organizational unit deleted");
+                    },
+                    function (error) {
+                        Notification.error("Couldn't delete Organizational Unit!");
+                        console.error(error);
+                    });
             });
 
             var init = function () {
@@ -123,7 +161,9 @@ ouControllers.controller('OrganizationController',
                     }
                     $scope.organizationSelection.selected = value;
                     $scope.refresh();
-                    $scope.back();
+
+                    $scope.canEdit = false;
+                    $scope.disableDetails = !$scope.canEdit;
                 }, function (error) {
                     Notification.error(error.data.error);
                 });
