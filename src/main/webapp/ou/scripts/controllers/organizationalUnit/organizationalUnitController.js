@@ -357,6 +357,7 @@ ouControllers
             };
 
             function resetServiceData() {
+                ServiceSelectedOU.dataRedirect = false;
                 ServiceSelectedOU.ouId = null;
                 ServiceSelectedOU.perspectiveId = null;
                 ServiceSelectedOU.organizationId = null;
