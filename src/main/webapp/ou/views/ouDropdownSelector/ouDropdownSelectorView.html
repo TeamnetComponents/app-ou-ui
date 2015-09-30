@@ -1,13 +1,13 @@
 <div>
     <div class="form-group">
-        <label> OU asociat : </label>
+        <label><b>Unitate organizationala asociata :</b></label>
 
         <ui-select ng-model="ouAccountSelected.selected"
                    name="organizationSelect"
                    on-select="selectOu($item)"
                    theme="selectize">
 
-            <ui-select-match placeholder="Organizational Unit">
+            <ui-select-match placeholder="Unitate organizationala">
                 {{$select.selected.code}}
             </ui-select-match>
 
