@@ -46,4 +46,6 @@ ouModule
                 $rootScope.organizationalUnitIsEnable = false;
             }
         });
+
+        $rootScope.loginExtensionTpl = "ou/views/login/organizationLogin.html"
     });

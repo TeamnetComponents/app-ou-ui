@@ -11,6 +11,11 @@ ouModule
             'save': {
                 url: 'app/rest/organization/save',
                 method: 'POST'
+            },
+            'publicOrganizations': {
+                url: 'app/public/rest/organization/',
+                method: 'GET',
+                isArray: true
             }
         });
     }]);

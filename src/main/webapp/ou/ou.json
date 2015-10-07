@@ -18,7 +18,6 @@
         "ou/scripts/constants/OU.js",
         "ou/scripts/controllers/organizationalUnit/organizationalUnitController.js",
         "ou/scripts/services/organizationalUnit/organizationalUnitService.js",
-        "ou/scripts/controllers/organization/organization.json",
         "ou/scripts/services/organizationalUnit/organizationalUnitServiceMock.js",
         "ou/scripts/controllers/function/FunctionController.js",
         "ou/scripts/services/function/Function.js",
@@ -33,6 +32,7 @@
         "ou/scripts/directives/ouDropdownSelector/ouDropdownSelectorController.js",
         "ou/scripts/directives/ouDropdownSelector/ouDropdownSelectorDirective.js",
         "ou/scripts/services/organizationalUnit/organizationalUnitHierarchyFilterService.js",
-        "ou/scripts/services/organizationalUnit/OrganizationalUnitObjectGetterService.js"
+        "ou/scripts/services/organizationalUnit/OrganizationalUnitObjectGetterService.js",
+        "ou/scripts/controllers/login/LoginExtensionController.js"
     ]
 }

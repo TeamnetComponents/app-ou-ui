@@ -23,6 +23,11 @@ ouServices
                     data = angular.fromJson(data);
                     return data;
                 }
+            },
+            'getPublicOUs': {
+                url : 'app/public/rest/ou/:organizationId/',
+                method: 'GET',
+                isArray: true
             }
         });
     }]);
