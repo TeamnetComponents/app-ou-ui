@@ -1,0 +1,12 @@
+{
+  "login": {
+    "form": {
+      "organization": "Selectati organizatia:",
+      "organization.placeholder": "Organizatie",
+      "perspective": "Selectati perspectiva:",
+      "perspective.placeholder": "Perspectiva",
+      "organizationalUnit": "Selectati unitatea organizationala:",
+      "organizationalUnit.placeholder": "Unitatea organizationala"
+    }
+  }
+}

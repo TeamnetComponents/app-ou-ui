@@ -1,0 +1,12 @@
+{
+  "login": {
+    "form": {
+      "organization": "Select the organization:",
+      "organization.placeholder": "Organization",
+      "perspective": "Select the perspective:",
+      "perspective.placeholder": "Perspective",
+      "organizationalUnit": "Select the organizational unit:",
+      "organizationalUnit.placeholder": "Organizational unit"
+    }
+  }
+}

@@ -1,20 +1,20 @@
 <div class="row m0">
     <div class="form-group">
-        <label> Selecteaza organizatie : </label>
+        <label translate="login.form.organization">Select the organization:</label>
 
         <ui-select ng-model="selection.organization"
                    name="organizationSelect"
                    on-select="selectOrganization()"
                    theme="selectize">
 
-            <ui-select-match placeholder="Organizatie">
+            <ui-select-match placeholder="{{login.form.organization.placeholder}}">
                 {{$select.selected.code}}
             </ui-select-match>
 
             <ui-select-choices repeat="org in publicOrganizations | filter: $select.search">
                 <div ng-bind-html="org.code | highlight: $select.search"></div>
                 <small>
-                    Name: {{org.description}}
+                    {{org.description}}
                 </small>
             </ui-select-choices>
         </ui-select>

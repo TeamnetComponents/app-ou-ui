@@ -1,7 +1,10 @@
 var ouModule=angular.module('ouModule',['ouControllers','ouServices','ouDirectives','ouConstants', 'ouFilters']);
 ouModule
-    .config(function ($routeProvider, $httpProvider, $translateProvider, tmhDynamicLocaleProvider,AUTH_BOOTSTRAP) {
+    .config(function ($routeProvider, $httpProvider, $translateProvider, $translatePartialLoaderProvider, tmhDynamicLocaleProvider,AUTH_BOOTSTRAP) {
         console.log('ou Module loading!!!');
+
+        // include i18n files
+        $translatePartialLoaderProvider.addPart('/ou/i18n/ou_');
 
     //place some routes here
         $routeProvider
