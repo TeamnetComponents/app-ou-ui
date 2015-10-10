@@ -27,8 +27,22 @@ ouModule
                 access: {
                     authorizedModules: [AUTH_BOOTSTRAP.all]
                 }
+            }).when('/ouLoginStep', {
+                templateUrl: 'ou/views/login/ouLoginStep.html',
+                controller: 'OULoginController',
+                access: {
+                    authorizedModules: [AUTH_BOOTSTRAP.all]
+                }
+            }).when('/ouLoginSwitcher', {
+                templateUrl: 'ou/views/login/ouLoginSwitcher.html',
+                controller: 'OULoginController',
+                access: {
+                    authorizedModules: [AUTH_BOOTSTRAP.all]
+                }
             })
-    }).run(function ($rootScope) {
+    }).run(function ($rootScope, $location) {
+
+        $rootScope.ouEnabled = true;
 
         $rootScope.$on("event:get-account-information", function(event, args) {
             if (args.moduleRights.function_READ_ACCESS != null) {
@@ -51,4 +65,18 @@ ouModule
         });
 
         $rootScope.loginExtensionTpl = "ou/views/login/organizationLogin.html"
+
+        if($rootScope.finalStep === undefined) {
+            $rootScope.finalStep = 1;
+        }
+        if($rootScope.ouLoginStep === undefined) {
+            $rootScope.ouLoginStep = 1;
+        }
+
+        // Call when the authentication flow is complete
+        $rootScope.$on('event:auth-login-step'+$rootScope.ouLoginStep, function (event, pathParameters) {
+            $rootScope.ouLoginInfo = {pathParams: pathParameters};
+            $location.path('/ouLoginStep').replace();
+        });
+
     });

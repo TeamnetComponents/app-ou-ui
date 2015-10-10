@@ -1,0 +1,68 @@
+<div class="container-fluid">
+    <div id="page-login" class="row">
+        <div class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+            <div class="panel panel-default">
+                <form class="form" role="form">
+                    <div class="panel-heading"><h3 class="page-header" translate="login.ou.switch.title">Organization
+                        switcher</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group">
+                            <label translate="login.ou.switch.info">"You can change the current logged in organization
+                                in the form below."</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="login.ou.form.organization">Select the organization:</label>
+
+                            <ui-select id="organization"
+                                       ng-model="selection.organization"
+                                       name="organizationSelect"
+                                       on-select="selectOrganization()"
+                                       theme="selectize">
+
+                                <ui-select-match placeholder="{{login.ou.form.organization.placeholder}}">
+                                    {{$select.selected.code}}
+                                </ui-select-match>
+
+                                <ui-select-choices repeat="org in accountOrganizations | filter: $select.search">
+                                    <div ng-bind-html="org.code | highlight: $select.search"></div>
+                                    <small>
+                                        {{org.description}}
+                                    </small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="form-group" ng-show="showOUs">
+                            <label translate="login.ou.form.organizationalUnit">Select the organizational unit:</label>
+
+                            <ui-select id="ou"
+                                       ng-model="selection.organizationalUnit"
+                                       name="ouSelect"
+                                       on-select="selectOU()"
+                                       theme="selectize">
+
+                                <ui-select-match placeholder="{{login.ou.form.organizationalUnit.placeholder}}">
+                                    {{$select.selected.code}}
+                                </ui-select-match>
+
+                                <ui-select-choices repeat="ou in accountOUs | filter: $select.search">
+                                    <div ng-bind-html="ou.code | highlight: $select.search"></div>
+                                    <small>
+                                        {{ou.description}}
+                                    </small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success btn-block" ng-click="proceed()"
+                                    translate="login.ou.switch.button">Switch
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

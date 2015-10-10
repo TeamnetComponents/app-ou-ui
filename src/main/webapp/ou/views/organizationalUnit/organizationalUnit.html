@@ -82,7 +82,7 @@
                                 </ui-select-match>
 
                                 <ui-select-choices
-                                        repeat="OUParent in organizationalUnits | filter: $select.search">
+                                        repeat="OUParent in authorizedOUs | filter: $select.search">
                                     <div ng-bind-html="OUParent.code | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>

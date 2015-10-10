@@ -33,6 +33,8 @@
         "ou/scripts/directives/ouDropdownSelector/ouDropdownSelectorDirective.js",
         "ou/scripts/services/organizationalUnit/organizationalUnitHierarchyFilterService.js",
         "ou/scripts/services/organizationalUnit/OrganizationalUnitObjectGetterService.js",
-        "ou/scripts/controllers/login/LoginExtensionController.js"
+        "ou/scripts/controllers/login/LoginExtensionController.js",
+        "ou/scripts/controllers/login/OULoginController.js",
+        "ou/scripts/services/login/OULoginService.js"
     ]
 }

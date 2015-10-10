@@ -1,12 +1,19 @@
 {
   "login": {
-    "form": {
-      "organization": "Select the organization:",
-      "organization.placeholder": "Organization",
-      "perspective": "Select the perspective:",
-      "perspective.placeholder": "Perspective",
-      "organizationalUnit": "Select the organizational unit:",
-      "organizationalUnit.placeholder": "Organizational unit"
+    "ou": {
+      "form": {
+        "organization": "Select the organization:",
+        "organization.placeholder": "Organization",
+        "perspective": "Select the perspective:",
+        "perspective.placeholder": "Perspective",
+        "organizationalUnit": "Select the organizational unit:",
+        "organizationalUnit.placeholder": "Organizational unit"
+      },
+      "switch": {
+        "title": "Organization switcher",
+        "info": "You can change the current logged in organization in the form below.",
+        "button": "Switch"
+      }
     }
   }
 }

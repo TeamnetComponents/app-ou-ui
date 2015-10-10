@@ -1,13 +1,13 @@
 <div class="row m0">
     <div class="form-group">
-        <label translate="login.form.organization">Select the organization:</label>
+        <label translate="login.ou.form.organization">Select the organization:</label>
 
         <ui-select ng-model="selection.organization"
                    name="organizationSelect"
                    on-select="selectOrganization()"
                    theme="selectize">
 
-            <ui-select-match placeholder="{{login.form.organization.placeholder}}">
+            <ui-select-match placeholder="{{login.ou.form.organization.placeholder}}">
                 {{$select.selected.code}}
             </ui-select-match>
 

@@ -1,12 +1,19 @@
 {
   "login": {
-    "form": {
-      "organization": "Selectati organizatia:",
-      "organization.placeholder": "Organizatie",
-      "perspective": "Selectati perspectiva:",
-      "perspective.placeholder": "Perspectiva",
-      "organizationalUnit": "Selectati unitatea organizationala:",
-      "organizationalUnit.placeholder": "Unitatea organizationala"
+    "ou": {
+      "form": {
+        "organization": "Selectati organizatia:",
+        "organization.placeholder": "Organizatie",
+        "perspective": "Selectati perspectiva:",
+        "perspective.placeholder": "Perspectiva",
+        "organizationalUnit": "Selectati unitatea organizationala:",
+        "organizationalUnit.placeholder": "Unitatea organizationala"
+      },
+      "switch": {
+        "title": "Schimbare organizatie",
+        "info": "Puteti schimba organizatia autentificata utilizand formularul de mai jos.",
+        "button": "Schimba"
+      }
     }
   }
 }
