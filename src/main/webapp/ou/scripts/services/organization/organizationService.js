@@ -25,3 +25,22 @@ ouModule
         return {};
     }
 );
+
+ouModule
+    .factory('OrgAccount', ['$resource', function ($resource) {
+        return $resource('app/rest/organization/accounts/:orgId', {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            },
+            'queryAvailable' : {
+                url: 'app/rest/organization/availableAccounts/:orgId',
+                method: 'GET',
+                isArray: true
+            }
+        });
+    }]);

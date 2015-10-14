@@ -2,8 +2,10 @@
  * Created by Radu.Hoaghe on 7/16/2015.
  */
 ouControllers.controller('OrganizationController',
-    ['$scope', '$http', 'OU', '$location', 'OrganizationalUnit', 'Organization', 'Notification', 'Perspective', 'ServiceSelectedOU',
-        function ($scope, $http, OU, $location, OrganizationalUnit, Organization, Notification, Perspective, ServiceSelectedOU) {
+    ['$scope', '$http', 'OU', '$location', 'OrganizationalUnit', 'Organization',
+        'Notification', 'Perspective', 'ServiceSelectedOU', 'OrgAccount',
+        function ($scope, $http, OU, $location, OrganizationalUnit, Organization,
+                  Notification, Perspective, ServiceSelectedOU, OrgAccount) {
 
             $scope.organizationSelection = {};
             $scope.disableDetails = true;
@@ -19,6 +21,10 @@ ouControllers.controller('OrganizationController',
             };
             $scope.canEditPerspective = false;
             $scope.selectedPerspectiveOuTree = [];
+            $scope.orgAccounts = [];
+
+            $scope.search = '';
+            $scope.selSearch = '';
 
             $scope.getTree = function () {
                 OrganizationalUnit.getTree(
@@ -28,6 +34,9 @@ ouControllers.controller('OrganizationController',
                     }
                 );
             };
+
+            var baseTemplateUrl = 'ou/views/organization/template/';
+            $scope.accountsTpl = baseTemplateUrl + 'orgaccount.tpl.html';
 
             $scope.$on('onSelectTreeNode', function (e, data) {
                 if (data !== undefined && data !== null && data.id !== undefined && data.id !== null) {
@@ -83,6 +92,45 @@ ouControllers.controller('OrganizationController',
                 });
             };
 
+            var angularIndexOf = function (array, elem) {
+                for (var x = 0; x < array.length; x++) {
+                    if (angular.equals(array[x].id, elem.id))
+                        return x;
+                }
+                return -1;
+            };
+
+            $scope.startFnc = function () {
+                arguments[0].target.style.visibility = 'hidden';
+            };
+
+            $scope.stopFnc = function () {
+                arguments[0].target.style.visibility = '';
+            };
+
+            var initAvailableFunctionsAndAccounts = function () {
+                $scope.availableAccounts = [];
+                $scope.selectedAccounts = [];
+                $scope.selectedAccount = {};
+            };
+
+            initAvailableFunctionsAndAccounts();
+
+            var getSelectedAndAvailableAccounts = function (orgId) {
+                OrgAccount.query({orgId: orgId}, function (accounts) {
+                    $scope.selectedAccounts = accounts;
+                    OrgAccount.queryAvailable({orgId: orgId}, function (availableAccounts) {
+                        $scope.availableAccounts = availableAccounts;
+                        $scope.selectedAccounts.forEach(function (item) {
+                            var idx = angularIndexOf($scope.availableAccounts, item);
+                            if (idx > -1) {
+                                $scope.availableAccounts.splice(idx, 1);
+                            }
+                        });
+                    });
+                });
+            };
+
             init();
 
             $scope.selectPerspective = function (index) {
@@ -124,6 +172,7 @@ ouControllers.controller('OrganizationController',
 
                 $scope.canEditPerspective = false;
                 $scope.selectedPerspectiveOuTree = [];
+                getSelectedAndAvailableAccounts($scope.organizationSelection.selected.id);
             };
 
             $scope.createOrganization = function () {
@@ -135,7 +184,6 @@ ouControllers.controller('OrganizationController',
             };
 
             $scope.editOrganization = function () {
-
                 $scope.savedObject = jQuery.extend(true, {}, $scope.organizationSelection.selected);
                 $scope.canEdit = true;
                 $scope.disableDetails = !$scope.canEdit;
@@ -149,6 +197,16 @@ ouControllers.controller('OrganizationController',
                 });
             };
 
+            $scope.saveOrgAccounts = function() {
+                OrgAccount.save({orgId: $scope.organizationSelection.selected.id}, $scope.selectedAccounts,
+                    function (succes) {
+                        Notification.success("Organization accounts save succeeded!");
+                    },
+                    function (error) {
+                        Notification.error("Organization accounts save failed!");
+                    });
+            };
+
             $scope.saveOrganization = function () {
                 $scope.organizationSelection.selected.active = true;
 
@@ -159,6 +217,7 @@ ouControllers.controller('OrganizationController',
                     else {
                         Notification.success('Organization created');
                     }
+                    $scope.saveOrgAccounts();
                     $scope.organizationSelection.selected = value;
                     $scope.refresh();
 

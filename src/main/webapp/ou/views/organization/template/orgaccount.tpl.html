@@ -1,0 +1,79 @@
+<div class="form-group">
+    <label>Organization users</label>
+
+    <div ng-show="loading" class="row">
+        <md-progress-circular style="position: absolute;
+                                          left: 50%;
+                                          top: 50%;
+                                          z-index: 9999"
+                              class="md-hue-2" md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div class="row permissions-editor">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" id="parentDivAccOrg1" ng-class="{'col-anim': canEdit}">
+            <label>Utilizatori existenti: </label>
+
+            <div class="thumbnail"
+                 style=" min-height: 400px; max-height: 400px; overflow-y: scroll"
+                 data-drop="true"
+                 ng-model='selectedAccounts'
+                 data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccounts])'}"
+                 jqyoui-droppable="{multiple:true}">
+                <input type="text" class="form-control mb15" ng-model="selSearch" placeholder="Filter">
+
+                <div class="list-group">
+                    <div ng-repeat="selectedAccount in selectedAccounts | filter: {username: selSearch}">
+                        <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
+                             data-drag="!clickBool"
+                             ng-model='selectedAccounts'
+                             ng-show='selectedAccount.username !== undefined'
+                             data-jqyoui-options="{revert: 'invalid',
+                                               helper: 'clone',
+                                               appendTo: '#parentDivAccOrg1',
+                                               containment: 'window',
+                                               scroll: false}"
+                             jqyoui-draggable="{index: {{$index}},
+                                            deepCopy : true,
+                                            onStart: 'startFnc',
+                                            onStop: 'stopFnc'}">
+                            {{selectedAccount.username}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="canEdit"
+             class="col-lg-6 col-md-6 col-sm-12 col-xs-12 animate-show" id="parentDivAccOrg2">
+            <label>Utilizatori disponibili:</label>
+
+            <div class="thumbnail"
+                 style=" min-height: 400px; max-height: 400px; overflow-y: scroll"
+                 data-drop="true"
+                 ng-model='availableAccounts'
+                 data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=availableAccounts])'}"
+                 jqyoui-droppable="{multiple:true}"
+                    >
+                <input type="text" class="form-control mb15" ng-model="search" placeholder="Filter">
+
+                <div class="list-group">
+                    <div ng-repeat="availableAccount in availableAccounts | filter: {username: search}">
+                        <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
+                             data-drag="!clickBool"
+                             ng-model='availableAccounts'
+                             ng-show='availableAccount.username !== undefined'
+                             data-jqyoui-options="{revert: 'invalid',
+                                               helper: 'clone',
+                                               appendTo: '#parentDivAccOrg2',
+                                               containment: 'window',
+                                               scroll: false}"
+                             jqyoui-draggable="{index: {{$index}},
+                                            deepCopy : true,
+                                            onStart: 'startFnc',
+                                            onStop: 'stopFnc'}">
+                            {{availableAccount.username}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -204,14 +204,17 @@ ouControllers
             };
 
             var selectOrganizationalUnit = function (ouId) {
-                $scope.isTreeOUSelected = true;
                 $scope.selectedAccount = {functions: [], availableFunctions: []};
                 $scope.displayAccountFunctions = false;
                 $scope.setEdit(false);
                 getOuDetails(ouId);
-                $scope.getParentOrgUnitsById(ouId);
-                getSelectedAndAvailableFunctions(ouId);
-                getSelectedAndEligibleAccounts(ouId);
+            };
+
+            var deselectOrganizationalUnit = function() {
+                $scope.isTreeOUSelected = false;
+                $scope.selectedAccount = {functions: [], availableFunctions: []};
+                $scope.displayAccountFunctions = false;
+                $scope.setEdit(false);
             };
 
             var getOuDetails = function (ouId) {
@@ -222,10 +225,21 @@ ouControllers
                         if ($scope.organizationalUnit.parent === undefined || $scope.organizationalUnit.parent === null) {
                             $scope.organizationalUnit.perspective = $scope.ouTree.perspective;
                         }
+
+                        //Daca utilizatorul are acces la OU, se obtin si celelalte detalii
+                        $scope.isTreeOUSelected = true;
+                        $scope.getParentOrgUnitsById(ouId);
+                        getSelectedAndAvailableFunctions(ouId);
+                        getSelectedAndEligibleAccounts(ouId);
                     },
                     function (error) {
-                        Notification.error("Couldn't fetch Organizational Unit!");
-                        console.error(error);
+                        if (error.status == 406) {
+                            Notification.error("Not authorized to view this Organizational Unit!");
+                        }
+                        else {
+                            Notification.error("Couldn't fetch Organizational Unit!");
+                        }
+                        deselectOrganizationalUnit();
                     }
                 );
             };
