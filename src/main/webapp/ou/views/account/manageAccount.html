@@ -1,0 +1,105 @@
+<div>
+    <div class="panel panel-default">
+        <form name="formCreateOrEdit" class="form" role="form">
+            <div class="panel-heading">
+                <h4 translate="global.menu.account.main">Account</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-4">
+                        <div ng-show="view != 'create'"
+                             class="list-group" style="max-height: 600px; overflow: auto">
+                            <input type="text" class="form-control mb15" ng-model="accSearch" placeholder="Filter">
+                            <div class="list-group-item"
+                                 style="cursor: pointer; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+                                 ng-repeat="account in accounts | filter: {username: accSearch}"
+                                 ng-click="selectAccount(account)"
+                                 ng-class="{active:isSelected(account)}">
+                                {{account.username}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-4">
+                        <div class="row m0">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label translate="settings.form.firstname"><b>First name</b></label>
+                                    <input type="text" name="selectedAccount_firstName" class="form-control"
+                                           ng-model="selectedAccount.firstName" ng-readonly="true">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label translate="settings.form.lastname"><b>Last name</b></label>
+                                    <input type="text" name="selectedAccount_lastname" class="form-control"
+                                           ng-model="selectedAccount.lastName" ng-readonly="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m0">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label translate="global.form.email"><b>Email</b></label>
+                                    <input type="email" name="selectedAccount_email" class="form-control"
+                                           ng-model="selectedAccount.email" ng-readonly="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="separator mt5 mb15"></div>
+                            </div>
+                        </div>
+
+                        <div class="row m0">
+                            <div>
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#functions" aria-controls="functions" role="tab" data-toggle="tab">Functions</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="functions"
+                                         ng-controller="OuAccountController">
+                                        <div class="col-md-12" ng-include="functionTpl"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row m0">
+                            <div class="col-md-12 text-right mb15">
+                                <button class="btn btn-info"
+                                        ng-show="isView"
+                                        ng-click="editAccount()">
+                                    <span translate="global.button.edit">Edit</span>
+                                </button>
+                                <button class="btn btn-success"
+                                        ng-show="isEdit"
+                                        ng-disabled="formCreateOrEdit.$invalid"
+                                        ng-click="saveAccount()">
+                                    <span translate="global.button.save">Save</span>
+                                </button>
+                                <button class="btn btn-danger"
+                                        ng-show="false">
+                                    <span translate="global.button.delete">Delete</span>
+                                </button>
+                                <button class="btn btn-warning"
+                                        ng-show="!isView"
+                                        ng-click="formCreateOrEdit.$setPristine();backAccount()">
+                                    <span translate="global.button.back">Back</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
