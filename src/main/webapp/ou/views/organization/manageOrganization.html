@@ -75,51 +75,36 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
-                            <div class="datepicker">
                                 <label>Valid from:</label>
-                                <a id="orgValidFrom" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                                   data-target="#" href="#" required>
-                                    <div class="input-group">
-                                        <div class="form-control"
-                                             data-ng-model="organizationSelection.selected.validFrom">
-                                            {{organizationSelection.selected.validFrom | date:"dd/MM/yyyy"}}
-                                        </div>
-                                            <span class="input-group-addon"><i
-                                                    class="glyphicon glyphicon-calendar"></i>
-                                            </span>
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                    <datepicker data-ng-model="organizationSelection.selected.validFrom"
-                                                data-datetimepicker-config="{ dropdownSelector: '#orgValidFrom' }"
-                                                ng-required="true"></datepicker>
-                                </ul>
-                            </div>
+                                <p class="input-group">
+                                    <input type="text" name="selectedOrg_validFrom" class="form-control"
+                                           ng-disabled="!canEdit"
+                                           is-open="opened_validFrom" placeholder="Valid from" close-text="Close"
+                                           datepicker-popup="{{dateOptions.format}}" datepicker-options="dateOptions"
+                                           ng-model="organizationSelection.selected.validFrom" ng-required="true" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"  ng-disabled="!canEdit" ng-click="open_validFrom($event)">
+                                            <i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
                         </div>
                     </div>
 
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
-                            <div class="datepicker">
                                 <label>Valid to:</label>
-                                <a id="orgValidTo" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                                   data-target="#" href="#" required>
-                                    <div class="input-group">
-                                        <div class="form-control"
-                                             data-ng-model="organizationSelection.selected.validTo">
-                                            {{organizationSelection.selected.validTo | date:"dd/MM/yyyy"}}
-                                        </div>
-                                            <span class="input-group-addon"><i
-                                                    class="glyphicon glyphicon-calendar"></i>
-                                            </span>
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                    <datepicker data-ng-model="organizationSelection.selected.validTo"
-                                                data-datetimepicker-config="{ dropdownSelector: '#orgValidTo' }"
-                                                ng-required="true"></datepicker>
-                                </ul>
-                            </div>
+
+                                <p class="input-group">
+                                    <input type="text" name="selectedOrg_validTo" class="form-control"
+                                           ng-disabled="!canEdit"
+                                           is-open="opened_validTo" placeholder="Valid to" close-text="Close"
+                                           datepicker-popup="{{dateOptions.format}}" datepicker-options="dateOptions"
+                                           ng-model="organizationSelection.selected.validTo" ng-required="true" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default"  ng-disabled="!canEdit" ng-click="open_validTo($event)"><i
+                                                class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
                         </div>
                     </div>
                 </div>

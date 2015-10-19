@@ -26,6 +26,24 @@ ouControllers.controller('OrganizationController',
             $scope.search = '';
             $scope.selSearch = '';
 
+            $scope.open_validFrom = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened_validFrom = true;
+            };
+
+            $scope.open_validTo = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened_validTo = true;
+            };
+
+            $scope.dateOptions = {
+                format: 'dd/MM/yyyy',
+                formatYear: 'yyyy',
+                startingDay: 1
+            };
+
             $scope.getTree = function () {
                 OrganizationalUnit.getTree(
                     {id: $scope.selectedPerspective.ouTreeRoot.id},
