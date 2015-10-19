@@ -32,12 +32,24 @@ ouControllers.controller('OuAccountController', ['$scope', '$http', '$q', 'Notif
         $scope.$on('onSaveAccount', function(event, accountId){
             $scope.selectedFunctions.forEach(function(selectedFunction){
                 if (angularIndexOf($scope.accountFunctions, selectedFunction) < 0) {
-                    AccountFunction.save({accountId: accountId}, selectedFunction);
+                    AccountFunction.save({accountId: accountId}, selectedFunction,
+                        function(successData) {
+                            Notification.success('Account functions updated!');
+                        },
+                        function(errorData) {
+                            Notification.error('Error updating account functions!');
+                        });
                 }
             });
             $scope.accountFunctions.forEach(function(accountFunction){
                 if (angularIndexOf($scope.selectedFunctions, accountFunction) < 0) {
-                    AccountFunction.delete({accountId: accountId, functionId: accountFunction.id});
+                    AccountFunction.delete({accountId: accountId, functionId: accountFunction.id},
+                        function(successData) {
+                            Notification.success('Account functions updated!');
+                        },
+                        function(errorData) {
+                            Notification.error('Error updating account functions!');
+                        });
                 }
             });
         });

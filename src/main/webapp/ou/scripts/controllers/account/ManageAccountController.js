@@ -36,6 +36,7 @@ bootstrapControllers
 
             $scope.saveAccount = function () {
                 $scope.$broadcast('onSaveAccount', $scope.selectedAccount.id);
+                $scope.backAccount();
             };
 
             $scope.backAccount = function () {
