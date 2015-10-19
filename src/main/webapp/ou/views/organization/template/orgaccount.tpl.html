@@ -18,21 +18,21 @@
                  ng-model='selectedAccounts'
                  data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=selectedAccounts])'}"
                  jqyoui-droppable="{multiple:true}">
-                <input type="text" class="form-control mb15" ng-model="selSearch" placeholder="Filter">
+                <input type="text" class="form-control mb15" ng-model="searchSelected" placeholder="Filter">
 
                 <div class="list-group">
-                    <div ng-repeat="selectedAccount in selectedAccounts | filter: {username: selSearch}">
+                    <div ng-repeat="selectedAccount in selectedAccounts | orderBy:'username' | filter: {username: searchSelected}">
                         <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
                              data-drag="!clickBool"
                              ng-model='selectedAccounts'
                              ng-show='selectedAccount.username !== undefined'
                              data-jqyoui-options="{revert: 'invalid',
                                                helper: 'clone',
-                                               appendTo: '#parentDivAccOrg1',
                                                containment: 'window',
                                                scroll: false}"
                              jqyoui-draggable="{index: {{$index}},
                                             deepCopy : true,
+                                            applyFilter: 'filterSelectedUsers',
                                             onStart: 'startFnc',
                                             onStop: 'stopFnc'}">
                             {{selectedAccount.username}}
@@ -52,20 +52,20 @@
                  data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=availableAccounts])'}"
                  jqyoui-droppable="{multiple:true}"
                     >
-                <input type="text" class="form-control mb15" ng-model="search" placeholder="Filter">
+                <input type="text" class="form-control mb15" ng-model="searchAvailable" placeholder="Filter">
 
                 <div class="list-group">
-                    <div ng-repeat="availableAccount in availableAccounts | filter: {username: search}">
+                    <div ng-repeat="availableAccount in availableAccounts | orderBy:'username' | filter: {username: searchAvailable}">
                         <div class="md-whiteframe-z1 list-group-item btn-draggable accessPermission simple"
                              data-drag="!clickBool"
                              ng-model='availableAccounts'
                              ng-show='availableAccount.username !== undefined'
                              data-jqyoui-options="{revert: 'invalid',
                                                helper: 'clone',
-                                               appendTo: '#parentDivAccOrg2',
                                                containment: 'window',
                                                scroll: false}"
                              jqyoui-draggable="{index: {{$index}},
+                                            applyFilter: 'filterAvailableUsers',
                                             deepCopy : true,
                                             onStart: 'startFnc',
                                             onStop: 'stopFnc'}">

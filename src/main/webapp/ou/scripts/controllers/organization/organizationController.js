@@ -3,9 +3,9 @@
  */
 ouControllers.controller('OrganizationController',
     ['$scope', '$http', 'OU', '$location', 'OrganizationalUnit', 'Organization',
-        'Notification', 'Perspective', 'ServiceSelectedOU', 'OrgAccount',
+        'Notification', 'Perspective', 'ServiceSelectedOU', 'OrgAccount', '$filter',
         function ($scope, $http, OU, $location, OrganizationalUnit, Organization,
-                  Notification, Perspective, ServiceSelectedOU, OrgAccount) {
+                  Notification, Perspective, ServiceSelectedOU, OrgAccount, $filter) {
 
             $scope.organizationSelection = {};
             $scope.disableDetails = true;
@@ -23,8 +23,16 @@ ouControllers.controller('OrganizationController',
             $scope.selectedPerspectiveOuTree = [];
             $scope.orgAccounts = [];
 
-            $scope.search = '';
-            $scope.selSearch = '';
+            $scope.searchAvailable = '';
+            $scope.searchSelected = '';
+
+            $scope.filterAvailableUsers = function() {
+                return $filter('filter')($filter('orderBy')($scope.availableAccounts, 'username'), {username : $scope.searchAvailable});
+            };
+
+            $scope.filterSelectedUsers = function() {
+                return $filter('filter')($filter('orderBy')($scope.selectedAccounts, 'username'), {username : $scope.searchSelected});
+            };
 
             $scope.open_validFrom = function($event) {
                 $event.preventDefault();
@@ -52,9 +60,6 @@ ouControllers.controller('OrganizationController',
                     }
                 );
             };
-
-            var baseTemplateUrl = 'ou/views/organization/template/';
-            $scope.accountsTpl = baseTemplateUrl + 'orgaccount.tpl.html';
 
             $scope.$on('onSelectTreeNode', function (e, data) {
                 if (data !== undefined && data !== null && data.id !== undefined && data.id !== null) {
