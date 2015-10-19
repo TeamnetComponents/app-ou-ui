@@ -77,6 +77,14 @@ ouModule
             }
         };
 
+        var addModuleRightsToRoot = function(ouAccount) {
+            if (ouAccount != null && ouAccount.moduleRights != null
+                && $rootScope.account != undefined && $rootScope.account != null
+                && $rootScope.account.moduleRights != undefined && $rootScope.account.moduleRights != null) {
+                    $rootScope.account.moduleRights = angular.extend({}, $rootScope.account.moduleRights, ouAccount.moduleRights);
+            }
+        }
+
         $rootScope.ouEnabled = true;
 
         $rootScope.$on("event:get-account-information", function (event, args) {
@@ -85,6 +93,7 @@ ouModule
                 function (data) {
                     ouAccount = data;
                     checkAuthorities(args, ouAccount);
+                    addModuleRightsToRoot(ouAccount);
                 },
                 function (error) {
                     checkAuthorities(args, ouAccount);
