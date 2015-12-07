@@ -39,7 +39,7 @@
             <groupId>ro.teamnet.ou</groupId>
             <artifactId>app-ou-java</artifactId>
             <type>jar</type>
-            <version>0.3-SNAPSHOT</version>
+            <version>${app-neo4j-ou.version}</version>
         </dependency>
     </dependencies>
 
