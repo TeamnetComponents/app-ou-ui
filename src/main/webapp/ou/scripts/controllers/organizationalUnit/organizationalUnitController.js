@@ -13,19 +13,6 @@ ouControllers
 
             $scope.getParentOrgUnitsById = function (nodeId) {
 
-                /*OrganizationalUnit.getParentOrgUnitsById(
-                    {
-                        rootId: $scope.ouTree.perspective.ouTreeRoot.id,
-                        id: nodeId
-                    },
-                    function (data) {
-                        $scope.organizationalUnits = data;
-                        console.log($scope.organizationalUnits);
-                    },
-                    function (error) {
-                        $scope.organizationalUnits = null
-                        Notification.error("Cannot retrieve Organizational Units!");
-                    });*/
             };
 
             $scope.selectOrganization = function () {
