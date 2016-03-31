@@ -37,6 +37,8 @@
         "ou/scripts/controllers/login/OULoginController.js",
         "ou/scripts/services/login/OULoginService.js",
         "ou/scripts/controllers/account/ManageAccountController.js",
-        "ou/scripts/services/account/OuAccountService.js"
+        "ou/scripts/services/account/OuAccountService.js",
+        "ou/scripts/controllers/sync/syncController.js",
+        "ou/scripts/services/sync/syncService.js"
     ]
 }

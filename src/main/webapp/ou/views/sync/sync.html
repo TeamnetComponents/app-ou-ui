@@ -1,0 +1,31 @@
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading" style="border-bottom-color: #a9a9a9">
+            <h4>Sync Neo4j</h4>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>Sync databases?</h3>
+                    <h3>WARNING! This might take a while.</h3>
+                </div>
+
+                <div class="col-xs-3 pull-right">
+                    <button class="btn btn-success"
+                            ng-disabled="status == 'pending'"
+                            ng-click="synchronizeDb()">
+                        Synchronize
+                    </button>
+                </div>
+
+                <div class="col-xs-12" ng-switch on="status">
+                    <h3 ng-switch-when="ok">Synchronization complete!</h3>
+                    <h3 ng-switch-when="already">Synchronization already running!</h3>
+                    <h3 ng-switch-when="pending">Synchronization in progress...</h3>
+                    <h3 ng-switch-when="error">Failed!</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

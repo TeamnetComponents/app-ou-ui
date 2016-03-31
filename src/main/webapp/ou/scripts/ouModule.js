@@ -46,6 +46,12 @@ ouModule
                 access: {
                     authorizedModules: [AUTH_BOOTSTRAP.all]
                 }
+            }).when('/syncDb', {
+                templateUrl: 'ou/views/sync/sync.html',
+                controller: 'SyncController',
+                access: {
+                    authorizedModules: [AUTH_BOOTSTRAP.all]
+                }
             })
     }).run(function ($rootScope, $location, OuAccountService) {
 
@@ -69,6 +75,13 @@ ouModule
                 $rootScope.organizationalUnitIsEnable = true;
             } else {
                 $rootScope.organizationalUnitIsEnable = false;
+            }
+
+            if ((args.moduleRights.dbSynchronization_READ_ACCESS != null) || (ouAccount != null
+                && ouAccount.moduleRights.dbSynchronization_READ_ACCESS != null)) {
+                $rootScope.databaseSynchronizationAllowed = true;
+            } else {
+                $rootScope.databaseSynchronizationAllowed = false;
             }
 
             if ((args.moduleRights.SETTINGS_READ_ACCESS != null) || (ouAccount != null
