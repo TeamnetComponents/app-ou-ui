@@ -6,7 +6,7 @@
     <parent>
         <groupId>ro.teamnet.neo</groupId>
         <artifactId>app-neo4j-dependencies</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.7</version>
         <relativePath />
     </parent>
 	
@@ -41,7 +41,7 @@
             <groupId>ro.teamnet.ou</groupId>
             <artifactId>app-ou-java</artifactId>
             <type>jar</type>
-            <version>0.6-SNAPSHOT</version>
+            <version>0.4</version>
         </dependency>
 
 
