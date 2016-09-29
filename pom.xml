@@ -10,7 +10,7 @@
 	
 	<groupId>ro.teamnet.ou</groupId>
     <artifactId>app-ou-ui</artifactId>
-    <version>0.5</version>
+    <version>0.6-SNAPSHOT</version>
     <packaging>war</packaging>
 	
     <distributionManagement>
@@ -48,7 +48,7 @@
 	<scm>
         <url>http://git-components.teamnet.ro/summary/components%2Fjava%2Fplatform-extensions%2Fapp-ou-ui.git</url>
         <connection>scm:git:http://component-publisher@git-components.teamnet.ro/r/components/java/platform-extensions/app-ou-ui.git</connection>
-        <tag>v0.5</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <build>
